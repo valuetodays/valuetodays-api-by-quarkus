@@ -1,0 +1,16 @@
+quarkus:
+  profile: dev
+  http:
+    port: 8080
+  datasource:
+    db-kind: mysql
+    password: root
+    username: root
+    jdbc:
+      url: jdbc:mysql://localhost/test
+  package:
+    jar:
+      type: uber-jar
+    runner-suffix: -runner
+
+hello: hello,dev

@@ -1,0 +1,7 @@
+# https://quarkus.io/guides/getting-started-testing
+quarkus:
+  http:
+    # random port
+    test-port: 0
+
+hello: hello,test

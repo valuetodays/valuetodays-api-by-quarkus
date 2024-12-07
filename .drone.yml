@@ -1,0 +1,97 @@
+# for gitee
+kind: pipeline
+type: docker
+name: quarkus-demo-ci/cd
+
+workspace:
+  path: /drone/src
+
+clone:
+  depth: 1
+#  disable: true
+
+steps:
+  - name: compile code
+    image: openjdk:21-jdk
+    environment:
+      KEY_A: value_a
+    volumes:
+      - name: maven_m2_dir
+        path: /root/.m2   # path in the container
+      - name: workbench_dir
+        path: /root/workbench_dir
+    commands:
+      # 获取environment的KEY_A不成功
+      - echo 1=${KEY_A} 2=$${KEY_A}
+      # use 内置变量 https://docs.drone.io/pipeline/environment/reference/
+      - echo ${DRONE_GIT_HTTP_URL} ${DRONE_COMMIT_BRANCH} ${DRONE_BUILD_LINK}
+      # echo 后面的字符串中不能有英文冒号，
+      - echo "url=${DRONE_GIT_HTTP_URL}, branch=${DRONE_COMMIT_BRANCH}, buildUrl=${DRONE_BUILD_LINK}"
+      - env
+      - chmod +x ./mvnw
+      - ./mvnw -v
+      - ./mvnw clean
+      - ./mvnw package -B -U -Dmaven.test.skip=true -DskipTests
+      - sh /drone/src/docs/scripts-for-drone-ci/ci-publish.sh
+
+  - name: call docker
+    image: docker:dind
+    volumes:
+      - name: dockersock
+        path: /var/run/
+      - name: workbench_dir
+        path: /root/workbench_dir
+    commands:
+      - docker info
+      - docker ps -a
+
+  - name: restart application by docker-compose
+    image: docker/compose:1.23.1
+    volumes:
+      - name: dockersock
+        path: /var/run/
+      - name: workbench_dir
+        path: /root/workbench_dir
+    commands:
+      - sleep 1
+      - |
+        server_existed=$(docker-compose -f /drone/src/docs/docker-compose/docker-compose.yml ps | grep 'quarkus-demo' | grep 'java')
+        if [ "$server_existed" == "" ]; then
+          echo quarkus-demo create
+          docker-compose -f /drone/src/docs/docker-compose/docker-compose.yml up -d
+        else
+          echo quarkus-demo restart
+          docker-compose -f /drone/src/docs/docker-compose/docker-compose.yml restart
+        fi
+      - sleep 1
+  - name: notify
+    # 本 images 由自己手工创建，搜索 centos7-with-tools 即可找到dockerfile
+    image: centos7-with-tools:centos7.6.1810
+    volumes:
+      - name: dockersock
+        path: /var/run/
+      - name: workbench_dir
+        path: /root/workbench_dir
+    commands:
+      - |
+        echo begin to notify
+        curl -X POST "http://notify.valuetodays.cn/push" -H 'Content-Type: application/json; charset=utf-8'  -d '{  "device_key": "cUAnNQX7koA4NDFtCk5NsF", "body": "服务（quote-web）重启成功，请知悉。", "title": "【CD/CI】quote-web", "sound": "newmail", "group": "CD/CI" }'
+      - echo end
+trigger:
+  branch:
+    - master
+  event:
+    - push
+    - custom
+
+volumes:
+  - name: maven_m2_dir
+    host:
+      path: /opt/maven-m2 # path in host machine
+  - name: workbench_dir
+    host:
+      path: /opt/workbench
+  - name: dockersock
+    host:
+      path: /var/run/
+
