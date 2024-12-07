@@ -28,6 +28,7 @@ steps:
       # echo 后面的字符串中不能有英文冒号，
       - echo "url=${DRONE_GIT_HTTP_URL}, branch=${DRONE_COMMIT_BRANCH}, buildUrl=${DRONE_BUILD_LINK}"
       - env
+      - echo ~
       - chmod +x ./mvnw
       - ./mvnw -v
       - ./mvnw clean

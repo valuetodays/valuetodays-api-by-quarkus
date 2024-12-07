@@ -11,6 +11,11 @@ quarkus:
       url: jdbc:mysql://aliyun2:3306/db_test?useUnicode=true&characterEncoding=utf8&useSSL=false&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
       max-size: 5
       min-size: 1
+  # https://quarkus.io/guides/hibernate-orm
+  hibernate-orm:
+    database:
+      generation: none
+    sql-load-script: no-file
   package:
     jar:
       type: uber-jar
