@@ -20,7 +20,8 @@ public class IndexController {
     private IpService ipService;
 
     @GET
-    public Map<String, Object> index() {
+    @Path("ip")
+    public Map<String, Object> ip() {
         IpPersist n = ipService.getRepository().findById(1L).orElse(null);
         return Map.of("data", n, "code", 0, "time", System.currentTimeMillis()); // <4>
     }
