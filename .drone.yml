@@ -30,8 +30,8 @@ steps:
       - env
       - echo ~
       - chmod 777 -R ~/.m2
-      - ls ~/.m2
-      - ls /root/.m2
+#      - ls ~/.m2
+#      - ls /root/.m2
       - chmod +x ./mvnw
       - ./mvnw -v
       - ./mvnw clean
