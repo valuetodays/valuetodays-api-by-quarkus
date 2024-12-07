@@ -29,6 +29,7 @@ steps:
       - echo "url=${DRONE_GIT_HTTP_URL}, branch=${DRONE_COMMIT_BRANCH}, buildUrl=${DRONE_BUILD_LINK}"
       - env
       - echo ~
+      - chmod 777 -R ~/.m2
       - ls ~/.m2
       - ls /root/.m2
       - chmod +x ./mvnw
