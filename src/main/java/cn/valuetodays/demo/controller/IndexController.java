@@ -1,10 +1,14 @@
 package cn.valuetodays.demo.controller;
 
 import cn.valuetodays.demo.persist.IpPersist;
+import cn.valuetodays.demo.properties.GreetingProperties;
 import cn.valuetodays.demo.service.IpService;
+import cn.valuetodays.demo.task.DemoTask;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
 
 import java.util.Map;
 
@@ -17,7 +21,14 @@ import java.util.Map;
 @Path("/")
 public class IndexController {
     @Inject
-    private IpService ipService;
+    IpService ipService;
+
+    @Inject
+    DemoTask demoTask;
+
+    @Inject
+    GreetingProperties greetingProperties;
+
 
     @GET
     @Path("ip")
@@ -25,4 +36,17 @@ public class IndexController {
         IpPersist n = ipService.getRepository().findById(1L).orElse(null);
         return Map.of("data", n, "code", 0, "time", System.currentTimeMillis()); // <4>
     }
+
+    @GET
+    @Path("counter")
+    public int counter() {
+        return demoTask.getCounter();
+    }
+    @GET
+    @Path("greetingProperties")
+    @Produces({MediaType.APPLICATION_JSON})
+    public GreetingProperties greetingProperties() {
+        return greetingProperties;
+    }
+
 }

@@ -23,3 +23,7 @@ quarkus:
     runner-suffix: -runner
 
 hello: hello,dev
+
+greeting:
+  title: show properties usage
+  version: v1

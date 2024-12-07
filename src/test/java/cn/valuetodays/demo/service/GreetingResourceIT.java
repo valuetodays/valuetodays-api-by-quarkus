@@ -1,4 +1,4 @@
-package my.groupId;
+package cn.valuetodays.demo.service;
 
 import io.quarkus.test.junit.QuarkusIntegrationTest;
 
