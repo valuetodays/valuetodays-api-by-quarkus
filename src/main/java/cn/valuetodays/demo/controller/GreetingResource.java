@@ -1,4 +1,4 @@
-package cn.valuetodays.demo;
+package cn.valuetodays.demo.controller;
 
 import io.quarkus.runtime.configuration.ConfigUtils;
 import jakarta.ws.rs.GET;

@@ -64,19 +64,7 @@ steps:
           docker-compose -f /drone/src/docs/docker-compose/docker-compose.yml restart
         fi
       - sleep 1
-  - name: notify
-    # 本 images 由自己手工创建，搜索 centos7-with-tools 即可找到dockerfile
-    image: centos7-with-tools:centos7.6.1810
-    volumes:
-      - name: dockersock
-        path: /var/run/
-      - name: workbench_dir
-        path: /root/workbench_dir
-    commands:
-      - |
-        echo begin to notify
-        curl -X POST "http://notify.valuetodays.cn/push" -H 'Content-Type: application/json; charset=utf-8'  -d '{  "device_key": "cUAnNQX7koA4NDFtCk5NsF", "body": "服务（quote-web）重启成功，请知悉。", "title": "【CD/CI】quote-web", "sound": "newmail", "group": "CD/CI" }'
-      - echo end
+
 trigger:
   branch:
     - master
