@@ -8,9 +8,22 @@ workspace:
 
 clone:
   depth: 1
-#  disable: true
+  disable: true
 
 steps:
+  - name: custom clone commands
+    image: alpine/git:2.45.2
+    environment:
+      SSH_KEY:
+        from_secret: ssh_key_github
+    commands:
+      - env
+      - mkdir -p $HOME/.ssh
+      - echo "$SSH_KEY" > $HOME/.ssh/id_rsa && chmod 600 $HOME/.ssh/id_rsa
+      - ssh-keyscan -p 22 github.com > $HOME/.ssh/known_hosts 2> /dev/null
+      - chmod 600 $HOME/.ssh/known_hosts
+      - git clone --depth=1 $DRONE_GIT_SSH_URL .
+      - git checkout $DRONE_COMMIT
   - name: compile code
     image: openjdk:21-jdk
     environment:
