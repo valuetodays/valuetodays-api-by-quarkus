@@ -5,7 +5,7 @@ quarkus:
   # https://quarkus.io/guides/datasource
   datasource:
     db-kind: mysql
-    db-version: 5.7.0
+    db-version: 8.0.27
     username: root
     password: abcUUddsef
     jdbc:
@@ -21,6 +21,11 @@ quarkus:
     jar:
       type: uber-jar
     runner-suffix: -runner
+  thread-pool:
+    max-threads: 3
+    queue-size: 16
+
+
 
 hello: hello,dev
 

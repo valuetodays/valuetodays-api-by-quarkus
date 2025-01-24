@@ -15,6 +15,16 @@ import lombok.EqualsAndHashCode;
 @Data
 public abstract class JpaLongIdBasePersist extends JpaIdBasePersist<Long> {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
