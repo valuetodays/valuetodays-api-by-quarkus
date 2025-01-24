@@ -31,6 +31,12 @@ public class IndexController {
 
 
     @GET
+    @Path("/")
+    public Map<String, Object> hello() {
+        return Map.of("msg", "Hello from Quarkus REST");
+    }
+
+    @GET
     @Path("ip")
     public Map<String, Object> ip() {
         IpPersist n = ipService.getRepository().findById(1L).orElse(null);
