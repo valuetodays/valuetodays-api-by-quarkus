@@ -2,6 +2,8 @@ quarkus:
   profile: dev
   http:
     port: 8080
+    limits:
+      max-body-size: 12M
   # https://quarkus.io/guides/datasource
   datasource:
     db-kind: mysql
