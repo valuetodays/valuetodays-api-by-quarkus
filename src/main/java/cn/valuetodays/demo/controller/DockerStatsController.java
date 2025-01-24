@@ -2,6 +2,7 @@ package cn.valuetodays.demo.controller;
 
 import cn.valuetodays.demo.persist.DockerStatsPersist;
 import cn.valuetodays.demo.service.DockerStatsService;
+import cn.valuetodays.demo.vo.SimpleTypeReq;
 import cn.valuetodays.demo.vo.save.DockerStatsReq;
 import cn.vt.util.JsonUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -14,6 +15,7 @@ import org.eclipse.microprofile.context.ManagedExecutor;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * .
@@ -37,7 +39,11 @@ public class DockerStatsController {
 
     @POST
     @Path("saveByText")
-    public Map<String, Object> saveByText(String text) {
+    public Map<String, Object> saveByText(SimpleTypeReq req) {
+        if (Objects.isNull(req)) {
+            return Map.of();
+        }
+        String text = req.getText();
         if (StringUtils.isBlank(text)) {
             return Map.of();
         }
@@ -45,9 +51,9 @@ public class DockerStatsController {
             String json = "[" + text + "{}]";
             List<DockerStatsReq> dockerStatsReqs = JsonUtils.fromJson(json, new TypeReference<List<DockerStatsReq>>() {
             });
-            for (DockerStatsReq req : dockerStatsReqs) {
-                if (StringUtils.isNotBlank(req.getName())) {
-                    dockerStatsService.save(req.toPersist());
+            for (DockerStatsReq obj : dockerStatsReqs) {
+                if (StringUtils.isNotBlank(obj.getName())) {
+                    dockerStatsService.save(obj.toPersist());
                 }
             }
         });
