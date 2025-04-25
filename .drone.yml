@@ -1,29 +1,16 @@
 # for gitee
 kind: pipeline
 type: docker
-name: quarkus-demo-ci/cd
+name: valuetodays-api-by-quarkus-web-ci/cd
 
 workspace:
   path: /drone/src
 
 clone:
   depth: 1
-  disable: true
+  disable: false
 
 steps:
-  - name: custom clone commands
-    image: alpine/git:2.45.2
-    environment:
-      SSH_KEY:
-        from_secret: ssh_key_github
-    commands:
-      - env
-      - mkdir -p $HOME/.ssh
-      - echo "$SSH_KEY" > $HOME/.ssh/id_rsa && chmod 600 $HOME/.ssh/id_rsa
-      - ssh-keyscan -p 22 github.com > $HOME/.ssh/known_hosts 2> /dev/null
-      - chmod 600 $HOME/.ssh/known_hosts
-      - git clone --depth=1 $DRONE_GIT_SSH_URL .
-      - git checkout $DRONE_COMMIT
   - name: compile code
     image: openjdk:21-jdk
     environment:
@@ -41,14 +28,10 @@ steps:
       # echo 后面的字符串中不能有英文冒号，
       - echo "url=${DRONE_GIT_HTTP_URL}, branch=${DRONE_COMMIT_BRANCH}, buildUrl=${DRONE_BUILD_LINK}"
       - env
-      - echo ~
-      - chmod 777 -R ~/.m2
-#      - ls ~/.m2
-#      - ls /root/.m2
       - chmod +x ./mvnw
       - ./mvnw -v
       - ./mvnw clean
-      - ./mvnw package -B -U -Dmaven.test.skip=true -DskipTests
+      - ./mvnw package install -B -U -Dmaven.test.skip=true -DskipUnitTest=true
       - sh /drone/src/docs/scripts-for-drone-ci/ci-publish.sh
 
   - name: call docker
@@ -61,7 +44,19 @@ steps:
     commands:
       - docker info
       - docker ps -a
-
+  - name: notify
+    # 本 images 由自己手工创建，搜索 centos7-with-tools 即可找到dockerfile
+    image: centos7-with-tools:centos7.6.1810
+    volumes:
+      - name: dockersock
+        path: /var/run/
+      - name: workbench_dir
+        path: /root/workbench_dir
+    commands:
+      - |
+        echo begin to notify
+        curl -X POST "http://go.valuetodays.cn/api/public/notify/anon/cdci.do" -H 'Content-Type: application/json; charset=utf-8' -d '{"content": "valuetodays-api-by-quarkus was restarted just now.", "repo": "valuetodays-api-by-quarkus"}'
+      - echo end
   - name: restart application by docker-compose
     image: docker/compose:1.23.1
     volumes:
@@ -70,21 +65,12 @@ steps:
       - name: workbench_dir
         path: /root/workbench_dir
     commands:
-      - sleep 1
-      - |
-        server_existed=$(docker-compose -f /drone/src/docs/docker-compose/docker-compose.yml ps | grep 'quarkus-demo' | grep 'java')
-        if [ "$server_existed" == "" ]; then
-          echo quarkus-demo create
-          docker-compose -f /drone/src/docs/docker-compose/docker-compose.yml up -d
-        else
-          echo quarkus-demo restart
-          docker-compose -f /drone/src/docs/docker-compose/docker-compose.yml restart
-        fi
-      - sleep 1
+      - sh /drone/src/docs/scripts-for-drone-ci/ci-restart-docker.sh
 
 trigger:
   branch:
     - master
+    - main
   event:
     - push
     - custom
