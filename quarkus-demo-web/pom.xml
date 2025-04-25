@@ -14,6 +14,17 @@
             <groupId>cn.valuetodays.demo</groupId>
             <artifactId>quarkus-demo-commons</artifactId>
             <version>${project.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>logback-classic</artifactId>
+                    <groupId>ch.qos.logback</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>cn.vt.quote</groupId>
+            <artifactId>module-third-rest</artifactId>
+            <version>${quote-module-third-rest.version}</version>
         </dependency>
 
         <!--

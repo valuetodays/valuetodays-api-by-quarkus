@@ -20,6 +20,7 @@
         <surefire-plugin.version>3.5.0</surefire-plugin.version>
 
         <valuetodays.utils.version>boot322-2024.12.22</valuetodays.utils.version>
+        <quote-module-third-rest.version>0.4</quote-module-third-rest.version>
     </properties>
 
     <modules>
