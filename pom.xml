@@ -16,7 +16,7 @@
     <properties>
         <valuetodays.utils.version>boot322-2024.12.22</valuetodays.utils.version>
         <valuetodays.quarkus-commons.version>quarkus3.2025.04.25</valuetodays.quarkus-commons.version>
-        <quote-module-third-rest.version>0.4</quote-module-third-rest.version>
+        <quote-module-third-rest.version>0.4-quarkus</quote-module-third-rest.version>
     </properties>
 
     <modules>
@@ -25,7 +25,12 @@
     </modules>
 
     <dependencies>
-
+        <!--        <dependency>-->
+        <!--            <groupId>org.projectlombok</groupId>-->
+        <!--            <artifactId>lombok</artifactId>-->
+        <!--            <version>1.18.34</version>-->
+        <!--            <optional>true</optional>-->
+        <!--        </dependency>-->
         <!--
         <dependency>
             <groupId>io.quarkus</groupId>

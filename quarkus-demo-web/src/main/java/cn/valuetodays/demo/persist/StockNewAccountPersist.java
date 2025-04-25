@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@Table(schema = "eblog", catalog = "eblog", name = "fortune_stock_new_account")
+@Table(name = "fortune_stock_new_account")
 public class StockNewAccountPersist extends JpaCrudLongIdBasePersist {
 
     @Column(name = "year_month_val")

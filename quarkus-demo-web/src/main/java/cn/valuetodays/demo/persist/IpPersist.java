@@ -1,6 +1,6 @@
 package cn.valuetodays.demo.persist;
 
-import cn.valuetodays.quarkus.commons.base.jpa.JpaLongIdBasePersist;
+import cn.valuetodays.quarkus.commons.base.jpa.JpaCrudLongIdBasePersist;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Data;
@@ -15,8 +15,8 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@Table(name = "test_ip")
-public class IpPersist extends JpaLongIdBasePersist {
+@Table(name = "ip")
+public class IpPersist extends JpaCrudLongIdBasePersist {
 
     private String ip;
 }

@@ -5,10 +5,10 @@ import cn.valuetodays.demo.repository.StockNewAccountRepository;
 import cn.valuetodays.quarkus.commons.base.BaseService;
 import cn.vt.rest.third.sse.SseNewStockAccountClientUtils;
 import cn.vt.rest.third.sse.vo.StockNewAccountResp;
+import jakarta.enterprise.context.ApplicationScoped;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.exception.ConstraintViolationException;
-import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.YearMonth;
@@ -22,7 +22,7 @@ import java.util.Objects;
  * @author lei.liu
  * @since 2025-04-24
  */
-@Component
+@ApplicationScoped
 @Slf4j
 public class StockNewAccountService extends BaseService<Long, StockNewAccountPersist, StockNewAccountRepository> {
 

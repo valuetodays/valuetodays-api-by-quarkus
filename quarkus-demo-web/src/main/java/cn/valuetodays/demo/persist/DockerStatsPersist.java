@@ -1,6 +1,6 @@
 package cn.valuetodays.demo.persist;
 
-import cn.valuetodays.quarkus.commons.base.jpa.JpaLongIdBasePersist;
+import cn.valuetodays.quarkus.commons.base.jpa.JpaCrudLongIdBasePersist;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -12,8 +12,8 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@Table(name = "metric_docker_stats")
-public class DockerStatsPersist extends JpaLongIdBasePersist {
+@Table(schema = "db_test", catalog = "db_test", name = "metric_docker_stats")
+public class DockerStatsPersist extends JpaCrudLongIdBasePersist {
     @Column(name = "stat_datetime")
     private LocalDateTime statDatetime;
     private String name;
