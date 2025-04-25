@@ -21,7 +21,7 @@ quarkus:
     sql-load-script: no-file
   package:
     jar:
-      type: uber-jar
+      type: UBER_JAR
     runner-suffix: -runner
   thread-pool:
     max-threads: 3

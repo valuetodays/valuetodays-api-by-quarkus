@@ -1,4 +1,4 @@
-package cn.valuetodays.demo.base.jpa;
+package valuetodays.demo.commons.base.jpa;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -7,24 +7,16 @@ import jakarta.persistence.MappedSuperclass;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
+
 /**
  * entity基类
  */
 @EqualsAndHashCode(callSuper = true)
 @MappedSuperclass
 @Data
-public abstract class JpaLongIdBasePersist extends JpaIdBasePersist<Long> {
+public abstract class JpaIdBasePersist<I extends Serializable> extends JpaBasePersist<I> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private I id;
 }

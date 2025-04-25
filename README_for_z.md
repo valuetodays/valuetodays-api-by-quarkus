@@ -18,4 +18,9 @@ ApplicationScoped: lazy Singleton
 
 quarkus 的 dev-ui 页面，可以提供很多有用的信息 http://localhost:8080/q/dev-ui/welcome
 
+## 启动
+
+mvn compile quarkus:demo
+
+.\mvnw compile quarkus:dev -f quarkus-demo-web/pom.xml
 

@@ -1,4 +1,4 @@
-package cn.valuetodays.demo.base;
+package valuetodays.demo.commons.base;
 
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -39,6 +39,7 @@ public abstract class BaseService<I, E, R extends JpaRepository<E, I>> {
     public List<E> findAll() {
         return repository.findAll();
     }
+
     public E save(E entity) {
         return repository.save(entity);
     }

@@ -1,4 +1,4 @@
-package cn.valuetodays.demo.base.jpa;
+package valuetodays.demo.commons.base.jpa;
 
 import jakarta.persistence.MappedSuperclass;
 import lombok.Data;

@@ -5,6 +5,7 @@
     <groupId>cn.valuetodays.demo</groupId>
     <artifactId>quarkus-demo</artifactId>
     <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
     <properties>
         <compiler-plugin.version>3.13.0</compiler-plugin.version>
@@ -21,6 +22,10 @@
         <valuetodays.utils.version>boot322-2024.12.22</valuetodays.utils.version>
     </properties>
 
+    <modules>
+        <module>quarkus-demo-commons</module>
+        <module>quarkus-demo-web</module>
+    </modules>
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -34,10 +39,7 @@
     </dependencyManagement>
 
     <dependencies>
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-spring-data-jpa</artifactId>
-        </dependency>
+
         <!--
         <dependency>
             <groupId>io.quarkus</groupId>
@@ -53,35 +55,6 @@
         <!--            <artifactId>quarkus-spring-web</artifactId>-->
         <!--        </dependency>-->
         <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-rest-jackson</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-spring-scheduled</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-spring-boot-properties</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-jdbc-mysql</artifactId>
-        </dependency>
-        <!-- Hibernate ORM specific dependencies -->
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-hibernate-orm</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-smallrye-context-propagation</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-arc</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.34</version>
@@ -89,57 +62,40 @@
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-config-yaml</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
             <artifactId>quarkus-junit5</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>cn.valuetodays</groupId>
-            <artifactId>valuetodays-utils-core</artifactId>
-            <version>${valuetodays.utils.version}</version>
         </dependency>
     </dependencies>
 
     <build>
         <finalName>${project.artifactId}</finalName>
         <plugins>
+            <!--            <plugin>-->
+            <!--                <groupId>${quarkus.platform.group-id}</groupId>-->
+            <!--                <artifactId>quarkus-maven-plugin</artifactId>-->
+            <!--                <version>${quarkus.platform.version}</version>-->
+            <!--&lt;!&ndash;                <extensions>true</extensions>&ndash;&gt;-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <goals>-->
+            <!--                            <goal>build</goal>-->
+            <!--&lt;!&ndash;                            <goal>generate-code</goal>&ndash;&gt;-->
+            <!--&lt;!&ndash;                            <goal>generate-code-tests</goal>&ndash;&gt;-->
+            <!--&lt;!&ndash;                            <goal>native-image-agent</goal>&ndash;&gt;-->
+            <!--                        </goals>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--            </plugin>-->
             <plugin>
-                <groupId>${quarkus.platform.group-id}</groupId>
-                <artifactId>quarkus-maven-plugin</artifactId>
-                <version>${quarkus.platform.version}</version>
-                <extensions>true</extensions>
+                <groupId>io.smallrye</groupId>
+                <artifactId>jandex-maven-plugin</artifactId>
+                <version>3.2.2</version>
                 <executions>
                     <execution>
+                        <id>make-index</id>
                         <goals>
-                            <goal>build</goal>
-                            <goal>generate-code</goal>
-                            <goal>generate-code-tests</goal>
-                            <goal>native-image-agent</goal>
+                            <goal>jandex</goal>
                         </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>lib</outputDirectory>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>

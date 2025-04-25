@@ -1,4 +1,4 @@
-package cn.valuetodays.demo.vo;
+package valuetodays.demo.commons;
 
 import lombok.Data;
 
