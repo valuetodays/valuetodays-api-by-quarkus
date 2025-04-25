@@ -2,13 +2,13 @@ package cn.valuetodays.demo.service;
 
 import cn.valuetodays.demo.persist.StockNewAccountPersist;
 import cn.valuetodays.demo.repository.StockNewAccountRepository;
+import cn.valuetodays.quarkus.commons.base.BaseService;
 import cn.vt.rest.third.sse.SseNewStockAccountClientUtils;
 import cn.vt.rest.third.sse.vo.StockNewAccountResp;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.stereotype.Component;
-import valuetodays.demo.commons.base.BaseService;
 
 import java.math.BigDecimal;
 import java.time.YearMonth;

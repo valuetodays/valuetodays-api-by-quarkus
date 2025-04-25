@@ -1,11 +1,11 @@
 package cn.valuetodays.demo.persist;
 
+import cn.valuetodays.quarkus.commons.base.jpa.JpaLongIdBasePersist;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import valuetodays.demo.commons.base.jpa.JpaLongIdBasePersist;
 
 import java.time.LocalDateTime;
 

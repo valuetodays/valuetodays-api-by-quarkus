@@ -16,9 +16,11 @@
             <version>${valuetodays.utils.version}</version>
         </dependency>
         <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-spring-data-jpa</artifactId>
+            <groupId>cn.valuetodays</groupId>
+            <artifactId>quarkus-common-0</artifactId>
+            <version>${valuetodays.quarkus-commons.version}</version>
         </dependency>
+
     </dependencies>
 
 </project>

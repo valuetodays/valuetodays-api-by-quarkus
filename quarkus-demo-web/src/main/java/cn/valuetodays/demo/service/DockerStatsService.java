@@ -2,8 +2,8 @@ package cn.valuetodays.demo.service;
 
 import cn.valuetodays.demo.persist.DockerStatsPersist;
 import cn.valuetodays.demo.repository.DockerStatsRepository;
+import cn.valuetodays.quarkus.commons.base.BaseService;
 import jakarta.inject.Singleton;
-import valuetodays.demo.commons.base.BaseService;
 
 /**
  * .
