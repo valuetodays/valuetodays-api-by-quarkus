@@ -34,4 +34,16 @@ public final class StockAlertEnums {
             this.title = title;
         }
     }
+
+    @Getter
+    public enum CodeType implements TitleCapable {
+        STOCK("股票"),
+        INDEX("指数");
+
+        private final String title;
+
+        CodeType(String title) {
+            this.title = title;
+        }
+    }
 }

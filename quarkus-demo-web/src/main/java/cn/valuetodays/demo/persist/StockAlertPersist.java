@@ -26,11 +26,14 @@ import java.math.BigDecimal;
 @Data
 public class StockAlertPersist extends JpaCrudLongIdBasePersist {
 
-    @Column(name = "code")
-    private String code;
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private StockAlertEnums.Status status;
+    @Column(name = "code")
+    private String code;
+    @Column(name = "code_typ")
+    @Enumerated(EnumType.STRING)
+    private StockAlertEnums.CodeType codeType;
     @Column(name = "schedule_type")
     @Enumerated(EnumType.STRING)
     private StockAlertEnums.ScheduleType scheduleType;
