@@ -46,10 +46,12 @@ public class StockAlertService
             StockAlertEnums.CodeType codeType = p.getCodeType();
 
             BigDecimal realtimePoint = BigDecimal.ZERO;
+            BigDecimal changeOffsetPricePtg = BigDecimal.ZERO;
             if (StockAlertEnums.CodeType.STOCK == codeType) {
                 EastMoneyStockDetailDataTyped realtimeStockDetail =
                     EastMoneyStockUtils.getRealtimeStockDetail(code);
                 realtimePoint = realtimeStockDetail.getPrice();
+                changeOffsetPricePtg = realtimeStockDetail.getChangeOffsetPricePtg();
             } else if (StockAlertEnums.CodeType.INDEX == codeType) {
                 List<QuoteDailyStatVO> indexKlines = EastMoneyIndexUtils.getIndexKline(code);
                 if (CollectionUtils.isEmpty(indexKlines)) {
@@ -58,16 +60,43 @@ public class StockAlertService
                 } else {
                     QuoteDailyStatVO last = indexKlines.getLast();
                     realtimePoint = BigDecimal.valueOf(last.getClosePx());
+                    changeOffsetPricePtg = BigDecimal.valueOf(last.getOffsetPxPercentage());
                 }
             }
 
             try {
-                alertMsgToAppIfNecessary(p, realtimePoint);
+                if (BigDecimal.ZERO.compareTo(p.getCurrentPoint()) >= 0) {
+                    alertDailyOffsetToAppIfNecessary(p, changeOffsetPricePtg);
+                } else {
+                    alertMsgToAppIfNecessary(p, realtimePoint);
+                }
             } catch (Exception e) {
                 log.warn("error when alertMsgToAppIfNecessary()", e);
             }
         }
 
+    }
+
+    private void alertDailyOffsetToAppIfNecessary(StockAlertPersist p, BigDecimal changeOffsetPricePtg) {
+        BigDecimal targetPtg = p.getTargetPtg();
+        String code = p.getCode();
+        // 跌
+        if (BigDecimal.ZERO.compareTo(targetPtg) >= 0) {
+            if (changeOffsetPricePtg.compareTo(targetPtg) <= 0) {
+                String msg = "达到设定的跌幅啦：设定在" + DateUtils.formatDate(p.getCreateTime()) + "的" + code
+                    + "设定了当天涨跌幅度为" + targetPtg + "%，已达到目标值（" + changeOffsetPricePtg + "）。";
+                saveAlertLog(p, BigDecimal.valueOf(-1), changeOffsetPricePtg);
+                alertMsgToApp(msg);
+            }
+        } else { // 涨
+            if (changeOffsetPricePtg.compareTo(targetPtg) >= 0) {
+                // 达到一定涨幅
+                String msg = "达到设定的跌幅啦：设定在" + DateUtils.formatDate(p.getCreateTime()) + "的" + code
+                    + "设定了当天涨跌幅度为" + targetPtg + "%，已达到目标值（" + changeOffsetPricePtg + "）。";
+                saveAlertLog(p, BigDecimal.valueOf(-1), changeOffsetPricePtg);
+                alertMsgToApp(msg);
+            }
+        }
     }
 
     private void alertMsgToAppIfNecessary(StockAlertPersist p,

@@ -19,4 +19,9 @@ public class StockAlertTaskTest {
     public void scheduleRefreshAfterMarketClose() {
         stockAlertTask.scheduleRefreshAfterMarketClose();
     }
+
+    @Test
+    public void scheduleRefreshDailyOffsetChangePtg() {
+        stockAlertTask.scheduleRefresh10Min();
+    }
 }
