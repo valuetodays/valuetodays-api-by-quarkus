@@ -1,8 +1,10 @@
 package cn.valuetodays.demo.service;
 
+import cn.valuetodays.demo.persist.StockAlertLogPersist;
 import cn.valuetodays.demo.persist.StockAlertPersist;
 import cn.valuetodays.demo.persist.enums.StockAlertEnums;
 import cn.valuetodays.demo.repository.StockAlertDAO;
+import cn.valuetodays.demo.repository.StockAlertLogDAO;
 import cn.valuetodays.quarkus.commons.base.BaseService;
 import cn.vt.rest.third.eastmoney.EastMoneyIndexUtils;
 import cn.vt.rest.third.eastmoney.EastMoneyStockUtils;
@@ -11,6 +13,7 @@ import cn.vt.rest.third.eastmoney.vo.QuoteDailyStatVO;
 import cn.vt.util.DateUtils;
 import cn.vt.util.HttpClient4Utils;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -29,6 +32,9 @@ import java.util.Map;
 @Slf4j
 public class StockAlertService
     extends BaseService<Long, StockAlertPersist, StockAlertDAO> {
+
+    @Inject
+    private StockAlertLogDAO stockAlertLogDAO;
 
     public void scheduleAlert(StockAlertEnums.ScheduleType scheduleType) {
         List<StockAlertPersist> list = getRepository().findAllByStatusAndScheduleType(StockAlertEnums.Status.NORMAL, scheduleType);
@@ -55,7 +61,11 @@ public class StockAlertService
                 }
             }
 
-            alertMsgToAppIfNecessary(p, realtimePoint);
+            try {
+                alertMsgToAppIfNecessary(p, realtimePoint);
+            } catch (Exception e) {
+                log.warn("error when alertMsgToAppIfNecessary()", e);
+            }
         }
 
     }
@@ -77,6 +87,7 @@ public class StockAlertService
                 + "的点位是" + pointWhenAlert + "，目标点位是" + targetPoint
                 + "，当前点位是" + realtimePoint + "，"
                 + "，涨跌幅度为" + realChgPtg + "%";
+            saveAlertLog(p, realtimePoint, realChgPtg);
             alertMsgToApp(msg);
         }
         if (BigDecimal.ZERO.compareTo(targetPtg) != 0) {
@@ -94,9 +105,20 @@ public class StockAlertService
                     + "，当前点位是" + realtimePoint
                     + "，目标涨跌幅度是" + chgPtg + "%"
                     + "，实际涨跌幅度为" + realChgPtg + "%";
+                saveAlertLog(p, realtimePoint, realChgPtg);
                 alertMsgToApp(msg);
             }
         }
+    }
+
+    private void saveAlertLog(StockAlertPersist p, BigDecimal realtimePoint, BigDecimal chgPtg) {
+        StockAlertLogPersist alertLogPersist = new StockAlertLogPersist();
+        alertLogPersist.initUserIdAndTime(p.getCreateUserId());
+        alertLogPersist.setAlertId(p.getId());
+        alertLogPersist.setConfigPoint(p.getCurrentPoint());
+        alertLogPersist.setTargetPoint(realtimePoint);
+        alertLogPersist.setTargetPtg(chgPtg);
+        stockAlertLogDAO.save(alertLogPersist);
     }
 
     private void alertMsgToApp(String msg) {

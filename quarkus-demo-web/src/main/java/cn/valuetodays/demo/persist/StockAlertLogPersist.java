@@ -26,6 +26,8 @@ public class StockAlertLogPersist extends JpaCrudLongIdBasePersist {
 
     @Column(name = "alert_id")
     private Long alertId;
+    @Column(name = "config_point")
+    private BigDecimal configPoint;
     @Column(name = "target_point")
     private BigDecimal targetPoint;
     @Column(name = "target_ptg")
