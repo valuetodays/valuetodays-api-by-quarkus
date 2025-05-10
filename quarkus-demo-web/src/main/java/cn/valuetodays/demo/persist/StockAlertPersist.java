@@ -31,7 +31,7 @@ public class StockAlertPersist extends JpaCrudLongIdBasePersist {
     private StockAlertEnums.Status status;
     @Column(name = "code")
     private String code;
-    @Column(name = "code_typ")
+    @Column(name = "code_type")
     @Enumerated(EnumType.STRING)
     private StockAlertEnums.CodeType codeType;
     @Column(name = "schedule_type")
