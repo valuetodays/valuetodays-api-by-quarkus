@@ -25,27 +25,6 @@
     </modules>
 
     <dependencies>
-        <!--        <dependency>-->
-        <!--            <groupId>org.projectlombok</groupId>-->
-        <!--            <artifactId>lombok</artifactId>-->
-        <!--            <version>1.18.34</version>-->
-        <!--            <optional>true</optional>-->
-        <!--        </dependency>-->
-        <!--
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-smallrye-openapi</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-resteasy</artifactId>
-        </dependency>
-        -->
-        <!--        <dependency>-->
-        <!--            <groupId>io.quarkus</groupId>-->
-        <!--            <artifactId>quarkus-spring-web</artifactId>-->
-        <!--        </dependency>-->
-
     </dependencies>
 
 </project>
