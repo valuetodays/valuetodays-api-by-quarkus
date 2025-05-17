@@ -18,14 +18,14 @@ public class IndustryDailyStatTask {
     @Inject
     private IndustryDailyStatService industryDailyStatService;
 
-    @Scheduled(cron = "10 00 18 * * MON-FRI") // 每工作日18:00:10
+    @Scheduled(cron = "10 00 18 ? * MON-FRI") // 每工作日18:00:10
     public void scheduleRefresh() {
         log.info("begin to refresh scheduleRefresh");
         industryDailyStatService.refresh();
         log.info("end to refresh scheduleRefresh");
     }
 
-    @Scheduled(cron = "10 00 23 * * MON-FRI") // 每工作日23:00:10
+    @Scheduled(cron = "10 00 23 ? * MON-FRI") // 每工作日23:00:10
     public void scheduleRefreshTwice() {
         scheduleRefresh();
     }
