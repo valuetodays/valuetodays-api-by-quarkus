@@ -1,0 +1,23 @@
+package cn.valuetodays.demo.service;
+
+import io.quarkus.test.junit.QuarkusTest;
+import jakarta.inject.Inject;
+import org.junit.jupiter.api.Test;
+
+/**
+ * Tests for {@link IndustryDailyStatService}.
+ *
+ * @author lei.liu
+ * @since 2025-05-18
+ */
+@QuarkusTest
+public class IndustryDailyStatServiceTest {
+
+    @Inject
+    private IndustryDailyStatService industryDailyStatService;
+
+    @Test
+    public void refresh() {
+        industryDailyStatService.refresh();
+    }
+}

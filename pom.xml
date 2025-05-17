@@ -8,9 +8,9 @@
         <version>quarkus3.2025.04.25</version>
     </parent>
 
-    <groupId>cn.valuetodays.demo</groupId>
-    <artifactId>quarkus-demo</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <groupId>cn.valuetodays</groupId>
+    <artifactId>api2-by-quarkus</artifactId>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -20,8 +20,8 @@
     </properties>
 
     <modules>
-        <module>quarkus-demo-commons</module>
-        <module>quarkus-demo-web</module>
+        <module>api2-commons</module>
+        <module>api2-web</module>
     </modules>
 
     <dependencies>
