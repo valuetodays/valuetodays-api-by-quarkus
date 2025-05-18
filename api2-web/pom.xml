@@ -87,7 +87,6 @@
     </dependencies>
 
     <build>
-        <finalName>quarkus-demo-web</finalName>
         <plugins>
             <plugin>
                 <groupId>${quarkus.platform.group-id}</groupId>

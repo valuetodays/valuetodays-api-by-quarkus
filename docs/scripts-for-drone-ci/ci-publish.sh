@@ -7,12 +7,12 @@ WORKBENCH_DIR=/root/workbench_dir
 WORKBENCH_BAK_DIR=${WORKBENCH_DIR}'/backup'
 WORKBENCH_DEPLOY_DIR=${WORKBENCH_DIR}'/deploy'
 # EDIT HERE
-APP_JAR_NAME=quarkus-demo-web-runner.jar
-APP_JAR_DIR=${WORKSPACE_PATH}/quarkus-demo-web/target
+APP_JAR_NAME=api2-web-runner.jar
+APP_JAR_DIR=${WORKSPACE_PATH}/api2-web/target
 
 echo start on $(date "+%Y-%m-%d %H:%M:%S")
 shell_directory=$(cd `dirname $0`; pwd)
-echo ${shell_directory}
+echo "${shell_directory}"
 echo current_dir=$(pwd)
 
 timeStampStr=$(date "+%Y-%m-%d_%H_%M_%S")
