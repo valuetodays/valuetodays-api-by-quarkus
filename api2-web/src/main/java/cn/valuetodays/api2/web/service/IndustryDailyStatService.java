@@ -59,6 +59,10 @@ public class IndustryDailyStatService extends BaseService<Long, IndustryDailySta
         }
     }
 
+    public List<IndustryDailyStatPersist> getByStatDateGe(LocalDate localDate) {
+        return getRepository().findAllByStatDateGe(DateUtils.formatAsYyyyMMdd(localDate));
+    }
+
     public List<IndustryDailyStatPersist> getByStatDate(LocalDate localDate) {
         return getRepository().findAllByStatDate(DateUtils.formatAsYyyyMMdd(localDate));
     }
