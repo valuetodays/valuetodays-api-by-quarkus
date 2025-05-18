@@ -20,7 +20,7 @@
     </properties>
 
     <modules>
-        <module>api2-commons</module>
+        <module>api2-client</module>
         <module>api2-web</module>
     </modules>
 

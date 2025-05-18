@@ -1,9 +1,8 @@
 quarkus:
   profile: dev
-  rest:
-    path: "/api2"
   http:
     port: 8080
+    root-path: "/api2"
     limits:
       max-body-size: 12M
   # https://quarkus.io/guides/datasource
