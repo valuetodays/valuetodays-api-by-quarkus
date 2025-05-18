@@ -1,5 +1,7 @@
 quarkus:
   profile: dev
+  rest:
+    path: "/api2"
   http:
     port: 8080
     limits:
