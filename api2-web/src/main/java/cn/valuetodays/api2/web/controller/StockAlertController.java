@@ -1,9 +1,9 @@
 package cn.valuetodays.api2.web.controller;
 
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.MediaType;
+import cn.valuetodays.api2.client.persist.StockAlertPersist;
+import cn.valuetodays.quarkus.commons.base.BaseController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 股票告警服务
@@ -11,9 +11,8 @@ import jakarta.ws.rs.core.MediaType;
  * @author lei.liu
  * @since 2025-04-16 08:40
  */
-@Path("/stockAlert")
-@Produces({MediaType.APPLICATION_JSON})
-@Consumes({MediaType.APPLICATION_JSON})
-public class StockAlertController {
+@RestController
+@RequestMapping("/stockAlert")
+public class StockAlertController extends BaseController<StockAlertPersist> {
 
 }
