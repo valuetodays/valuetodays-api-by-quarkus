@@ -1,7 +1,10 @@
 quarkus:
   profile: dev
   http:
-    port: 8080
+    # 不配置host，只能 localhost 访问
+    # 因为 前端页面是在另一个服务器上（使用vscode + remote development），要访问本服务
+    host: 0.0.0.0
+    port: 20002
     root-path: "/api2"
     limits:
       max-body-size: 12M

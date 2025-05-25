@@ -1,6 +1,7 @@
 package cn.valuetodays.api2.web.controller;
 
 import cn.valuetodays.api2.client.persist.StockAlertPersist;
+import cn.valuetodays.api2.web.service.StockAlertService;
 import cn.valuetodays.quarkus.commons.base.BaseController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/stockAlert")
-public class StockAlertController extends BaseController<StockAlertPersist> {
+public class StockAlertController
+    extends BaseController<
+    Long,
+    StockAlertPersist,
+    StockAlertService
+    > {
 
 }

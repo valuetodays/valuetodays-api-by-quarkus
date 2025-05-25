@@ -5,10 +5,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 股票告警记录表
@@ -32,4 +35,7 @@ public class StockAlertLogPersist extends JpaCrudLongIdBasePersist {
     private BigDecimal targetPoint;
     @Column(name = "target_ptg")
     private BigDecimal targetPtg;
+
+    @Transient
+    private Map<String, Object> otherMap = new HashMap<>();
 }

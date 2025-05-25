@@ -11,9 +11,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>cn.valuetodays</groupId>
-            <artifactId>valuetodays-utils-core</artifactId>
-            <version>${valuetodays.utils.version}</version>
+            <groupId>cn.vt</groupId>
+            <artifactId>common-spring-web</artifactId>
+            <version>${vt-simple-common-modules.version}</version>
         </dependency>
         <dependency>
             <groupId>cn.valuetodays</groupId>

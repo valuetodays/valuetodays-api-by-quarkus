@@ -14,7 +14,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <valuetodays.utils.version>boot322-2024.12.22</valuetodays.utils.version>
+        <vt-simple-common-modules.version>boot322-2024.12.22</vt-simple-common-modules.version>
         <valuetodays.quarkus-commons.version>quarkus3.2025.04.25</valuetodays.quarkus-commons.version>
         <quote-module-third-rest.version>0.4-quarkus</quote-module-third-rest.version>
     </properties>
