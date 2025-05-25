@@ -1,8 +1,8 @@
 package cn.valuetodays.api2.web.service;
 
+import cn.valuetodays.api2.client.enums.StockAlertEnums;
 import cn.valuetodays.api2.client.persist.StockAlertLogPersist;
 import cn.valuetodays.api2.client.persist.StockAlertPersist;
-import cn.valuetodays.api2.client.persist.enums.StockAlertEnums;
 import cn.valuetodays.api2.web.repository.StockAlertDAO;
 import cn.valuetodays.api2.web.repository.StockAlertLogDAO;
 import cn.valuetodays.quarkus.commons.base.BaseService;

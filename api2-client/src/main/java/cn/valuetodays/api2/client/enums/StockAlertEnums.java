@@ -1,4 +1,4 @@
-package cn.valuetodays.api2.client.persist.enums;
+package cn.valuetodays.api2.client.enums;
 
 import cn.vt.core.TitleCapable;
 import lombok.Getter;

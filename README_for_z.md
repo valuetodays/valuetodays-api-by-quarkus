@@ -20,7 +20,7 @@ quarkus 的 dev-ui 页面，可以提供很多有用的信息 http://localhost:8
 
 ## 启动
 
-mvn compile  quarkus:dev -f quarkus-demo-web/pom.xml -DskipTests
+mvn compile quarkus:dev -f api2-web/pom.xml -DskipTests
 
-.\mvnw compile quarkus:dev -f quarkus-demo-web/pom.xml -DskipTests
+.\mvnw compile quarkus:dev -f api2-web/pom.xml -DskipTests
 

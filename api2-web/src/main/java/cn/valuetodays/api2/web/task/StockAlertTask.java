@@ -1,6 +1,6 @@
 package cn.valuetodays.api2.web.task;
 
-import cn.valuetodays.api2.client.persist.enums.StockAlertEnums;
+import cn.valuetodays.api2.client.enums.StockAlertEnums;
 import cn.valuetodays.api2.web.service.StockAlertService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;

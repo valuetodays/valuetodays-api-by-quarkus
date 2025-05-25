@@ -1,7 +1,7 @@
 package cn.valuetodays.api2.web.repository;
 
+import cn.valuetodays.api2.client.enums.StockAlertEnums;
 import cn.valuetodays.api2.client.persist.StockAlertPersist;
-import cn.valuetodays.api2.client.persist.enums.StockAlertEnums;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
