@@ -12,7 +12,7 @@
     <dependencies>
         <dependency>
             <groupId>cn.valuetodays</groupId>
-            <artifactId>api2-bom</artifactId>
+            <artifactId>api2-dependencies-web</artifactId>
             <version>${project.version}</version>
         </dependency>
 

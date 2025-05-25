@@ -20,7 +20,7 @@
     </properties>
 
     <modules>
-        <module>api2-bom</module>
+        <module>api2-dependencies-web</module>
         <module>api2-basic</module>
         <module>api2-client</module>
         <module>api2-web</module>

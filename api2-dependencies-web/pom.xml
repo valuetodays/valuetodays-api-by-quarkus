@@ -7,7 +7,7 @@
         <artifactId>api2-by-quarkus</artifactId>
         <version>1.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>api2-bom</artifactId>
+    <artifactId>api2-dependencies-web</artifactId>
 
     <dependencies>
         <dependency>
