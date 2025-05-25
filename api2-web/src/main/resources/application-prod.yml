@@ -1,1 +1,6 @@
 hello: hello,prod
+
+quarkus:
+  redis:
+    hosts: redis://aliyun2:6379
+    password: 'abc123'

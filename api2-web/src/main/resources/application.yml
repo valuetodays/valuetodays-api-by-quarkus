@@ -30,7 +30,10 @@ quarkus:
   thread-pool:
     max-threads: 3
     queue-size: 16
-
+  redis:
+    hosts: redis://localhost:6379
+    password: 'abc123'
+    timeout: 10s
 
 
 hello: hello,dev

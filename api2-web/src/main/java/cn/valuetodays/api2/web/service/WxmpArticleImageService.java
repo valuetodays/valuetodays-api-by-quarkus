@@ -27,9 +27,7 @@ public class WxmpArticleImageService
     protected void beforeSave(WxmpArticleImagePersist wxmpArticleImagePersist) {
         super.beforeSave(wxmpArticleImagePersist);
         String url = wxmpArticleImagePersist.getUrl();
-        if (!StringUtils.startsWith(url, "http")) {
-            throw AssertUtils.create("url应该以http(s)开头");
-        }
+        AssertUtils.assertTrue(StringUtils.startsWith(url, "http"), "url应该以http(s)开头");
 
         wxmpArticleImagePersist.setStatus(WxmpArticleImageEnums.Status.NOT_RUN);
     }
