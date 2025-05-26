@@ -20,6 +20,7 @@ quarkus:
       min-size: 1
   # https://quarkus.io/guides/hibernate-orm
   hibernate-orm:
+    packages: cn.valuetodays.api2.basic.persist,cn.valuetodays.api2.extra.persist
     database:
       generation: none
     sql-load-script: no-file
