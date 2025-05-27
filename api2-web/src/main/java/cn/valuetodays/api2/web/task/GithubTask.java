@@ -3,11 +3,11 @@ package cn.valuetodays.api2.web.task;
 import cn.valuetodays.api2.client.persist.WxmpArticleImagePersist;
 import cn.valuetodays.api2.web.component.WordPressComponent;
 import cn.valuetodays.api2.web.service.WxmpArticleImageService;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,12 +18,12 @@ import java.util.List;
  * @author lei.liu
  * @since 2025-04-08
  */
-@Component
+@ApplicationScoped
 public class GithubTask {
     @Inject
-    private WxmpArticleImageService wxmpArticleImageService;
+    WxmpArticleImageService wxmpArticleImageService;
     @Inject
-    private WordPressComponent wordPressComponent;
+    WordPressComponent wordPressComponent;
 
 
     @Scheduled(cron = "0 0/18 * * * ?")

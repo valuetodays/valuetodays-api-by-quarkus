@@ -1,4 +1,6 @@
 quarkus:
+  application:
+    name: api2-web
   profile: dev
   http:
     # 不配置host，只能 localhost 访问

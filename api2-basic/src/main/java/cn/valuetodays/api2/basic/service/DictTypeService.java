@@ -7,8 +7,8 @@ import cn.valuetodays.api2.basic.vo.BarkDict;
 import cn.valuetodays.quarkus.commons.base.BaseService;
 import cn.vt.exception.AssertUtils;
 import cn.vt.util.JsonUtils;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
@@ -21,12 +21,12 @@ import java.util.stream.Collectors;
  * @author lei.liu
  * @since 2024-11-13 20:40
  */
-@Named
+@ApplicationScoped
 @Slf4j
 public class DictTypeService
     extends BaseService<Long, DictTypePO, DictTypeDAO> {
     @Inject
-    private DictItemService dictItemService;
+    DictItemService dictItemService;
 
 
     //    @Cacheable(value = "getBarkDict#20m", cacheManager = RedisCache2Configuration.CACHE2_MANAGER_NAME)

@@ -6,13 +6,16 @@ import cn.vt.util.HttpClient4Utils;
 import io.quarkus.redis.datasource.RedisDataSource;
 import io.quarkus.redis.datasource.keys.KeyCommands;
 import io.quarkus.redis.datasource.value.ValueCommands;
+import io.quarkus.runtime.util.ExceptionUtil;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * .
@@ -20,19 +23,25 @@ import java.util.Map;
  * @author lei.liu
  * @since 2023-09-25
  */
-@Named
+@ApplicationScoped
 @Slf4j
 public class NotifyServiceImpl {
     @Inject
     private DictTypeService dictTypeService;
 
+    private static final String DICT_TYPE_CACHE_KEY = "cache.dictType";
     @Inject
-    private RedisDataSource stringRedisTemplate;
+    RedisDataSource stringRedisTemplate;
 
     public void notify(String title, String content, String group, boolean withSound) {
-        BarkDict barkDict = dictTypeService.getBarkDict();
+        ValueCommands<String, BarkDict> barkDictValueCommands = stringRedisTemplate.value(BarkDict.class);
+        BarkDict cached = barkDictValueCommands.get(DICT_TYPE_CACHE_KEY);
+        if (Objects.isNull(cached)) {
+            cached = dictTypeService.getBarkDict();
+            barkDictValueCommands.setex(DICT_TYPE_CACHE_KEY, Duration.ofMinutes(10).getSeconds(), cached);
+        }
         Map<String, String> requestMap = new HashMap<>();
-        requestMap.put("device_key", barkDict.getDeviceId());
+        requestMap.put("device_key", cached.getDeviceId());
         requestMap.put("title", title);
         requestMap.put("body", content);
         requestMap.put("group", group);
@@ -40,7 +49,7 @@ public class NotifyServiceImpl {
             requestMap.put("sound", "newmail");
         }
         try {
-            HttpClient4Utils.doPostJson(barkDict.getUrl(), requestMap, null);
+            HttpClient4Utils.doPostJson(cached.getUrl(), requestMap, null);
         } catch (Exception e) {
             log.error("error when #notify()", e);
         }
@@ -126,6 +135,18 @@ public class NotifyServiceImpl {
         this.notify(
             "[" + group.name() + "] hedged stock trades maybe wrong, please check. ",
             "info: " + msg,
+            group.getTitle(),
+            true
+        );
+    }
+
+    public void notifyApplicationException(String application, String msg, Exception exception) {
+        NotifyEnums.Group group = NotifyEnums.Group.APPLICATION_EXCEPTION;
+        String exceptionStackTraceString = ExceptionUtil.generateStackTrace(exception);
+        String first800 = StringUtils.substring(exceptionStackTraceString, 0, 800);
+        this.notify(
+            application + " EXCEPTION!",
+            first800,
             group.getTitle(),
             true
         );

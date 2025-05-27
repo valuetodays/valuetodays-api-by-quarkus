@@ -3,7 +3,7 @@ package cn.valuetodays.api2.basic.service;
 import cn.valuetodays.api2.basic.dao.DictItemDAO;
 import cn.valuetodays.api2.basic.persist.DictItemPO;
 import cn.valuetodays.quarkus.commons.base.BaseService;
-import jakarta.inject.Named;
+import jakarta.enterprise.context.ApplicationScoped;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
  * @author lei.liu
  * @since 2024-11-13 20:40
  */
-@Named
+@ApplicationScoped
 @Slf4j
 public class DictItemService
     extends BaseService<Long, DictItemPO, DictItemDAO> {
