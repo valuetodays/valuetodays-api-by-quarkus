@@ -20,10 +20,12 @@ quarkus:
       min-size: 1
   # https://quarkus.io/guides/hibernate-orm
   hibernate-orm:
-    packages: cn.valuetodays.api2.basic.persist,cn.valuetodays.api2.extra.persist
+    packages: cn.valuetodays.api2
     database:
       generation: none
     sql-load-script: no-file
+    log:
+      sql: true
   package:
     jar:
       type: UBER_JAR

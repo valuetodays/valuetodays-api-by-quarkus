@@ -7,6 +7,7 @@ import cn.valuetodays.api2.extra.reqresp.WeworkDiffGroupResp;
 import cn.valuetodays.api2.extra.reqresp.WeworkGroupAndMemberSaveReq;
 import cn.valuetodays.api2.extra.service.WeworkGroupBatchServiceImpl;
 import cn.valuetodays.quarkus.commons.base.BaseController;
+import cn.vt.R;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,12 +30,12 @@ public class WeworkGroupBatchController
 
 
     @PostMapping("/diffUser")
-    public WeworkDiffGroupResp diffUser(@RequestBody WeworkDiffGroupReq req) {
-        return service.diffUser(req.getGroupId1(), req.getGroupId2());
+    public R<WeworkDiffGroupResp> diffUser(@RequestBody WeworkDiffGroupReq req) {
+        return R.success(service.diffUser(req.getGroupId1(), req.getGroupId2()));
     }
 
     @PostMapping("/saveGroupAndMember")
-    public SaveGroupAndMemberResp saveGroupAndMember(@RequestBody WeworkGroupAndMemberSaveReq req) {
-        return service.saveGroupAndMember(req);
+    public R<SaveGroupAndMemberResp> saveGroupAndMember(@RequestBody WeworkGroupAndMemberSaveReq req) {
+        return R.success(service.saveGroupAndMember(req));
     }
 }
