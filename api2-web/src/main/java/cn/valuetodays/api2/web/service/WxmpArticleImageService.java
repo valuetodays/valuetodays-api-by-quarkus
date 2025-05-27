@@ -5,9 +5,9 @@ import cn.valuetodays.api2.client.persist.WxmpArticleImagePersist;
 import cn.valuetodays.api2.web.repository.WxmpArticleImageDAO;
 import cn.valuetodays.quarkus.commons.base.BaseService;
 import cn.vt.exception.AssertUtils;
+import jakarta.enterprise.context.ApplicationScoped;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
@@ -18,7 +18,7 @@ import java.util.Objects;
  * @author lei.liu
  * @since 2025-04-08 00:08
  */
-@Service
+@ApplicationScoped
 @Slf4j
 public class WxmpArticleImageService
     extends BaseService<Long, WxmpArticleImagePersist, WxmpArticleImageDAO> {
