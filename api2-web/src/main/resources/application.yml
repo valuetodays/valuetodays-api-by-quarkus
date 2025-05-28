@@ -46,3 +46,7 @@ hello: hello,dev
 greeting:
   title: show properties usage
   version: v1
+
+nats:
+  server: nats://aliyun2:4222
+  token: z1zFFjQ6QjgP9tp3GNGb9PL

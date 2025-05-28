@@ -4,3 +4,7 @@ quarkus:
   redis:
     hosts: redis://aliyun2:6379
     password: 'abc123'
+
+nats:
+  server: nats://aliyun2:4222
+  token: by-command-line
