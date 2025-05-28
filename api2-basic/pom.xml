@@ -15,6 +15,11 @@
             <artifactId>api2-dependencies-web</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.nats</groupId>
+            <artifactId>jnats</artifactId>
+            <version>2.19.1</version>
+        </dependency>
 
     </dependencies>
 
