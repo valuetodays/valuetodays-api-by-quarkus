@@ -5,7 +5,7 @@
 Singleton: eager Singleton
 
 ApplicationScoped: lazy Singleton
-  
+     
 ## function list
 
 - [x] rest
