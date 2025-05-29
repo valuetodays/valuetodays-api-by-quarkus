@@ -151,4 +151,14 @@ public class NotifyServiceImpl {
             true
         );
     }
+
+    public void notifyApplicationMsg(String msg) {
+        NotifyEnums.Group group = NotifyEnums.Group.APPLICATION_MSG;
+        this.notify(
+            "Application Msg",
+            msg,
+            group.getTitle(),
+            true
+        );
+    }
 }

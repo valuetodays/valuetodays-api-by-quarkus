@@ -1,5 +1,6 @@
 package cn.valuetodays.api2.basic.component;
 
+import cn.valuetodays.api2.basic.service.NotifyServiceImpl;
 import io.nats.client.Dispatcher;
 import io.nats.client.MessageHandler;
 import io.quarkus.runtime.StartupEvent;
@@ -27,6 +28,8 @@ public class NatsConsumer {
 
     @Inject
     VtNatsClient vtNatsClient;
+    @Inject
+    NotifyServiceImpl notifyService;
 
     // 设置优先级较高的@StartupEvent方法，值越低，优先级越高
     @Priority(100)
@@ -37,8 +40,9 @@ public class NatsConsumer {
             String subject = msg.getSubject();
             String msgText = new String(msg.getData(), StandardCharsets.UTF_8);
             LOGGER.info("Received message {}, on subject {}", msgText, subject);
+            notifyService.notifyApplicationMsg(msgText);
         };
-        dispatcher.subscribe("abc",
+        dispatcher.subscribe("application-msg",
             messageHandler
         );
     }

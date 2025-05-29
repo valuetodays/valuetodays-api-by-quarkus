@@ -18,6 +18,7 @@ public final class NotifyEnums {
         CD_CI("CD/CI"),
         TEST("测试"),
         APPLICATION_EXCEPTION("应用异常"),
+        APPLICATION_MSG("应用消息"),
         API_ALARM("api告警");
 
         private final String title;
