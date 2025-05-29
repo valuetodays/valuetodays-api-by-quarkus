@@ -24,7 +24,7 @@ import java.util.Objects;
  */
 @Singleton
 @Slf4j
-@Priority(1)
+//@Priority(1)
 public class VtNatsClient {
     public static final String TOPIC_APPLICATION_MESSAGE = "applicationmsg";
     public volatile Connection connection;

@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
  * @since 2025-05-28
  */
 @ApplicationScoped
-@Priority(100)
+//@Priority(100)
 @Slf4j
 public class NatsConsumer {
     public static final Logger LOGGER = LoggerFactory.getLogger(NatsConsumer.class);
@@ -33,8 +33,8 @@ public class NatsConsumer {
     @Inject
     NotifyServiceImpl notifyService;
 
-    // 设置优先级较高的@StartupEvent方法，值越低，优先级越高
-    @Priority(100)
+    // 设置优先级的@StartupEvent方法，值越低，优先级越高
+    @Priority(1000)
     void onStartup(@Observes StartupEvent unused) {
         Connection conn;
         while ((conn = vtNatsClient.connection) == null) {
@@ -43,6 +43,7 @@ public class NatsConsumer {
             } catch (InterruptedException ignored) {
             }
         }
+        log.info("conn is not null");
         Dispatcher dispatcher = conn.createDispatcher();
 
         MessageHandler messageHandler = msg -> {

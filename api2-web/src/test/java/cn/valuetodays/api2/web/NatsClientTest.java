@@ -5,6 +5,8 @@ import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * .
  *
@@ -17,8 +19,9 @@ public class NatsClientTest {
     VtNatsClient natsClient;
 
     @Test
-    public void testNats() {
-        natsClient.publishApplicationException("ex", new RuntimeException("fdsdfs"));
+    public void testNats() throws InterruptedException {
+        natsClient.publishApplicationException("applicationex", new RuntimeException("fdsdfs"));
         natsClient.publishApplicationMessage("abc");
+        TimeUnit.MINUTES.sleep(5);
     }
 }
