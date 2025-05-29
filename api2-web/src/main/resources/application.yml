@@ -48,5 +48,5 @@ greeting:
   version: v1
 
 nats:
-  server: nats://aliyun2:4222
+  server: nats://aliyun-test:4222
   token: zFFjQ6QjgP9tp3GNGb9PL

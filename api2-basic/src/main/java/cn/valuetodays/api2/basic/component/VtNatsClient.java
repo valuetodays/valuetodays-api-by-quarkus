@@ -26,7 +26,7 @@ import java.util.Objects;
 @Slf4j
 @Priority(1)
 public class VtNatsClient {
-    public static final String TOPIC_APPLICATION_MESSAGE = "application-msg";
+    public static final String TOPIC_APPLICATION_MESSAGE = "applicationmsg";
     public volatile Connection connection;
     @ConfigProperty(name = "nats.server")
     String natsServer;

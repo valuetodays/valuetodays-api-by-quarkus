@@ -51,9 +51,10 @@ public class NatsConsumer {
             LOGGER.info("Received message {}, on subject {}", msgText, subject);
             notifyService.notifyApplicationMsg(msgText);
         };
-        dispatcher.subscribe("application-msg",
+        dispatcher.subscribe("applicationmsg",
             messageHandler
         );
+        log.info("subscribe topic: {}", "applicationmsg");
 
         MessageHandler messageHandlerForEx = msg -> {
             String subject = msg.getSubject();
@@ -61,8 +62,9 @@ public class NatsConsumer {
             LOGGER.info("Received message {}, on subject {}", msgText, subject);
             notifyService.notifyApplicationException(vtNatsClient.applicationName, msgText);
         };
-        dispatcher.subscribe("application-ex",
+        dispatcher.subscribe("applicationex",
             messageHandlerForEx
         );
+        log.info("subscribe topic: {}", "applicationex");
     }
 }
