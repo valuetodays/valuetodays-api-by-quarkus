@@ -49,4 +49,4 @@ greeting:
 
 nats:
   server: nats://aliyun2:4222
-  token: z1zFFjQ6QjgP9tp3GNGb9PL
+  token: zFFjQ6QjgP9tp3GNGb9PL

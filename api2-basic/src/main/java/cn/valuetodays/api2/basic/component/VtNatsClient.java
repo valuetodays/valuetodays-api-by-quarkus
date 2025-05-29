@@ -27,7 +27,7 @@ import java.util.Objects;
 @Priority(1)
 public class VtNatsClient {
     public static final String TOPIC_APPLICATION_MESSAGE = "application-msg";
-    public Connection connection;
+    public volatile Connection connection;
     @ConfigProperty(name = "nats.server")
     String natsServer;
     @ConfigProperty(name = "nats.token")
