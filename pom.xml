@@ -16,10 +16,11 @@
     <properties>
         <vt-simple-common-modules.version>boot322-2024.12.22</vt-simple-common-modules.version>
         <valuetodays.quarkus-commons.version>quarkus3.2025.04.25</valuetodays.quarkus-commons.version>
-        <quote-module-third-rest.version>0.4-quarkus</quote-module-third-rest.version>
+        <jsoup.version>1.17.2</jsoup.version>
     </properties>
 
     <modules>
+        <module>module-third-rest</module>
         <module>api2-dependencies-web</module>
         <module>api2-extra</module>
         <module>api2-basic</module>

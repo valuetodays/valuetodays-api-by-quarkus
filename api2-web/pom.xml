@@ -21,9 +21,9 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>cn.vt.quote</groupId>
+            <groupId>cn.valuetodays</groupId>
             <artifactId>module-third-rest</artifactId>
-            <version>${quote-module-third-rest.version}</version>
+            <version>${project.version}</version>
         </dependency>
 
         <!--
