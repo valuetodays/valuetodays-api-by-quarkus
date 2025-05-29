@@ -1,7 +1,6 @@
 package cn.valuetodays.api2.web;
 
 import cn.valuetodays.api2.basic.component.VtNatsClient;
-import cn.valuetodays.api2.basic.service.NotifyServiceImpl;
 import cn.vt.R;
 import cn.vt.exception.CommonException;
 import jakarta.inject.Inject;
@@ -12,8 +11,6 @@ import org.eclipse.microprofile.context.ManagedExecutor;
 
 @Provider
 public class DefaultExceptionHandler implements ExceptionMapper<Exception> {
-    @Inject
-    NotifyServiceImpl notifyService;
     @Inject
     ManagedExecutor managedExecutor;
 
