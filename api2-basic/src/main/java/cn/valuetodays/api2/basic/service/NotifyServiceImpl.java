@@ -6,11 +6,9 @@ import cn.vt.util.HttpClient4Utils;
 import io.quarkus.redis.datasource.RedisDataSource;
 import io.quarkus.redis.datasource.keys.KeyCommands;
 import io.quarkus.redis.datasource.value.ValueCommands;
-import io.quarkus.runtime.util.ExceptionUtil;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -140,13 +138,11 @@ public class NotifyServiceImpl {
         );
     }
 
-    public void notifyApplicationException(String application, String msg, Exception exception) {
+    public void notifyApplicationException(String application, String msg) {
         NotifyEnums.Group group = NotifyEnums.Group.APPLICATION_EXCEPTION;
-        String exceptionStackTraceString = ExceptionUtil.generateStackTrace(exception);
-        String first800 = StringUtils.substring(exceptionStackTraceString, 0, 800);
         this.notify(
             application + " EXCEPTION!",
-            first800,
+            msg,
             group.getTitle(),
             true
         );

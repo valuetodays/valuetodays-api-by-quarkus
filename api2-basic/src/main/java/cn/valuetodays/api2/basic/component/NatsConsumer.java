@@ -46,4 +46,20 @@ public class NatsConsumer {
             messageHandler
         );
     }
+
+    // 设置优先级较高的@StartupEvent方法，值越低，优先级越高
+    @Priority(101)
+    void onStartup2(@Observes StartupEvent unused) {
+        Dispatcher dispatcher = vtNatsClient.connection.createDispatcher();
+
+        MessageHandler messageHandler = msg -> {
+            String subject = msg.getSubject();
+            String msgText = new String(msg.getData(), StandardCharsets.UTF_8);
+            LOGGER.info("Received message {}, on subject {}", msgText, subject);
+            notifyService.notifyApplicationException(vtNatsClient.applicationName, msgText);
+        };
+        dispatcher.subscribe("application-ex",
+            messageHandler
+        );
+    }
 }

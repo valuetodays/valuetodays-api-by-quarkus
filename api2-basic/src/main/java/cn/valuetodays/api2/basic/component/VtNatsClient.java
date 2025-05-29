@@ -5,10 +5,12 @@ import io.nats.client.Nats;
 import io.nats.client.Options;
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
+import io.quarkus.runtime.util.ExceptionUtil;
 import jakarta.annotation.Priority;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import java.nio.charset.StandardCharsets;
@@ -23,12 +25,14 @@ import java.util.Objects;
 @Singleton
 @Slf4j
 public class VtNatsClient {
-    public static final String TOPIC_APPLICATION_MESSAGE = "application_message";
+    public static final String TOPIC_APPLICATION_MESSAGE = "application-msg";
     public Connection connection;
     @ConfigProperty(name = "nats.server")
     String natsServer;
     @ConfigProperty(name = "nats.token")
     String natsToken;
+    @ConfigProperty(name = "quarkus.application.name")
+    String applicationName;
 
     // 设置优先级较高的@StartupEvent方法，值越低，优先级越高
     @Priority(1)
@@ -56,6 +60,12 @@ public class VtNatsClient {
 
     public void publishApplicationMessage(String msg) {
         this.publish(TOPIC_APPLICATION_MESSAGE, msg);
+    }
+
+    public void publishApplicationException(String msgPrefix, Throwable ex) {
+        String exceptionStackTraceString = ExceptionUtil.generateStackTrace(ex);
+        String first800 = StringUtils.substring(exceptionStackTraceString, 0, 800);
+        this.publish(TOPIC_APPLICATION_MESSAGE, "[" + applicationName + "]" + msgPrefix + first800);
     }
 
     void onShutdown(@Observes ShutdownEvent unused) {
