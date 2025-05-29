@@ -1,7 +1,7 @@
 package cn.valuetodays.api2.web.asyncevent;
 
-import cn.valuetodays.quote.persist.AccessedUrlPersist;
-import cn.valuetodays.quote.service.AccessedUrlService;
+import cn.valuetodays.api2.client.persist.AccessedUrlPersist;
+import cn.valuetodays.api2.web.service.AccessedUrlService;
 import cn.vt.util.JsonUtils;
 import io.quarkus.vertx.ConsumeEvent;
 import io.smallrye.common.annotation.Blocking;

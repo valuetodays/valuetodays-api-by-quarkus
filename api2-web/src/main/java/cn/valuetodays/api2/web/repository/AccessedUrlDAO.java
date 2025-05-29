@@ -1,6 +1,6 @@
 package cn.valuetodays.api2.web.repository;
 
-import cn.valuetodays.quote.persist.AccessedUrlPersist;
+import cn.valuetodays.api2.client.persist.AccessedUrlPersist;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

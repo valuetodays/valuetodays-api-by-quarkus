@@ -1,8 +1,8 @@
 package cn.valuetodays.api2.web.service;
 
+import cn.valuetodays.api2.client.persist.AccessedUrlPersist;
+import cn.valuetodays.api2.web.repository.AccessedUrlDAO;
 import cn.valuetodays.quarkus.commons.base.BaseService;
-import cn.valuetodays.quote.persist.AccessedUrlPersist;
-import cn.valuetodays.quote.repository.AccessedUrlDAO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

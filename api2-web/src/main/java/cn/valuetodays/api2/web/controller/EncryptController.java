@@ -1,6 +1,6 @@
 package cn.valuetodays.api2.web.controller;
 
-import cn.valuetodays.quote.component.CookieCacheComponent;
+import cn.valuetodays.api2.web.component.CookieCacheComponent;
 import cn.vt.util.RSAUtils;
 import io.quarkus.redis.datasource.RedisDataSource;
 import io.quarkus.redis.datasource.hash.HashCommands;
