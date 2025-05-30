@@ -21,6 +21,7 @@ steps:
       - name: workbench_dir
         path: /root/workbench_dir
     commands:
+      - whoami
       # 获取environment的KEY_A不成功
       - echo 1=${KEY_A} 2=$${KEY_A}
       # use 内置变量 https://docs.drone.io/pipeline/environment/reference/
