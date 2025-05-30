@@ -13,7 +13,7 @@ quarkus:
   # https://quarkus.io/guides/datasource
   datasource:
     #    db-kind: mysql
-    #    db-kind: other
+    db-kind: other
     #    db-version: 8.0.27
     username: root
     password: abcUUddsef
@@ -30,7 +30,8 @@ quarkus:
       generation: none
     sql-load-script: no-file
     log:
-      sql: true
+      # the printed sql is containing ?
+      sql: false
   package:
     jar:
       type: UBER_JAR
