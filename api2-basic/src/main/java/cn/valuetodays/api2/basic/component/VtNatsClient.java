@@ -24,7 +24,7 @@ import java.util.Objects;
  */
 @Singleton
 @Slf4j
-//@Priority(1)
+@Priority(PriorityConstant.NATS_CLIENT_INIT_ORDER)
 public class VtNatsClient {
     public static final String TOPIC_APPLICATION_MESSAGE = "applicationmsg";
     public volatile Connection connection;
@@ -35,12 +35,11 @@ public class VtNatsClient {
     @ConfigProperty(name = "quarkus.application.name")
     String applicationName;
 
-    // 设置优先级较高的@StartupEvent方法，值越低，优先级越高
-    @Priority(1)
+    // 设置优先级较高的@StartupEvent方法，值越高，越先运行
+    @Priority(PriorityConstant.NATS_CLIENT_INIT_ORDER)
     void onStartup(@Observes StartupEvent unused) {
         log.info("connecting to nats server with {}", natsToken);
         try {
-            // 连接到 NATS 服务器，这里使用默认的本地地址和端口，你可以根据实际情况修改
             Options options = new Options.Builder()
                 .server(natsServer)
                 .token(natsToken.toCharArray())

@@ -1,8 +1,7 @@
 package cn.valuetodays.api2.web.basic;
 
-import cn.valuetodays.api2.basic.controller.NotifyController;
+import cn.valuetodays.api2.basic.service.NotifyServiceImpl;
 import cn.valuetodays.api2.web.service.BaseTest;
-import cn.vt.web.req.SimpleTypesReq;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
@@ -16,12 +15,11 @@ import org.junit.jupiter.api.Test;
 @QuarkusTest
 public class NotifyControllerTest extends BaseTest {
     @Inject
-    private NotifyController notifyController;
+    private NotifyServiceImpl notifyService;
 
     @Test
     public void pushToBark() {
-        SimpleTypesReq req = new SimpleTypesReq();
-        req.setText("测试推送消息");
-        notifyController.pushToBark(req);
+        notifyService.notifyApplicationMsg("application-msg is here");
+        notifyService.notifyApplicationException("test", "application-msg is here");
     }
 }

@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
  * @since 2025-05-28
  */
 @ApplicationScoped
-//@Priority(100)
+@Priority(PriorityConstant.NATS_CONSUMER_ORDER)
 @Slf4j
 public class NatsConsumer {
     public static final Logger LOGGER = LoggerFactory.getLogger(NatsConsumer.class);
@@ -33,8 +33,7 @@ public class NatsConsumer {
     @Inject
     NotifyServiceImpl notifyService;
 
-    // 设置优先级的@StartupEvent方法，值越低，优先级越高
-    @Priority(1000)
+    @Priority(PriorityConstant.NATS_CONSUMER_ORDER)
     void onStartup(@Observes StartupEvent unused) {
         Connection conn;
         while ((conn = vtNatsClient.connection) == null) {
@@ -50,7 +49,11 @@ public class NatsConsumer {
             String subject = msg.getSubject();
             String msgText = new String(msg.getData(), StandardCharsets.UTF_8);
             LOGGER.info("Received message {}, on subject {}", msgText, subject);
-            notifyService.notifyApplicationMsg(msgText);
+            try {
+                notifyService.notifyApplicationMsg(msgText);
+            } catch (Exception e) {
+                log.error("error,", e);
+            }
         };
         dispatcher.subscribe("applicationmsg",
             messageHandler
