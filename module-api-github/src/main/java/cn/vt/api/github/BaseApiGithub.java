@@ -15,6 +15,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * .
@@ -160,7 +161,21 @@ public abstract class BaseApiGithub {
             if (json == null || json.isEmpty()) {
                 return Pair.of(code, null);
             }
-            return Pair.of(code, JsonUtils.fromJson(json, responseEntityCls));
+            boolean respEntityIsString = String.class.equals(responseEntityCls);
+            T r;
+            if (respEntityIsString) {
+                r = (T) json;
+            } else {
+                r = JsonUtils.fromJson(json, responseEntityCls);
+            }
+            Map<String, Object> stringObjectMap = JsonUtils.fromJson(json);
+            if ("422".equals(stringObjectMap.get("status"))) {
+//            {"message":"Invalid request.\n\n\"sha\" wasn't supplied.",
+//            "documentation_url":"https://docs.github.com/rest/repos/contents#create-or-update-file-contents",
+//            "status":"422"}
+                return Pair.of(200, r);
+            }
+            return Pair.of(code, r);
         } catch (IOException e) {
             throw new CommonException(e);
         }
