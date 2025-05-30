@@ -58,3 +58,10 @@ greeting:
 nats:
   server: nats://aliyun-test:4222
   token: zFFjQ6QjgP9tp3GNGb9PL
+
+vt:
+  github:
+    username: valuetodays
+    email: from-env11
+    git-token: from-env11
+

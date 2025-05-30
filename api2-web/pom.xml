@@ -25,6 +25,11 @@
             <artifactId>module-third-rest</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>cn.valuetodays</groupId>
+            <artifactId>module-api-github</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <!--
         <dependency>
@@ -68,7 +73,11 @@
             <artifactId>rest-assured</artifactId>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
