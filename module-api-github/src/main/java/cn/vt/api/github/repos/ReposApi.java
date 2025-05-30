@@ -5,7 +5,6 @@ import cn.vt.api.github.vo.CreateOrUpdateFileContentReq;
 import cn.vt.api.github.vo.PublicKeyVo;
 import cn.vt.api.github.vo.SecretsInRepo;
 import lombok.Data;
-import org.springframework.http.ResponseEntity;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -21,6 +20,7 @@ import java.util.Map;
 public class ReposApi extends BaseApiGithub {
 
     public ReposApi() {
+        super();
     }
 
     public ReposApi(String apiKey) {
@@ -67,7 +67,7 @@ public class ReposApi extends BaseApiGithub {
         Map<String, String> requestBody = new HashMap<>();
         requestBody.put("encrypted_value", "");// encryptSecret(key, secretValue));
         requestBody.put("key_id", publicKey.getKey_id());
-        ResponseEntity<String> put = put("/repos/{owner}/{repo}/actions/secrets/{secretName}", requestBody, String.class, vars);
+        String put = put("/repos/{owner}/{repo}/actions/secrets/{secretName}", requestBody, String.class, vars);
         System.out.println(put);
         return null;
     }
@@ -88,9 +88,9 @@ public class ReposApi extends BaseApiGithub {
         requestBody.setContent(req.getFileContentBase64String());
         // https://docs.github.com/en/rest/repos/contents?apiVersion=2022-11-28#create-or-update-file-contents
         // path不以/开头
-        ResponseEntity<String> put = put("/repos/{username}/{reponame}/contents/{path}", requestBody, String.class, vars);
-        int value = put.getStatusCode().value();
-        return value >= 200 && value < 300;
+        String put = put("/repos/{username}/{reponame}/contents/{path}", requestBody, String.class, vars);
+//        return value >= 200 && value < 300;
+        return put != null;
     }
 
     @Data

@@ -1,18 +1,18 @@
 package cn.vt.api.github;
 
+import cn.vt.exception.CommonException;
 import cn.vt.util.EnvironmentPropertyUtils;
+import cn.vt.util.JsonUtils;
+import com.fasterxml.jackson.core.type.TypeReference;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.ClientHttpRequestInterceptor;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
+import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * .
@@ -36,6 +36,8 @@ public abstract class BaseApiGithub {
         this.apiToken = apiKey;
     }
 
+    private OkHttpClient httpClient = createHttpClient();
+
     private static String buildUrl(String path) {
         return StringUtils.startsWithIgnoreCase(path, "http") ? path : API_GITHUB_BASE_PATH + path;
     }
@@ -43,38 +45,122 @@ public abstract class BaseApiGithub {
     public <T> T get(String path, Class<T> responseEntityCls, Object... uriVariables) {
         String url = buildUrl(path);
 
-        RestTemplate restTemplate = getRestTemplate();
-        return restTemplate.getForObject(url, responseEntityCls, uriVariables);
+        Request.Builder builder = new Request.Builder();
+        fillHeaders(builder);
+        okhttp3.Request request = builder.url(replacePathVariables(url, uriVariables))
+            .url(replacePathVariables(url, uriVariables))
+            .get()
+            .build();
+        try (Response response = httpClient.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Unexpected code " + response);
+            }
+
+            String json = response.body() != null ? response.body().string() : null;
+            if (json == null || json.isEmpty()) {
+                return null;
+            }
+            return JsonUtils.fromJson(json, responseEntityCls);
+        } catch (IOException e) {
+            throw new CommonException(e);
+        }
     }
 
-    private RestTemplate getRestTemplate() {
-        // 借助拦截器的方式来实现塞统一的请求头
-        ClientHttpRequestInterceptor interceptor = (httpRequest, bytes, execution) -> {
-            httpRequest.getHeaders().set("Host", "api.github.com");
-            httpRequest.getHeaders().set("Accept", "application/vnd.github.v3+json");
-            httpRequest.getHeaders().set("Authorization", "token " + apiToken);
-            return execution.execute(httpRequest, bytes);
-        };
+    private OkHttpClient createHttpClient() {
+        return new OkHttpClient.Builder()
+            /*   .addInterceptor(chain -> {
+                   okhttp3.Request request = chain.request();
+                   okhttp3.Request.Builder newRequestBuilder = request.newBuilder()
+                       .header("Host", "api.github.com")
+                       .header("Accept", "application/vnd.github.v3+json")
+                       .header("Authorization", "token " + apiToken)
+                       .url(request.url());
 
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.getInterceptors().add(interceptor);
-        return restTemplate;
+                   return chain.proceed(newRequestBuilder.build());
+               })*/
+            .build();
     }
+
+    // 替换 /api/{name}/{code}/query 中的 {name} 和 {code}
+    private String replacePathVariables(String pathTemplate, Object... uriVariables) {
+        int varIndex = 0;
+        StringBuilder result = new StringBuilder();
+        int i = 0;
+        while (i < pathTemplate.length()) {
+            int start = pathTemplate.indexOf('{', i);
+            if (start == -1) {
+                result.append(pathTemplate.substring(i));
+                break;
+            }
+            int end = pathTemplate.indexOf('}', start);
+            if (end == -1) {
+                throw new IllegalArgumentException("Invalid path template: unmatched {");
+            }
+            result.append(pathTemplate, i, start);
+            if (varIndex >= uriVariables.length) {
+                throw new IllegalArgumentException("Not enough URI variables provided for the template.");
+            }
+            result.append(uriVariables[varIndex++].toString());
+            i = end + 1;
+        }
+        if (varIndex < uriVariables.length) {
+            throw new IllegalArgumentException("Too many URI variables provided.");
+        }
+        return result.toString();
+    }
+
 
     public <T> List<T> getList(String path, Class<T[]> responseEntityCls, Object... uriVariables) {
         String url = buildUrl(path);
-        RestTemplate restTemplate = getRestTemplate();
-        T[] arr = restTemplate.getForObject(url, responseEntityCls, uriVariables);
-        if (Objects.isNull(arr)) {
-            return new ArrayList<>(0);
+
+        Request.Builder builder = new Request.Builder();
+        fillHeaders(builder);
+        okhttp3.Request request = builder.url(replacePathVariables(url, uriVariables))
+            .get()
+            .build();
+        try (Response response = httpClient.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Unexpected code " + response);
+            }
+
+            String json = response.body() != null ? response.body().string() : null;
+            if (json == null || json.isEmpty()) {
+                return List.of();
+            }
+            return JsonUtils.fromJson(json, new TypeReference<>() {
+            });
+        } catch (IOException e) {
+            throw new CommonException(e);
         }
-        return new LinkedList<>(Arrays.stream(arr).toList());
     }
 
-    public <T> ResponseEntity<T> put(String path, Object requestBody, Class<T> responseEntityCls, Object... uriVariables) {
+    private void fillHeaders(Request.Builder builder) {
+        builder.header("Host", "api.github.com")
+            .header("Accept", "application/vnd.github.v3+json")
+            .header("Authorization", "token " + apiToken);
+    }
+
+    public <T> T put(String path, Object requestBody, Class<T> responseEntityCls, Object... uriVariables) {
         String url = buildUrl(path);
-        RestTemplate restTemplate = getRestTemplate();
-        HttpEntity<Object> httpEntity = new HttpEntity<>(requestBody);
-        return restTemplate.exchange(url, HttpMethod.PUT, httpEntity, responseEntityCls, uriVariables);
+
+        Request.Builder builder = new Request.Builder();
+        fillHeaders(builder);
+        okhttp3.Request request = builder.url(replacePathVariables(url, uriVariables))
+            .put(RequestBody.create(JsonUtils.toJson(requestBody), MediaType.parse("application/json")))
+            .build();
+        try (Response response = httpClient.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Unexpected code " + response);
+            }
+
+            String json = response.body() != null ? response.body().string() : null;
+            if (json == null || json.isEmpty()) {
+                return null;
+            }
+            return JsonUtils.fromJson(json, responseEntityCls);
+        } catch (IOException e) {
+            throw new CommonException(e);
+        }
+
     }
 }

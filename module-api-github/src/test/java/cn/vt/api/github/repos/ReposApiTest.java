@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Test;
  */
 @Slf4j
 public class ReposApiTest extends TestBase {
-    private ReposApi reposApi = new ReposApi("");
+    private ReposApi reposApi = new ReposApi();
 
     @Test
     void createFileOrUpdateFileContent() {
@@ -49,6 +49,7 @@ public class ReposApiTest extends TestBase {
 
     @Test
     void listSecretsInRepo() {
-        SecretsInRepo secretsInRepo = reposApi.listSecrets("valuetodays", "common-spring-web");
+        SecretsInRepo secretsInRepo = reposApi.listSecrets("valuetodays", "valuetodays-api");
+        log.info("secretsInRepo:{}", secretsInRepo);
     }
 }

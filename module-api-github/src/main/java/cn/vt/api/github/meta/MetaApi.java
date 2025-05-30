@@ -12,6 +12,7 @@ import cn.vt.api.github.vo.RootVo;
 public class MetaApi extends BaseApiGithub {
 
     public MetaApi() {
+        super();
     }
 
     public MetaApi(String apiKey) {
