@@ -2,13 +2,20 @@ package cn.valuetodays.api2.web.service;
 
 import cn.valuetodays.api2.client.enums.WxmpArticleImageEnums;
 import cn.valuetodays.api2.client.persist.WxmpArticleImagePersist;
+import cn.valuetodays.api2.web.component.GithubComponent;
+import cn.valuetodays.api2.web.component.WordPressComponent;
 import cn.valuetodays.api2.web.repository.WxmpArticleImageDAO;
 import cn.valuetodays.quarkus.commons.base.BaseService;
 import cn.vt.exception.AssertUtils;
+import io.smallrye.mutiny.tuples.Tuple2;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,6 +29,11 @@ import java.util.Objects;
 @Slf4j
 public class WxmpArticleImageService
     extends BaseService<Long, WxmpArticleImagePersist, WxmpArticleImageDAO> {
+
+    @Inject
+    GithubComponent githubComponent;
+    @Inject
+    WordPressComponent wordPressComponent;
 
     @Override
     protected void beforeSave(WxmpArticleImagePersist wxmpArticleImagePersist) {
@@ -40,6 +52,7 @@ public class WxmpArticleImageService
         return getRepository().findTop6ByStatusOrderByIdDesc(WxmpArticleImageEnums.Status.DOWNLOAD_DONE);
     }
 
+    @Transactional(value = Transactional.TxType.REQUIRES_NEW)
     public void finishDownload(WxmpArticleImagePersist p) {
         Long id = p.getId();
         WxmpArticleImagePersist old = findById(id);
@@ -69,5 +82,26 @@ public class WxmpArticleImageService
         old.setFinishTime(p.getFinishTime());
         old.setStatus(WxmpArticleImageEnums.Status.POST_DONE);
         getRepository().save(old);
+    }
+
+    public void scheduleDownloadImage() {
+        List<WxmpArticleImagePersist> list = this.listTop6ToRun();
+        if (CollectionUtils.isEmpty(list)) {
+            return;
+        }
+        for (WxmpArticleImagePersist p : list) {
+            String url = p.getUrl();
+            LocalDateTime beginTime = LocalDateTime.now();
+            Tuple2<String, List<String>> tuple2 = githubComponent.uploadImageByWxmpUrl(url);
+            List<String> t2 = tuple2.getItem2();
+            String t1 = tuple2.getItem1();
+            LocalDateTime finishTime = LocalDateTime.now();
+            p.setBeginTime(beginTime);
+            p.setFinishTime(finishTime);
+            p.setTitle(t1);
+            p.setLastFileUrl(t2.getLast());
+            this.finishDownload(p);
+        }
+
     }
 }

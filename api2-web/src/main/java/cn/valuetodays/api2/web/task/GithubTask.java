@@ -1,10 +1,8 @@
 package cn.valuetodays.api2.web.task;
 
 import cn.valuetodays.api2.client.persist.WxmpArticleImagePersist;
-import cn.valuetodays.api2.web.component.GithubComponent;
 import cn.valuetodays.api2.web.component.WordPressComponent;
 import cn.valuetodays.api2.web.service.WxmpArticleImageService;
-import io.smallrye.mutiny.tuples.Tuple2;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.apache.commons.collections4.CollectionUtils;
@@ -25,31 +23,13 @@ public class GithubTask {
     @Inject
     WxmpArticleImageService wxmpArticleImageService;
     @Inject
-    GithubComponent githubComponent;
-    @Inject
     WordPressComponent wordPressComponent;
 
 
     @Scheduled(cron = "0 0/15 * * * ?")
 //    @DistributeLock(id = "scheduleDownloadImage", milliSeconds = TimeConstants.T3m)
     public void scheduleDownloadImage() {
-        List<WxmpArticleImagePersist> list = wxmpArticleImageService.listTop6ToRun();
-        if (CollectionUtils.isEmpty(list)) {
-            return;
-        }
-        for (WxmpArticleImagePersist p : list) {
-            String url = p.getUrl();
-            LocalDateTime beginTime = LocalDateTime.now();
-            Tuple2<String, List<String>> tuple2 = githubComponent.uploadImageByWxmpUrl(url);
-            List<String> t2 = tuple2.getItem2();
-            String t1 = tuple2.getItem1();
-            LocalDateTime finishTime = LocalDateTime.now();
-            p.setBeginTime(beginTime);
-            p.setFinishTime(finishTime);
-            p.setTitle(t1);
-            p.setLastFileUrl(t2.getLast());
-            wxmpArticleImageService.finishDownload(p);
-        }
+        wxmpArticleImageService.scheduleDownloadImage();
     }
 
     @Scheduled(cron = "0 0/18 * * * ?")
