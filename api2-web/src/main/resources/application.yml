@@ -12,8 +12,9 @@ quarkus:
       max-body-size: 12M
   # https://quarkus.io/guides/datasource
   datasource:
-    db-kind: mysql
-    db-version: 8.0.27
+    #    db-kind: mysql
+    #    db-kind: other
+    #    db-version: 8.0.27
     username: root
     password: abcUUddsef
     jdbc:
