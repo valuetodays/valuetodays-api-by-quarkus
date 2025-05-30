@@ -86,13 +86,16 @@ public class WxmpArticleImageService
 
     public void scheduleDownloadImage() {
         List<WxmpArticleImagePersist> list = this.listTop6ToRun();
+        log.info("list: {}", list.size());
         if (CollectionUtils.isEmpty(list)) {
             return;
         }
         for (WxmpArticleImagePersist p : list) {
             String url = p.getUrl();
             LocalDateTime beginTime = LocalDateTime.now();
+            log.info("to uploadImage: {}", url);
             Tuple2<String, List<String>> tuple2 = githubComponent.uploadImageByWxmpUrl(url);
+            log.info("end to uploadImage: {}", url);
             List<String> t2 = tuple2.getItem2();
             String t1 = tuple2.getItem1();
             LocalDateTime finishTime = LocalDateTime.now();

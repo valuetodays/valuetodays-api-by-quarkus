@@ -10,6 +10,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.IOException;
 import java.util.List;
@@ -140,7 +141,7 @@ public abstract class BaseApiGithub {
             .header("Authorization", "token " + apiToken);
     }
 
-    public <T> T put(String path, Object requestBody, Class<T> responseEntityCls, Object... uriVariables) {
+    public <T> Pair<Integer, T> put(String path, Object requestBody, Class<T> responseEntityCls, Object... uriVariables) {
         String url = buildUrl(path);
 
         Request.Builder builder = new Request.Builder();
@@ -149,15 +150,12 @@ public abstract class BaseApiGithub {
             .put(RequestBody.create(JsonUtils.toJson(requestBody), MediaType.parse("application/json")))
             .build();
         try (Response response = httpClient.newCall(request).execute()) {
-            if (!response.isSuccessful()) {
-                throw new IOException("Unexpected code " + response);
-            }
-
+            int code = response.code();
             String json = response.body() != null ? response.body().string() : null;
             if (json == null || json.isEmpty()) {
-                return null;
+                return Pair.of(code, null);
             }
-            return JsonUtils.fromJson(json, responseEntityCls);
+            return Pair.of(code, JsonUtils.fromJson(json, responseEntityCls));
         } catch (IOException e) {
             throw new CommonException(e);
         }
