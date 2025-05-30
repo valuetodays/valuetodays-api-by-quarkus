@@ -9,6 +9,8 @@ import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
 import org.eclipse.microprofile.context.ManagedExecutor;
 
+import java.util.List;
+
 @Provider
 public class DefaultExceptionHandler implements ExceptionMapper<Exception> {
     @Inject
@@ -16,6 +18,7 @@ public class DefaultExceptionHandler implements ExceptionMapper<Exception> {
 
     @Inject
     VtNatsClient natsClient;
+    private List<String> excludeMsgsNotNotify = List.of("No static resource favicon.ico.");
 
     @Override
     public Response toResponse(Exception exception) {
@@ -26,9 +29,11 @@ public class DefaultExceptionHandler implements ExceptionMapper<Exception> {
             msg = "Exception: " + exception.getMessage();
         }
 
-        managedExecutor.execute(() -> {
-            natsClient.publishApplicationException(msg, exception);
-        });
+        if (!excludeMsgsNotNotify.contains(msg)) {
+            managedExecutor.execute(() -> {
+                natsClient.publishApplicationException(msg, exception);
+            });
+        }
         return Response.status(Response.Status.OK).entity(R.fail(msg)).build();
     }
 }
