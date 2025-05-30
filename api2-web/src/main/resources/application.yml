@@ -17,7 +17,8 @@ quarkus:
     username: root
     password: abcUUddsef
     jdbc:
-      url: jdbc:mysql://aliyun2:3306/eblog?useUnicode=true&characterEncoding=utf8&useSSL=false&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
+      #      url: jdbc:mysql://aliyun-test:3306/eblog?useUnicode=true&characterEncoding=utf8&useSSL=false&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
+      url: jdbc:p6spy:mysql://aliyun-test:3306/eblog?useUnicode=true&characterEncoding=utf8&useSSL=false&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
       max-size: 5
       min-size: 1
   # https://quarkus.io/guides/hibernate-orm
