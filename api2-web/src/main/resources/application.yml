@@ -59,6 +59,7 @@ nats:
   server: nats://aliyun-test:4222
   token: zFFjQ6QjgP9tp3GNGb9PL
 
+
 vt:
   github:
     username: valuetodays
