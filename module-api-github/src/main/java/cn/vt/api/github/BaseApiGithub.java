@@ -4,6 +4,7 @@ import cn.vt.exception.CommonException;
 import cn.vt.util.EnvironmentPropertyUtils;
 import cn.vt.util.JsonUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -21,6 +22,7 @@ import java.util.List;
  * @author lei.liu
  * @since 2024-09-25
  */
+@Slf4j
 public abstract class BaseApiGithub {
     // basePath 不要以/结尾，
     // 每个接口要以/开头
@@ -58,6 +60,7 @@ public abstract class BaseApiGithub {
             }
 
             String json = response.body() != null ? response.body().string() : null;
+            log.info("response.body()={}", json);
             if (json == null || json.isEmpty()) {
                 return null;
             }
@@ -125,6 +128,7 @@ public abstract class BaseApiGithub {
             }
 
             String json = response.body() != null ? response.body().string() : null;
+            log.info("response.body()={}", json);
             if (json == null || json.isEmpty()) {
                 return List.of();
             }
@@ -152,6 +156,7 @@ public abstract class BaseApiGithub {
         try (Response response = httpClient.newCall(request).execute()) {
             int code = response.code();
             String json = response.body() != null ? response.body().string() : null;
+            log.info("response.body()={}", json);
             if (json == null || json.isEmpty()) {
                 return Pair.of(code, null);
             }
@@ -159,6 +164,6 @@ public abstract class BaseApiGithub {
         } catch (IOException e) {
             throw new CommonException(e);
         }
-
     }
+
 }
