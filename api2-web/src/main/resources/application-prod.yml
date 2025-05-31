@@ -5,11 +5,15 @@ quarkus:
     hosts: redis://aliyun2:6379
     password: 'abc123'
   datasource:
+    db-kind: mysql
+    #    db-kind: other
+    db-version: 8.0.27
     username: root
     password: abcUUddsef
     jdbc:
-      url: jdbc:p6spy:mysql://aliyun2:3306/eblog?useUnicode=true&characterEncoding=utf8&useSSL=false&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
-#      url: jdbc:mysql://aliyun2:3306/eblog?useUnicode=true&characterEncoding=utf8&useSSL=false&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
+      driver: com.p6spy.engine.spy.P6SpyDriver
+      #      url: jdbc:mysql://aliyun-test:3306/eblog?useUnicode=true&characterEncoding=utf8&useSSL=false&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
+      url: jdbc:p6spy:mysql://aliyun-test:3306/eblog?useUnicode=true&characterEncoding=utf8&useSSL=false&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
 
 nats:
   server: nats://aliyun2:4222

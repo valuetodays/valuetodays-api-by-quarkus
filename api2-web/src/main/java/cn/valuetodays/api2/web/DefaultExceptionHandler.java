@@ -18,7 +18,7 @@ public class DefaultExceptionHandler implements ExceptionMapper<Exception> {
 
     @Inject
     VtNatsClient natsClient;
-    private List<String> excludeMsgsNotNotify = List.of("No static resource favicon.ico.");
+    private List<String> excludeMsgsPrefixNotNotify = List.of("No static resource favicon.ico.");
 
     @Override
     public Response toResponse(Exception exception) {
@@ -29,7 +29,8 @@ public class DefaultExceptionHandler implements ExceptionMapper<Exception> {
             msg = "Exception: " + exception.getMessage();
         }
 
-        if (!excludeMsgsNotNotify.contains(msg)) {
+        boolean excludeByMsgPrefix = excludeMsgsPrefixNotNotify.stream().anyMatch(msg::startsWith);
+        if (!excludeByMsgPrefix) {
             managedExecutor.execute(() -> {
                 natsClient.publishApplicationException(msg, exception);
             });

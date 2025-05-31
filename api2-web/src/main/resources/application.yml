@@ -18,9 +18,9 @@ quarkus:
     username: root
     password: abcUUddsef
     jdbc:
-      driver: com.p6spy.engine.spy.P6SpyDriver
-      #      url: jdbc:mysql://aliyun-test:3306/eblog?useUnicode=true&characterEncoding=utf8&useSSL=false&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
-      url: jdbc:p6spy:mysql://aliyun-test:3306/eblog?useUnicode=true&characterEncoding=utf8&useSSL=false&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
+      #      driver: com.p6spy.engine.spy.P6SpyDriver
+      url: jdbc:mysql://aliyun-test:3306/eblog?useUnicode=true&characterEncoding=utf8&useSSL=false&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
+      #      url: jdbc:p6spy:mysql://aliyun-test:3306/eblog?useUnicode=true&characterEncoding=utf8&useSSL=false&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
       max-size: 5
       min-size: 1
   # https://quarkus.io/guides/hibernate-orm
@@ -65,4 +65,8 @@ vt:
     username: valuetodays
     email: from-env11
     git-token: from-env11
-
+  vocechat:
+    base-path: http://vocechat.valuetodays.cn
+    url-send-to-group: ${vt.vocechat.base-path}/api/bot/send_to_group/
+    url-send-to-user: ${vt.vocechat.base-path}/api/bot/send_to_user/
+    api-key: a7c49bf36ecaa1fa709f877941e96c3a02c716965f7dc405aa09cb958d78c7bd7b22756964223a322c226e6f6e6365223a226d356162442f65565547594141414141426857634c7771743245365a56576a4f227d

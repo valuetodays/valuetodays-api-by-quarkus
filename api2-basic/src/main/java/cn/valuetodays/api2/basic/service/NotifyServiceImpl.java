@@ -2,6 +2,7 @@ package cn.valuetodays.api2.basic.service;
 
 import cn.valuetodays.api2.basic.enums.NotifyEnums;
 import cn.valuetodays.api2.basic.vo.BarkDict;
+import cn.valuetodays.api2.basic.vo.PushVocechatTextReq;
 import cn.vt.util.HttpClient4Utils;
 import io.quarkus.redis.datasource.RedisDataSource;
 import io.quarkus.redis.datasource.keys.KeyCommands;
@@ -24,12 +25,13 @@ import java.util.Objects;
 @ApplicationScoped
 @Slf4j
 public class NotifyServiceImpl {
-    @Inject
-    private DictTypeService dictTypeService;
-
     private static final String DICT_TYPE_CACHE_KEY = "cache.dictType";
     @Inject
+    DictTypeService dictTypeService;
+    @Inject
     RedisDataSource stringRedisTemplate;
+    @Inject
+    VocechatServiceImpl vocechatService;
 
     public void notify(String title, String content, String group, boolean withSound) {
         ValueCommands<String, BarkDict> barkDictValueCommands = stringRedisTemplate.value(BarkDict.class);
@@ -50,6 +52,15 @@ public class NotifyServiceImpl {
             HttpClient4Utils.doPostJson(cached.getUrl(), requestMap, null);
         } catch (Exception e) {
             log.error("error when #notify()", e);
+        }
+        try {
+            PushVocechatTextReq vocechatTextReq = new PushVocechatTextReq();
+            vocechatTextReq.setContent(content);
+            vocechatTextReq.setPlainText(true);
+            vocechatTextReq.useToGroupId(2);
+            vocechatService.pushVocechatText(vocechatTextReq);
+        } catch (Exception e) {
+            log.error("vocechatService.pushVocechatText", e);
         }
     }
 
