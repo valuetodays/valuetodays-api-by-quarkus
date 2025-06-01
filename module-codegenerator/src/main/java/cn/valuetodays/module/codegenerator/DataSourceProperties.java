@@ -10,7 +10,7 @@ import io.smallrye.config.ConfigMapping;
  */
 @ConfigMapping(prefix = "quarkus.datasource")
 public interface DataSourceProperties {
-    String getUsername();
+    String username();
 
-    String getPassword();
+    String password();
 }

@@ -72,8 +72,8 @@ public class CodegeneratorController {
             + "&useSSL=false&zeroDateTimeBehavior=convertToNull"
             + "&transformedBitIsBoolean=true"
             + "&serverTimezone=Asia/Shanghai");
-        mysqlDataSource.setUsername(dataSourceProperties.getUsername());
-        mysqlDataSource.setPassword(dataSourceProperties.getPassword());
+        mysqlDataSource.setUsername(dataSourceProperties.username());
+        mysqlDataSource.setPassword(dataSourceProperties.password());
         MetaProperties properties = new MetaProperties();
         properties.setAuthor(downloadZipReq.getAuthor());
         properties.setBasePackage(downloadZipReq.getBasePackage());

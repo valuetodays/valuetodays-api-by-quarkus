@@ -30,6 +30,11 @@
             <artifactId>module-api-github</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>cn.valuetodays</groupId>
+            <artifactId>module-codegenerator</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <!--
         <dependency>

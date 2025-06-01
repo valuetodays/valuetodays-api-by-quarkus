@@ -25,9 +25,9 @@ quarkus:
       min-size: 1
   # https://quarkus.io/guides/hibernate-orm
   hibernate-orm:
-    dialect: MySQL
     # https://docs.jboss.org/hibernate/orm/6.6/dialect/dialect.html
-    packages: cn.valuetodays.api2
+    dialect: MySQL
+    #    packages: cn.valuetodays.api2
     database:
       generation: none
       version-check:
