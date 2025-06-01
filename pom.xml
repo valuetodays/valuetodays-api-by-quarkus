@@ -15,7 +15,7 @@
 
     <properties>
         <vt-simple-common-modules.version>boot322-2024.12.22</vt-simple-common-modules.version>
-        <valuetodays.quarkus-commons.version>quarkus3.2025.04.25</valuetodays.quarkus-commons.version>
+        <valuetodays.quarkus-commons.version>quarkus3.2025.06.01</valuetodays.quarkus-commons.version>
         <jsoup.version>1.17.2</jsoup.version>
         <spring.version>6.1.3</spring.version>
     </properties>
