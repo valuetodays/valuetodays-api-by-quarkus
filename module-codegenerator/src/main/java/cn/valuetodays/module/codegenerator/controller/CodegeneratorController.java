@@ -15,6 +15,7 @@ import cn.valuetodays.module.codegenerator.po.CgTemplateGroupPersist;
 import cn.valuetodays.module.codegenerator.po.CgTemplatePO;
 import cn.valuetodays.module.codegenerator.service.CgTemplateGroupService;
 import cn.valuetodays.module.codegenerator.service.CgTemplateService;
+import cn.vt.R;
 import cn.vt.exception.AssertUtils;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
@@ -54,7 +55,7 @@ public class CodegeneratorController {
 
     @Path(value = "/generateAsZip")
     @POST
-    public String generateAsZip(@Valid CgDownloadAsZipReq downloadZipReq) {
+    public R<String> generateAsZip(@Valid CgDownloadAsZipReq downloadZipReq) {
         String databaseName = downloadZipReq.getDatabaseName();
         boolean illegal = Stream.of("mysql", "information_schema", "performance_schema")
             .anyMatch(e -> e.equalsIgnoreCase(databaseName));
@@ -101,7 +102,7 @@ public class CodegeneratorController {
         try {
             GenerateResp resp = cn.valuetodays.module.codegenerator.MainApplication.doGenerate(req);
             if (resp.isOk()) {
-                return resp.getFile().getName();
+                return R.success(resp.getFile().getName());
             }
             throw AssertUtils.create("下载失败，原因：" + resp.getMsg());
         } catch (Exception e) {
