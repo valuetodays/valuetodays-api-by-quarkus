@@ -1,6 +1,7 @@
 package cn.valuetodays.api2.basic.component;
 
 import cn.valuetodays.api2.basic.service.NotifyServiceImpl;
+import cn.vt.exception.AssertUtils;
 import io.nats.client.Connection;
 import io.nats.client.Dispatcher;
 import io.nats.client.MessageHandler;
@@ -35,13 +36,16 @@ public class NatsConsumer {
 
     @Priority(PriorityConstant.NATS_CONSUMER_ORDER)
     void onStartup(@Observes StartupEvent unused) {
-        Connection conn;
-        while ((conn = vtNatsClient.connection) == null) {
+        Connection conn = null;
+        int tryTimes = 1;
+        while (tryTimes < 10 && (conn = vtNatsClient.connection) == null) {
             try {
                 TimeUnit.SECONDS.sleep(1);
             } catch (InterruptedException ignored) {
             }
+            tryTimes++;
         }
+        AssertUtils.assertNotNull(conn, "can not get conn from nats server");
         log.info("conn is not null");
         Dispatcher dispatcher = conn.createDispatcher();
 
