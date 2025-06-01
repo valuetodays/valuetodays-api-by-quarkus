@@ -15,11 +15,11 @@ import java.util.List;
 public class StockAlertDAO implements PanacheRepository<StockAlertPersist> {
 
     public List<StockAlertPersist> findAllByStatus(StockAlertEnums.Status status) {
-        return null; //todo
+        return list("status = ?1", status);
     }
 
-    public List<StockAlertPersist> findAllByStatusAndScheduleType(StockAlertEnums.Status status, StockAlertEnums.ScheduleType scheduleType) {
-
-        return null; //todo
+    public List<StockAlertPersist> findAllByStatusAndScheduleType(StockAlertEnums.Status status,
+                                                                  StockAlertEnums.ScheduleType scheduleType) {
+        return list("status = ?1 and scheduleType = ?2", status, scheduleType);
     }
 }
