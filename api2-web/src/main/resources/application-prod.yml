@@ -7,7 +7,7 @@ quarkus:
   datasource:
     #    db-kind: mysql
     db-kind: other
-    #    db-version: 8.0.27
+    db-version: 8.0.27
     username: root
     password: abcUUddsef
     jdbc:
