@@ -47,6 +47,7 @@ quarkus:
     hosts: redis://localhost:6379
     password: 'abc123'
     timeout: 10s
+    database: 6
 
 
 hello: hello,dev
