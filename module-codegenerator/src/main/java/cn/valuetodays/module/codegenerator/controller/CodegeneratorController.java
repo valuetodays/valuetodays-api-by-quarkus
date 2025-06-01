@@ -64,7 +64,8 @@ public class CodegeneratorController {
         Project project = new Project();
         project.setName(downloadZipReq.getProjectName());
         project.setDebug(downloadZipReq.isDebug());
-        project.setTargetBaseDir("/tmp");
+        // 配置目录，/root/workbench 在 docker-compose.yml 中配置
+        project.setTargetBaseDir("/root/workbench/tmp");
         TableNameFilter tableNameFilter = new TableNameFilter();
         tableNameFilter.setPrefix(downloadZipReq.getTableNamePrefix());
         tableNameFilter.setSuffix(downloadZipReq.getTableNameSuffix());
