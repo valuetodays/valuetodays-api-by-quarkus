@@ -1,0 +1,12 @@
+package cn.valuetodays.module.codegenerator.db.nameconverter;
+
+/**
+ * @author lei.liu
+ * @since 2018-09-06 17:33:23
+ */
+public class OriginTableName2ClassNameConverter extends TableName2ClassNameConverter {
+    @Override
+    protected String convert(String tableName, ConverterContext context) {
+        return tableName;
+    }
+}

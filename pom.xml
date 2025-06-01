@@ -21,6 +21,7 @@
     </properties>
 
     <modules>
+        <module>module-codegenerator</module>
         <module>module-third-rest</module>
         <module>module-api-github</module>
         <module>api2-dependencies-web</module>
