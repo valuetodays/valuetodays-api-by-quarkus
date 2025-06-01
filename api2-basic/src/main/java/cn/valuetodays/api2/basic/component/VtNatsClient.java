@@ -1,8 +1,10 @@
 package cn.valuetodays.api2.basic.component;
 
 import cn.valuetodays.quarkus.commons.base.ProfileUtils;
+import cn.vt.exception.AssertUtils;
 import cn.vt.exception.CommonException;
 import io.nats.client.Connection;
+import io.nats.client.Dispatcher;
 import io.nats.client.Nats;
 import io.nats.client.Options;
 import io.quarkus.runtime.ShutdownEvent;
@@ -18,6 +20,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 /**
  * .
@@ -86,5 +89,16 @@ public class VtNatsClient {
             log.error("error when connection.close()", e);
             throw new RuntimeException(e);
         }
+    }
+
+    public boolean isConnected() {
+        return Objects.nonNull(connection);
+    }
+
+    public void subscribe(Consumer<Dispatcher> consumer) {
+        AssertUtils.assertNotNull(connection, "can not get connection from nats server");
+        log.info("connection is not null");
+        Dispatcher dispatcher = connection.createDispatcher();
+        consumer.accept(dispatcher);
     }
 }

@@ -1,8 +1,7 @@
 package cn.valuetodays.api2.basic.component;
 
+import cn.valuetodays.api2.basic.NatsConstants;
 import cn.valuetodays.api2.basic.service.NotifyServiceImpl;
-import cn.vt.exception.AssertUtils;
-import io.nats.client.Connection;
 import io.nats.client.Dispatcher;
 import io.nats.client.MessageHandler;
 import io.quarkus.runtime.StartupEvent;
@@ -16,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 /**
  * .
@@ -36,20 +36,21 @@ public class NatsConsumer {
 
 
     void onStartup(@Observes @Priority(PriorityConstant.NATS_CONSUMER_ORDER) StartupEvent unused) {
-        Connection conn = null;
         int tryTimes = 1;
-        while (tryTimes < 10 && (conn = vtNatsClient.connection) == null) {
+        while (tryTimes < 30 && (vtNatsClient.isConnected())) {
             try {
                 TimeUnit.SECONDS.sleep(1);
             } catch (InterruptedException ignored) {
             }
             tryTimes++;
         }
-        AssertUtils.assertNotNull(conn, "can not get conn from nats server");
-        log.info("conn is not null");
-        Dispatcher dispatcher = conn.createDispatcher();
 
-        MessageHandler messageHandler = msg -> {
+        Consumer<Dispatcher> consumer = getDispatcherConsumer();
+        vtNatsClient.subscribe(consumer);
+    }
+
+    private Consumer<Dispatcher> getDispatcherConsumer() {
+        MessageHandler messageHandlerForMsg = msg -> {
             String subject = msg.getSubject();
             String msgText = new String(msg.getData(), StandardCharsets.UTF_8);
             LOGGER.info("Received message {}, on subject {}", msgText, subject);
@@ -59,20 +60,26 @@ public class NatsConsumer {
                 log.error("error,", e);
             }
         };
-        dispatcher.subscribe("applicationmsg",
-            messageHandler
-        );
-        log.info("subscribe topic: {}", "applicationmsg");
-
         MessageHandler messageHandlerForEx = msg -> {
             String subject = msg.getSubject();
             String msgText = new String(msg.getData(), StandardCharsets.UTF_8);
             LOGGER.info("Received message {}, on subject {}", msgText, subject);
             notifyService.notifyApplicationException(vtNatsClient.applicationName, msgText);
         };
-        dispatcher.subscribe("applicationex",
-            messageHandlerForEx
-        );
-        log.info("subscribe topic: {}", "applicationex");
+        Consumer<Dispatcher> consumer = (dispatcher) -> {
+            dispatcher.subscribe(
+                NatsConstants.Topic.TOPIC_APPLICATIONMSG,
+                messageHandlerForMsg
+            );
+            log.info("subscribe topic: {}", NatsConstants.Topic.TOPIC_APPLICATIONMSG);
+
+            dispatcher.subscribe(
+                NatsConstants.Topic.TOPIC_APPLICATIONEX,
+                messageHandlerForEx
+            );
+            log.info("subscribe topic: {}", NatsConstants.Topic.TOPIC_APPLICATIONEX);
+        };
+        log.info("consumer={}", consumer);
+        return consumer;
     }
 }

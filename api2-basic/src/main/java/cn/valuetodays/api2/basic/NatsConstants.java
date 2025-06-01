@@ -9,5 +9,7 @@ package cn.valuetodays.api2.basic;
 public class NatsConstants {
     public static class Topic {
         public static final String TOPIC_WX_IMAGE = "t_wx_image";
+        public static final String TOPIC_APPLICATIONMSG = "applicationmsg";
+        public static final String TOPIC_APPLICATIONEX = "applicationex";
     }
 }
