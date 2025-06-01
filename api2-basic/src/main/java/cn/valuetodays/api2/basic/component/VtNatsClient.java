@@ -1,5 +1,7 @@
 package cn.valuetodays.api2.basic.component;
 
+import cn.valuetodays.quarkus.commons.base.ProfileUtils;
+import cn.vt.exception.CommonException;
 import io.nats.client.Connection;
 import io.nats.client.Nats;
 import io.nats.client.Options;
@@ -8,6 +10,7 @@ import io.quarkus.runtime.StartupEvent;
 import io.quarkus.runtime.util.ExceptionUtil;
 import jakarta.annotation.Priority;
 import jakarta.enterprise.event.Observes;
+import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -26,7 +29,9 @@ import java.util.Objects;
 @Slf4j
 public class VtNatsClient {
     public static final String TOPIC_APPLICATION_MESSAGE = "applicationmsg";
-    public volatile Connection connection;
+    @Inject
+    ProfileUtils profileUtils;
+    private Connection connection;
     @ConfigProperty(name = "nats.server")
     String natsServer;
     @ConfigProperty(name = "nats.token")
@@ -48,13 +53,15 @@ public class VtNatsClient {
             log.info("connected to nats server");
         } catch (Exception e) {
             log.error("error when Nats.connect()", e);
-            throw new RuntimeException("can not access nats");
+            throw new CommonException("can not access nats", e);
         }
     }
 
 
     public void publish(String topic, String msg) {
-        connection.publish(topic, msg.getBytes(StandardCharsets.UTF_8));
+        if (profileUtils.isProd()) {
+            connection.publish(topic, msg.getBytes(StandardCharsets.UTF_8));
+        }
     }
 
     public void publishApplicationMessage(String msg) {
@@ -64,7 +71,7 @@ public class VtNatsClient {
     public void publishApplicationException(String msgPrefix, Throwable ex) {
         String exceptionStackTraceString = ExceptionUtil.generateStackTrace(ex);
         String first800 = StringUtils.substring(exceptionStackTraceString, 0, 800);
-        this.publish(TOPIC_APPLICATION_MESSAGE, "[" + applicationName + "]" + msgPrefix + first800);
+        this.publish(TOPIC_APPLICATION_MESSAGE, "[" + applicationName + "] " + msgPrefix + first800);
     }
 
     void onShutdown(@Observes ShutdownEvent unused) {
