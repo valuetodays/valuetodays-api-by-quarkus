@@ -2,7 +2,7 @@ hello: hello,prod
 
 quarkus:
   redis:
-    hosts: redis://aliyun2:6379
+    hosts: redis://aliyun-prod:6379
     password: 'abc123'
   datasource:
     db-kind: mysql
