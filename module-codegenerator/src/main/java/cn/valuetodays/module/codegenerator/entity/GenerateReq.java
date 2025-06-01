@@ -6,7 +6,7 @@ import cn.valuetodays.module.codegenerator.advanced.config.configfile.Files;
 import cn.valuetodays.module.codegenerator.advanced.config.configfile.MetaProperties;
 import cn.valuetodays.module.codegenerator.advanced.config.configfile.Project;
 import cn.valuetodays.module.codegenerator.advanced.config.configfile.TableNameFilter;
-import cn.vt.util.ConvertUtils;
+import cn.vt.util.ConvertUtils2;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -27,11 +27,11 @@ public class GenerateReq implements Serializable {
 
     public CgConfig toConfigFile() {
         CgConfig cgConfig = new CgConfig();
-        cgConfig.setProject(ConvertUtils.convertObj(this.project, Project.class));
-        cgConfig.setTableNameFilter(ConvertUtils.convertObj(this.tableNameFilter, TableNameFilter.class));
+        cgConfig.setProject(ConvertUtils2.convertObj(this.project, Project.class));
+        cgConfig.setTableNameFilter(ConvertUtils2.convertObj(this.tableNameFilter, TableNameFilter.class));
         cgConfig.setActiveDatasource(datasource);
-        cgConfig.setProperties(ConvertUtils.convertObj(this.properties, MetaProperties.class));
-        cgConfig.setFiles(ConvertUtils.convertObj(this.files, Files.class));
+        cgConfig.setProperties(ConvertUtils2.convertObj(this.properties, MetaProperties.class));
+        cgConfig.setFiles(ConvertUtils2.convertObj(this.files, Files.class));
 
         return cgConfig;
     }
