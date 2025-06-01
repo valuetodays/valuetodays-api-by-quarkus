@@ -18,7 +18,7 @@ public class DefaultExceptionHandler implements ExceptionMapper<Exception> {
 
     @Inject
     VtNatsClient natsClient;
-    private List<String> excludeMsgsPrefixNotNotify = List.of("No static resource favicon.ico.");
+    private List<String> excludeMsgsPrefixNotNotify = List.of("No static resource");
 
     @Override
     public Response toResponse(Exception exception) {
