@@ -24,8 +24,9 @@ public class AccessedUrlService
     public void savePersistIgnoreException(String url) {
         AccessedUrlPersist p = new AccessedUrlPersist();
         p.setAccessAt(LocalDateTime.now());
+        p.setUserId(1L);
         p.setUrl(url);
-        p.initUserIdAndTime(1L);
+        p.initUserIdAndTime(p.getUserId());
 
         try {
             super.save(p);
