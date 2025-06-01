@@ -34,8 +34,8 @@ public class NatsConsumer {
     @Inject
     NotifyServiceImpl notifyService;
 
-    @Priority(PriorityConstant.NATS_CONSUMER_ORDER)
-    void onStartup(@Observes StartupEvent unused) {
+
+    void onStartup(@Observes @Priority(PriorityConstant.NATS_CONSUMER_ORDER) StartupEvent unused) {
         Connection conn = null;
         int tryTimes = 1;
         while (tryTimes < 10 && (conn = vtNatsClient.connection) == null) {

@@ -24,7 +24,6 @@ import java.util.Objects;
  */
 @Singleton
 @Slf4j
-@Priority(PriorityConstant.NATS_CLIENT_INIT_ORDER)
 public class VtNatsClient {
     public static final String TOPIC_APPLICATION_MESSAGE = "applicationmsg";
     public volatile Connection connection;
@@ -36,8 +35,8 @@ public class VtNatsClient {
     String applicationName;
 
     // 设置优先级较高的@StartupEvent方法，值越高，越先运行
-    @Priority(PriorityConstant.NATS_CLIENT_INIT_ORDER)
-    void onStartup(@Observes StartupEvent unused) {
+
+    void onStartup(@Observes @Priority(PriorityConstant.NATS_CLIENT_INIT_ORDER) StartupEvent unused) {
         log.info("connecting to nats server with {}", natsToken);
         try {
             Options options = new Options.Builder()

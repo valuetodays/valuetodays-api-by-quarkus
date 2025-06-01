@@ -8,6 +8,6 @@ package cn.valuetodays.api2.basic.component;
  */
 public class PriorityConstant {
     // 设置优先级较高的@StartupEvent方法，值越高，越先运行
-    public static final int NATS_CLIENT_INIT_ORDER = 99999;
-    public static final int NATS_CONSUMER_ORDER = 1;
+    public static final int NATS_CLIENT_INIT_ORDER = 1;
+    public static final int NATS_CONSUMER_ORDER = 11111;
 }

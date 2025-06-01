@@ -38,7 +38,7 @@ import java.util.stream.Stream;
  */
 @RestController
 @Slf4j
-@RequestMapping({"/codegenerator"})
+@RequestMapping({"/cg/codegenerator"})
 public class CodegeneratorController {
 
     @Inject
@@ -48,7 +48,7 @@ public class CodegeneratorController {
     @Inject
     private DataSourceProperties dataSourceProperties;
 
-    @PostMapping(value = "/generateAsZip.do")
+    @PostMapping(value = "/generateAsZip")
     public String generateAsZip(@RequestBody @Valid CgDownloadAsZipReq downloadZipReq) {
         String databaseName = downloadZipReq.getDatabaseName();
         boolean illegal = Stream.of("mysql", "information_schema", "performance_schema")
