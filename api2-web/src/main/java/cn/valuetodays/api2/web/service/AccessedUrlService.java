@@ -4,6 +4,7 @@ import cn.valuetodays.api2.client.persist.AccessedUrlPersist;
 import cn.valuetodays.api2.web.repository.AccessedUrlDAO;
 import cn.valuetodays.quarkus.commons.base.BaseService;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
@@ -19,15 +20,12 @@ import java.time.LocalDateTime;
 public class AccessedUrlService
     extends BaseService<Long, AccessedUrlPersist, AccessedUrlDAO> {
 
+    @Transactional
     public void savePersistIgnoreException(String url) {
         AccessedUrlPersist p = new AccessedUrlPersist();
-        p.setUserId(1L);
         p.setAccessAt(LocalDateTime.now());
         p.setUrl(url);
-        p.setCreateUserName("1");
-        p.setUpdateUserName("1");
-        p.setCreateUserId(p.getUserId());
-        p.setUpdateUserId(p.getUserId());
+        p.initUserIdAndTime(1L);
 
         try {
             super.save(p);
