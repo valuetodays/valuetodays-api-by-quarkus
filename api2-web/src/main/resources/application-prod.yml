@@ -5,8 +5,8 @@ quarkus:
     hosts: redis://aliyun2:6379
     password: 'abc123'
   datasource:
-    #    db-kind: mysql
-    db-kind: other
+    db-kind: mysql
+    #    db-kind: other
     db-version: 8.0.27
     username: root
     password: abcUUddsef
