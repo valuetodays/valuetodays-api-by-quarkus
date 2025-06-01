@@ -115,8 +115,7 @@ public class CodegeneratorController {
         List<Long> templateIds = groupList.stream()
             .flatMap(e -> Optional.ofNullable(e.getTemplateIds()).stream().flatMap(Collection::stream))
             .toList();
-        List<CgTemplatePO> list = null;
-        cgTemplateService.listByIds(templateIds);
+        List<CgTemplatePO> list = cgTemplateService.listByIds(templateIds);
         return list.stream().map(e -> {
             FreemarkerStringBaseTemplate freemarkerStringTemplate = new FreemarkerStringBaseTemplate();
             freemarkerStringTemplate.setTemplateString(e.getCode());
