@@ -4,6 +4,7 @@ import cn.valuetodays.api2.client.persist.IpPersist;
 import cn.valuetodays.api2.web.properties.GreetingProperties;
 import cn.valuetodays.api2.web.service.IpService;
 import cn.valuetodays.api2.web.task.DemoTask;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -18,6 +19,7 @@ import java.util.Map;
  * @author lei.liu
  * @since 2024-09-19
  */
+@RequestScoped
 @Path("/")
 public class IndexController {
     @Inject

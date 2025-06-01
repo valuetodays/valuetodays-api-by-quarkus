@@ -5,6 +5,7 @@ import cn.valuetodays.api2.client.vo.save.DockerStatsReq;
 import cn.valuetodays.api2.web.service.DockerStatsService;
 import cn.vt.util.JsonUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
@@ -33,6 +34,7 @@ import java.util.Map;
  * @author lei.liu
  * @since 2025-01-24
  */
+@RequestScoped
 @Path("/dockerStats")
 @Slf4j
 public class DockerStatsController {

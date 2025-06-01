@@ -7,6 +7,7 @@ import cn.valuetodays.api2.web.component.CookieCacheComponent;
 import cn.vt.rest.third.xueqiu.vo.PushCookieReq;
 import cn.vt.util.JsonUtils;
 import io.vertx.mutiny.core.eventbus.EventBus;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -22,6 +23,7 @@ import java.util.Map;
  * @author lei.liu
  * @since 2024-05-02
  */
+@RequestScoped
 @Path("/cookie")
 @Slf4j
 public class CookieController {

@@ -8,6 +8,7 @@ import cn.valuetodays.api2.extra.reqresp.WeworkGroupAndMemberSaveReq;
 import cn.valuetodays.api2.extra.service.WeworkGroupBatchServiceImpl;
 import cn.valuetodays.quarkus.commons.base.BaseController;
 import cn.vt.R;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 
@@ -17,6 +18,7 @@ import jakarta.ws.rs.Path;
  * @author lei.liu
  * @since 2023-06-20 19:45
  */
+@RequestScoped
 @Path("/extra/weworkGroupBatch")
 public class WeworkGroupBatchController
     extends BaseController<

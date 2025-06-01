@@ -7,6 +7,7 @@ import cn.valuetodays.quarkus.commons.base.BaseController;
 import cn.vt.R;
 import cn.vt.exception.AssertUtils;
 import cn.vt.web.req.SimpleTypesReq;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -20,6 +21,7 @@ import java.util.List;
  * @author lei.liu
  * @since 2025-05-25
  */
+@RequestScoped
 @Path("/wxmpArticleImage")
 public class WxmpArticleImageController
     extends BaseController<

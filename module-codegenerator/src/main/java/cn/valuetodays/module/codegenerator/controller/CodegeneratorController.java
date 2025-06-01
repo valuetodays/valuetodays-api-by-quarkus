@@ -16,6 +16,7 @@ import cn.valuetodays.module.codegenerator.po.CgTemplatePO;
 import cn.valuetodays.module.codegenerator.service.CgTemplateGroupService;
 import cn.valuetodays.module.codegenerator.service.CgTemplateService;
 import cn.vt.exception.AssertUtils;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.POST;
@@ -35,6 +36,7 @@ import java.util.stream.Stream;
  * @since 2022-05-25
  */
 @Slf4j
+@RequestScoped
 @Path("/cg/codegenerator")
 public class CodegeneratorController {
 

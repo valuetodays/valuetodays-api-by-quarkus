@@ -1,6 +1,7 @@
 package cn.valuetodays.api2.web.controller;
 
 import io.quarkus.runtime.configuration.ConfigUtils;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -16,6 +17,7 @@ import java.util.List;
  * @author lei.liu
  * @since 2024-12-07
  */
+@RequestScoped
 @Path("/spring")
 @Produces({MediaType.APPLICATION_JSON})
 @Consumes({MediaType.APPLICATION_JSON})
