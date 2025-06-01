@@ -126,6 +126,32 @@ public class WeworkGroupBatchServiceImpl
         String missedEmailsOfNames = req.getMissedEmailsOfNames();
 
         log.info("process group of [{}]", groupName);
+        if (StringUtils.equals("AUTO", groupName)) {
+            WeworkGroupBatchPersist lastGroup = getRepository().findLastGroup();
+            if (Objects.nonNull(lastGroup)) {
+                groupName = lastGroup.getGroupName();
+            }
+        }
+        List<WeworkGroupUserPersist> usersToSave = parseGroupUsers(missedEmailsOfNames, names, emails);
+        if (CollectionUtils.isEmpty(usersToSave)) {
+            return new SaveGroupAndMemberResp(0);
+        }
+
+        WeworkGroupBatchPersist groupPO = new WeworkGroupBatchPersist();
+        groupPO.setGroupName(groupName);
+        groupPO.setStatDatetime(DateUtils.formatDatetimeToday());
+        groupPO.setMemberCount(usersToSave.size());
+        groupPO.setJsonStr(JsonUtils.toJson(req));
+        groupPO.initUserIdAndTime(1L);
+        getRepository().save(groupPO);
+        AssertUtils.assertNotNull(groupPO.getId());
+
+        usersToSave.forEach(e -> e.setGroupId(groupPO.getId()));
+        weworkGroupUserDAO.saveAll(usersToSave);
+        return new SaveGroupAndMemberResp(groupPO.getMemberCount());
+    }
+
+    private List<WeworkGroupUserPersist> parseGroupUsers(String missedEmailsOfNames, String names, String emails) {
         List<WeworkGroupUserPersist> usersToSave = null;
         if (StringUtils.isBlank(missedEmailsOfNames)) {
             usersToSave = processLegalRecord(names, emails);
@@ -147,23 +173,7 @@ public class WeworkGroupBatchServiceImpl
             List<WeworkGroupUserPersist> usersWithEmail = processLegalRecord(namesToUse, emails);
             usersToSave = ListUtils.union(usersWithoutEmail, usersWithEmail);
         }
-
-        if (CollectionUtils.isEmpty(usersToSave)) {
-            return new SaveGroupAndMemberResp(0);
-        }
-
-        WeworkGroupBatchPersist groupPO = new WeworkGroupBatchPersist();
-        groupPO.setGroupName(groupName);
-        groupPO.setStatDatetime(DateUtils.formatDatetimeToday());
-        groupPO.setMemberCount(usersToSave.size());
-        groupPO.setJsonStr(JsonUtils.toJson(req));
-        groupPO.initUserIdAndTime(1L);
-        getRepository().save(groupPO);
-        AssertUtils.assertNotNull(groupPO.getId());
-
-        usersToSave.forEach(e -> e.setGroupId(groupPO.getId()));
-        weworkGroupUserDAO.saveAll(usersToSave);
-        return new SaveGroupAndMemberResp(groupPO.getMemberCount());
+        return usersToSave;
     }
 
 
