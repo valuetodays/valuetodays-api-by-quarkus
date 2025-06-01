@@ -39,7 +39,7 @@ public class IndexController {
     @GET
     @Path("ip")
     public Map<String, Object> ip() {
-        IpPersist n = ipService.getRepository().findById(1L).orElse(null);
+        IpPersist n = ipService.findById(1L);
         return Map.of("data", n, "code", 0, "time", System.currentTimeMillis()); // <4>
     }
 

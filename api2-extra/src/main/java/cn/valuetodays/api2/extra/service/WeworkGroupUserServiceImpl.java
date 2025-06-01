@@ -1,0 +1,17 @@
+package cn.valuetodays.api2.extra.service;
+
+import cn.valuetodays.api2.extra.dao.WeworkGroupUserDAO;
+import cn.valuetodays.api2.extra.persist.WeworkGroupUserPersist;
+import cn.valuetodays.quarkus.commons.base.BaseService;
+import jakarta.enterprise.context.ApplicationScoped;
+
+/**
+ * .
+ *
+ * @author lei.liu
+ * @since 2025-06-01
+ */
+@ApplicationScoped
+public class WeworkGroupUserServiceImpl
+    extends BaseService<Long, WeworkGroupUserPersist, WeworkGroupUserDAO> {
+}

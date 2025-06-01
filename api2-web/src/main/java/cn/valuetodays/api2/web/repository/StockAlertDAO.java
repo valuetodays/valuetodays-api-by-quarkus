@@ -2,7 +2,8 @@ package cn.valuetodays.api2.web.repository;
 
 import cn.valuetodays.api2.client.enums.StockAlertEnums;
 import cn.valuetodays.api2.client.persist.StockAlertPersist;
-import org.springframework.data.jpa.repository.JpaRepository;
+import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import java.util.List;
 
@@ -10,9 +11,15 @@ import java.util.List;
  * @author lei.liu
  * @since 2025-04-16 08:40
  */
-public interface StockAlertDAO extends JpaRepository<StockAlertPersist, Long> {
+@ApplicationScoped
+public class StockAlertDAO implements PanacheRepository<StockAlertPersist> {
 
-    List<StockAlertPersist> findAllByStatus(StockAlertEnums.Status status);
+    public List<StockAlertPersist> findAllByStatus(StockAlertEnums.Status status) {
+        return null; //todo
+    }
 
-    List<StockAlertPersist> findAllByStatusAndScheduleType(StockAlertEnums.Status status, StockAlertEnums.ScheduleType scheduleType);
+    public List<StockAlertPersist> findAllByStatusAndScheduleType(StockAlertEnums.Status status, StockAlertEnums.ScheduleType scheduleType) {
+
+        return null; //todo
+    }
 }

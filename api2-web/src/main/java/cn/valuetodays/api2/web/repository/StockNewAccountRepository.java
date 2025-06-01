@@ -1,7 +1,8 @@
 package cn.valuetodays.api2.web.repository;
 
 import cn.valuetodays.api2.client.persist.StockNewAccountPersist;
-import org.springframework.data.jpa.repository.JpaRepository;
+import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import jakarta.enterprise.context.ApplicationScoped;
 
 /**
  * .
@@ -9,5 +10,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author lei.liu
  * @since 2025-04-25
  */
-public interface StockNewAccountRepository extends JpaRepository<StockNewAccountPersist, Long> {
+@ApplicationScoped
+public class StockNewAccountRepository implements PanacheRepository<StockNewAccountPersist> {
 }

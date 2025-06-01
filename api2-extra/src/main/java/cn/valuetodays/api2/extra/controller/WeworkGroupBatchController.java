@@ -8,10 +8,8 @@ import cn.valuetodays.api2.extra.reqresp.WeworkGroupAndMemberSaveReq;
 import cn.valuetodays.api2.extra.service.WeworkGroupBatchServiceImpl;
 import cn.valuetodays.quarkus.commons.base.BaseController;
 import cn.vt.R;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
 
 /**
  * 企业微信群组记录服务
@@ -19,8 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author lei.liu
  * @since 2023-06-20 19:45
  */
-@RestController
-@RequestMapping("/extra/weworkGroupBatch")
+@Path("/extra/weworkGroupBatch")
 public class WeworkGroupBatchController
     extends BaseController<
     Long,
@@ -29,13 +26,15 @@ public class WeworkGroupBatchController
     > {
 
 
-    @PostMapping("/diffUser")
-    public R<WeworkDiffGroupResp> diffUser(@RequestBody WeworkDiffGroupReq req) {
+    @Path("/diffUser")
+    @POST
+    public R<WeworkDiffGroupResp> diffUser(WeworkDiffGroupReq req) {
         return R.success(service.diffUser(req.getGroupId1(), req.getGroupId2()));
     }
 
-    @PostMapping("/saveGroupAndMember")
-    public R<SaveGroupAndMemberResp> saveGroupAndMember(@RequestBody WeworkGroupAndMemberSaveReq req) {
+    @Path("/saveGroupAndMember")
+    @POST
+    public R<SaveGroupAndMemberResp> saveGroupAndMember(WeworkGroupAndMemberSaveReq req) {
         return R.success(service.saveGroupAndMember(req));
     }
 }

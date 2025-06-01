@@ -1,7 +1,8 @@
 package cn.valuetodays.api2.basic.dao;
 
 import cn.valuetodays.api2.basic.persist.DictItemPO;
-import org.springframework.data.jpa.repository.JpaRepository;
+import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import java.util.List;
 
@@ -9,7 +10,10 @@ import java.util.List;
  * @author lei.liu
  * @since 2024-11-13 20:40
  */
-public interface DictItemDAO extends JpaRepository<DictItemPO, Long> {
+@ApplicationScoped
+public class DictItemDAO implements PanacheRepository<DictItemPO> {
 
-    List<DictItemPO> findAllByTypeId(Long typeId);
+    public List<DictItemPO> findAllByTypeId(Long typeId) {
+        return find("typeId =?1", typeId).list();
+    }
 }

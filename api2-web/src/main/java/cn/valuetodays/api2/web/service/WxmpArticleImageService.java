@@ -66,7 +66,7 @@ public class WxmpArticleImageService
         old.setLastFileUrl(p.getLastFileUrl());
         old.setBeginTime(p.getBeginTime());
         old.setStatus(WxmpArticleImageEnums.Status.DOWNLOAD_DONE);
-        getRepository().save(old);
+        getRepository().persist(old);
     }
 
 
@@ -81,7 +81,7 @@ public class WxmpArticleImageService
         }
         old.setFinishTime(p.getFinishTime());
         old.setStatus(WxmpArticleImageEnums.Status.POST_DONE);
-        getRepository().save(old);
+        getRepository().persist(old);
     }
 
     public void scheduleDownloadImage() {

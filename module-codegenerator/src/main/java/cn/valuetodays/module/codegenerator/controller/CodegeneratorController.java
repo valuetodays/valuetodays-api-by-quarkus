@@ -18,11 +18,9 @@ import cn.valuetodays.module.codegenerator.service.CgTemplateService;
 import cn.vt.exception.AssertUtils;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
 import java.util.List;
@@ -36,9 +34,8 @@ import java.util.stream.Stream;
  * @author lei.liu
  * @since 2022-05-25
  */
-@RestController
 @Slf4j
-@RequestMapping({"/cg/codegenerator"})
+@Path("/cg/codegenerator")
 public class CodegeneratorController {
 
     @Inject
@@ -48,8 +45,9 @@ public class CodegeneratorController {
     @Inject
     private DataSourceProperties dataSourceProperties;
 
-    @PostMapping(value = "/generateAsZip")
-    public String generateAsZip(@RequestBody @Valid CgDownloadAsZipReq downloadZipReq) {
+    @Path(value = "/generateAsZip")
+    @POST
+    public String generateAsZip(@Valid CgDownloadAsZipReq downloadZipReq) {
         String databaseName = downloadZipReq.getDatabaseName();
         boolean illegal = Stream.of("mysql", "information_schema", "performance_schema")
             .anyMatch(e -> e.equalsIgnoreCase(databaseName));
@@ -110,7 +108,8 @@ public class CodegeneratorController {
         List<Long> templateIds = groupList.stream()
             .flatMap(e -> Optional.ofNullable(e.getTemplateIds()).stream().flatMap(Collection::stream))
             .toList();
-        List<CgTemplatePO> list = cgTemplateService.listByIds(templateIds);
+        List<CgTemplatePO> list = null;
+        cgTemplateService.listByIds(templateIds);
         return list.stream().map(e -> {
             FreemarkerStringBaseTemplate freemarkerStringTemplate = new FreemarkerStringBaseTemplate();
             freemarkerStringTemplate.setTemplateString(e.getCode());

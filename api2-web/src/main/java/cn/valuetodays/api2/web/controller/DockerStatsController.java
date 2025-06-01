@@ -44,7 +44,7 @@ public class DockerStatsController {
     @GET
     @Path("getById")
     public Map<String, Object> getById() {
-        DockerStatsPersist n = dockerStatsService.getRepository().findById(1L).orElse(null);
+        DockerStatsPersist n = dockerStatsService.findById(1L);
         return Map.of("data", n, "code", 0, "time", System.currentTimeMillis()); // <4>
     }
 

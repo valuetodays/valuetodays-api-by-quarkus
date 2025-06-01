@@ -3,8 +3,8 @@ package cn.valuetodays.api2.web.service;
 import cn.valuetodays.api2.client.persist.AccessedUrlPersist;
 import cn.valuetodays.api2.web.repository.AccessedUrlDAO;
 import cn.valuetodays.quarkus.commons.base.BaseService;
+import jakarta.enterprise.context.ApplicationScoped;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
  * @author lei.liu
  * @since 2025-03-27 16:01
  */
-@Service
+@ApplicationScoped
 @Slf4j
 public class AccessedUrlService
     extends BaseService<Long, AccessedUrlPersist, AccessedUrlDAO> {

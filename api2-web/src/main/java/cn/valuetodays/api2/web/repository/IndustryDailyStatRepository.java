@@ -2,9 +2,8 @@ package cn.valuetodays.api2.web.repository;
 
 
 import cn.valuetodays.api2.client.persist.IndustryDailyStatPersist;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
+import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import java.util.List;
 
@@ -14,11 +13,15 @@ import java.util.List;
  * @author lei.liu
  * @since 2025-05-18
  */
-@Repository
-public interface IndustryDailyStatRepository extends JpaRepository<IndustryDailyStatPersist, Long> {
+@ApplicationScoped
+public class IndustryDailyStatRepository implements PanacheRepository<IndustryDailyStatPersist> {
 
-    List<IndustryDailyStatPersist> findAllByStatDate(Integer statDate);
+    public List<IndustryDailyStatPersist> findAllByStatDate(Integer statDate) {
+        return null; // todo
+    }
 
-    @Query("select e from IndustryDailyStatPersist e where e.statDate >= :statDate order by statDate asc")
-    List<IndustryDailyStatPersist> findAllByStatDateGe(Integer statDate);
+    //    @Query("select e from IndustryDailyStatPersist e where e.statDate >= :statDate order by statDate asc")
+    public List<IndustryDailyStatPersist> findAllByStatDateGe(Integer statDate) {
+        return null; //todo
+    }
 }

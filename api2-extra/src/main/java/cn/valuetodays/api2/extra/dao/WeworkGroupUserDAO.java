@@ -1,7 +1,10 @@
 package cn.valuetodays.api2.extra.dao;
 
 import cn.valuetodays.api2.extra.persist.WeworkGroupUserPersist;
-import org.springframework.data.jpa.repository.JpaRepository;
+import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import io.quarkus.panache.common.Page;
+import io.quarkus.panache.common.Sort;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import java.util.List;
 
@@ -11,11 +14,20 @@ import java.util.List;
  * @author lei.liu
  * @since 2025-05-26
  */
-public interface WeworkGroupUserDAO extends JpaRepository<WeworkGroupUserPersist, Long> {
+@ApplicationScoped
+public class WeworkGroupUserDAO implements PanacheRepository<WeworkGroupUserPersist> {
 
-    List<WeworkGroupUserPersist> findByGroupIdIn(List<Long> ids);
+    public List<WeworkGroupUserPersist> findByGroupIdIn(List<Long> ids) {
+        return list("groupId in ?1", ids);
+    }
 
-    WeworkGroupUserPersist findTop1ByEmailOrderByCreateTimeDesc(String email);
+    public WeworkGroupUserPersist findTop1ByEmailOrderByCreateTimeDesc(String email) {
+        return find("email=?1", Sort.descending("createTime"), email).page(Page.of(0, 1)).stream()
+            .findFirst().orElse(null);
+    }
 
-    WeworkGroupUserPersist findTop1ByEmailOrderByCreateTimeAsc(String email);
+    public WeworkGroupUserPersist findTop1ByEmailOrderByCreateTimeAsc(String email) {
+        return find("email=?1", Sort.ascending("createTime"), email).page(Page.of(0, 1)).stream()
+            .findFirst().orElse(null);
+    }
 }

@@ -8,12 +8,9 @@ import cn.vt.R;
 import cn.vt.exception.AssertUtils;
 import cn.vt.web.req.SimpleTypesReq;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
 import org.eclipse.microprofile.context.ManagedExecutor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -23,8 +20,7 @@ import java.util.List;
  * @author lei.liu
  * @since 2025-05-25
  */
-@RestController
-@RequestMapping("/wxmpArticleImage")
+@Path("/wxmpArticleImage")
 public class WxmpArticleImageController
     extends BaseController<
     Long,
@@ -36,14 +32,16 @@ public class WxmpArticleImageController
     @Inject
     GithubComponent githubComponent;
 
-    @GetMapping("/scheduleDownloadImage")
+    @Path("/scheduleDownloadImage")
+    @POST
     public R<String> scheduleDownloadImage() {
         managedExecutor.execute(() -> service.scheduleDownloadImage());
         return R.success("SUCCESS");
     }
 
-    @PostMapping("/uploadImageByWxmpUrl.do")
-    public List<String> uploadImageByWxmpUrl(@RequestBody SimpleTypesReq req) {
+    @Path("/uploadImageByWxmpUrl.do")
+    @POST
+    public List<String> uploadImageByWxmpUrl(SimpleTypesReq req) {
         String url = req.getText();
         AssertUtils.assertStringNotBlank(url, "text不能为空");
 

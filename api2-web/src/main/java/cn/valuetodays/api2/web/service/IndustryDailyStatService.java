@@ -49,7 +49,7 @@ public class IndustryDailyStatService extends BaseService<Long, IndustryDailySta
             p.setLingDieChgPtg(item.getLingDieChgPtg());
             p.initUserIdAndTime(1L);
             try {
-                getRepository().save(p);
+                getRepository().persist(p);
 //            } catch (DuplicateKeyException ignored) {
             } catch (ConstraintViolationException ignored) {
                 // fall through

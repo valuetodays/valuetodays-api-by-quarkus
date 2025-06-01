@@ -6,10 +6,10 @@ import cn.vt.vo.NameValueVo;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.quarkus.redis.datasource.RedisDataSource;
 import io.quarkus.redis.datasource.value.SetArgs;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.util.List;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  * @author lei.liu
  * @since 2024-05-02
  */
-@Component
+@ApplicationScoped
 @Slf4j
 public class CookieCacheComponent {
     public static final String KEY = "_quote_api_cookie";
@@ -31,8 +31,8 @@ public class CookieCacheComponent {
     public static final String fieldPubKey = "pub";
     public static final String fieldPriKey = "pri";
 
-    @Autowired
-    private RedisDataSource stringRedisTemplate;
+    @Inject
+    RedisDataSource stringRedisTemplate;
 
     public String doGetAndBuildToString(String domain) {
         return doGetAndBuildToString(domain, List.of());

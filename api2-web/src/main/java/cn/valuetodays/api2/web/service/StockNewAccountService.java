@@ -45,7 +45,7 @@ public class StockNewAccountService extends BaseService<Long, StockNewAccountPer
                 return;
             }
             try {
-                getRepository().save(p);
+                getRepository().persist(p);
 //            } catch (DuplicateKeyException ignored) {
             } catch (ConstraintViolationException ignored) {
                 // fall through

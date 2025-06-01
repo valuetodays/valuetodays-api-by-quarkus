@@ -1,12 +1,14 @@
 package cn.valuetodays.api2.web.repository;
 
 import cn.valuetodays.api2.client.persist.AccessedUrlPersist;
-import org.springframework.data.jpa.repository.JpaRepository;
+import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import jakarta.enterprise.context.ApplicationScoped;
 
 /**
  * @author lei.liu
  * @since 2025-03-27 16:01
  */
-public interface AccessedUrlDAO extends JpaRepository<AccessedUrlPersist, Long> {
+@ApplicationScoped
+public class AccessedUrlDAO implements PanacheRepository<AccessedUrlPersist> {
 
 }

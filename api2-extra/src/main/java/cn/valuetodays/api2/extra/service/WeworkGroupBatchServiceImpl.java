@@ -46,7 +46,7 @@ public class WeworkGroupBatchServiceImpl
     @Transactional
     public WeworkDiffGroupResp diffUser(Long r1, Long r2) {
         List<Long> ids = Arrays.asList(r1, r2);
-        List<WeworkGroupBatchPersist> groupRecords = getRepository().findAllById(ids);
+        List<WeworkGroupBatchPersist> groupRecords = listByIds(ids);
         if (CollectionUtils.isEmpty(groupRecords) || groupRecords.size() != ids.size()) {
             throw new AssertFailException("illegal record: " + r1 + ", " + r2);
         }
@@ -143,11 +143,11 @@ public class WeworkGroupBatchServiceImpl
         groupPO.setMemberCount(usersToSave.size());
         groupPO.setJsonStr(JsonUtils.toJson(req));
         groupPO.initUserIdAndTime(1L);
-        getRepository().save(groupPO);
+        getRepository().persist(groupPO);
         AssertUtils.assertNotNull(groupPO.getId());
 
         usersToSave.forEach(e -> e.setGroupId(groupPO.getId()));
-        weworkGroupUserDAO.saveAll(usersToSave);
+        weworkGroupUserDAO.persist(usersToSave);
         return new SaveGroupAndMemberResp(groupPO.getMemberCount());
     }
 

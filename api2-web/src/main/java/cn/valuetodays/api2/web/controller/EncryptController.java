@@ -5,11 +5,10 @@ import cn.vt.util.RSAUtils;
 import io.quarkus.redis.datasource.RedisDataSource;
 import io.quarkus.redis.datasource.hash.HashCommands;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
@@ -19,13 +18,13 @@ import java.util.Map;
  * @author lei.liu
  * @since 2024-09-19
  */
-@RestController
-@RequestMapping("/encrypt")
+@Path("/encrypt")
 public class EncryptController {
     @Inject
     private RedisDataSource connection;
 
-    @PostMapping("/anon/getPublicKey.do")
+    @Path("/anon/getPublicKey.do")
+    @POST
     public Map<String, Object> getPublicKey() {
         final HashCommands<String, String, String> hashCommands = connection.hash(String.class);
         Map<String, String> hmgetted = hashCommands.hmget(CookieCacheComponent.cacheKey,

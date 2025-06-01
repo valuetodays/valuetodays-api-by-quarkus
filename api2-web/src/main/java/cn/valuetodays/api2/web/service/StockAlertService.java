@@ -147,7 +147,7 @@ public class StockAlertService
         alertLogPersist.setConfigPoint(p.getCurrentPoint());
         alertLogPersist.setTargetPoint(realtimePoint);
         alertLogPersist.setTargetPtg(chgPtg);
-        stockAlertLogDAO.save(alertLogPersist);
+        stockAlertLogDAO.persist(alertLogPersist);
     }
 
     private void alertMsgToApp(String msg) {

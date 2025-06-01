@@ -8,13 +8,10 @@ import cn.vt.rest.third.xueqiu.vo.PushCookieReq;
 import cn.vt.util.JsonUtils;
 import io.vertx.mutiny.core.eventbus.EventBus;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
@@ -25,18 +22,18 @@ import java.util.Map;
  * @author lei.liu
  * @since 2024-05-02
  */
-@RestController
-@RequestMapping("/cookie")
+@Path("/cookie")
 @Slf4j
 public class CookieController {
     @Inject
-    private EventBus eventBus;
+    EventBus eventBus;
 
-    @Autowired
-    private CookieCacheComponent cookieCacheComponent;
+    @Inject
+    CookieCacheComponent cookieCacheComponent;
 
-    @PostMapping("/anon/raw/push.do")
-    public Map<String, Object> pushCookies(@RequestBody PushCookieReq req) {
+    @Path("/anon/raw/push.do")
+    @POST
+    public Map<String, Object> pushCookies(PushCookieReq req) {
         log.info("pushCookies: {}", req);
         AccessedUrlPersist p = new AccessedUrlPersist();
         p.setUrl(req.getReferer());
@@ -53,20 +50,23 @@ public class CookieController {
         }
     }
 
-    @PostMapping("/anon/pullWeiboCookies.do")
+    @Path("/anon/pullWeiboCookies.do")
+    @POST
     public Map<String, String> pullWeiboCookies() {
         List<String> excludeNames = List.of("XSRF-TOKEN");
         return pull(PushCookieReq.DOMAIN_WEIBO, excludeNames);
     }
 
-    @PostMapping("/anon/pullXueqiuCookies.do")
+    @Path("/anon/pullXueqiuCookies.do")
+    @POST
     public Map<String, String> pullXueqiuCookies() {
         List<String> excludeNames = List.of("XSRF-TOKEN");
         return pull(PushCookieReq.DOMAIN_XUEQIU, excludeNames);
     }
 
-    @PostMapping("/anon/pull.do")
-    public Map<String, String> pullCookie(@RequestBody PullCookieReq req) {
+    @Path("/anon/pull.do")
+    @POST
+    public Map<String, String> pullCookie(PullCookieReq req) {
         String domain = req.getDomain();
         return pull(domain, List.of());
     }
