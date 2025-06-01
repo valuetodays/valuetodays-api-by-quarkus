@@ -7,11 +7,13 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
+import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.context.ManagedExecutor;
 
 import java.util.List;
 
 @Provider
+@Slf4j
 public class DefaultExceptionHandler implements ExceptionMapper<Exception> {
     @Inject
     ManagedExecutor managedExecutor;
@@ -28,6 +30,7 @@ public class DefaultExceptionHandler implements ExceptionMapper<Exception> {
         } else {
             msg = "Exception: " + exception.getMessage();
         }
+        log.error("error", exception);
 
         boolean excludeByMsgPrefix = excludeMsgsPrefixNotNotify.stream().anyMatch(msg::startsWith);
         if (!excludeByMsgPrefix) {
