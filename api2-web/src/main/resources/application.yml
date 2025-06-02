@@ -26,7 +26,8 @@ quarkus:
   # https://quarkus.io/guides/hibernate-orm
   hibernate-orm:
     # https://docs.jboss.org/hibernate/orm/6.6/dialect/dialect.html
-    dialect: MySQL
+    #    dialect: MySQL
+    dialect: cn.valuetodays.api2.web.extend.NoEscapeMySQLDialect
     schema-management:
       strategy: none
     packages: cn.valuetodays
