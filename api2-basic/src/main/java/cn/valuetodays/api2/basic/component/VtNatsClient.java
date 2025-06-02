@@ -45,7 +45,7 @@ public class VtNatsClient {
     // 设置优先级较高的@StartupEvent方法，值越高，越先运行
 
     void onStartup(@Observes @Priority(PriorityConstant.NATS_CLIENT_INIT_ORDER) StartupEvent unused) {
-        log.info("connecting to nats server with {}", natsToken);
+//        log.info("connecting to nats server with {}", natsToken);
         try {
             Options options = new Options.Builder()
                 .server(natsServer)

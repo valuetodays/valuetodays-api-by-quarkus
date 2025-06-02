@@ -27,15 +27,20 @@ quarkus:
   hibernate-orm:
     # https://docs.jboss.org/hibernate/orm/6.6/dialect/dialect.html
     dialect: MySQL
-    #    packages: cn.valuetodays.api2
+    schema-management:
+      strategy: none
+    packages: cn.valuetodays
     database:
-      generation: none
+      #      generation: none
       version-check:
         enabled: false
     sql-load-script: no-file
     log:
       # the printed sql is containing ?
       sql: true
+    validate-in-dev: false
+    validation:
+      mode: none
   package:
     jar:
       type: UBER_JAR
