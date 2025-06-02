@@ -24,3 +24,6 @@ mvn compile quarkus:dev -f api2-web/pom.xml -DskipTests "-Dquarkus.log.level=DEB
 
 .\mvnw compile quarkus:dev -f api2-web/pom.xml -DskipTests
 
+## 问题
+
+- 项目启动时长达35秒，只追踪到 io.quarkus.hibernate.orm.runtime.schema.SchemaManagementIntegrator.runPostBootValidation
