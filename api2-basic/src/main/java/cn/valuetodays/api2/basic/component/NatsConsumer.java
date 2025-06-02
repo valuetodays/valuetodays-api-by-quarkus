@@ -37,10 +37,19 @@ public class NatsConsumer {
 
     void onStartup(@Observes @Priority(PriorityConstant.NATS_CONSUMER_ORDER) StartupEvent unused) {
         int tryTimes = 1;
-        while (tryTimes < 30 && (vtNatsClient.isConnected())) {
+        while (true) {
             try {
                 TimeUnit.SECONDS.sleep(1);
             } catch (InterruptedException ignored) {
+            }
+            log.info("sleep 1s");
+            if (vtNatsClient.isConnected()) {
+                log.info("natsClient is ready");
+                break;
+            }
+            if (tryTimes > 30) {
+                log.warn("try 30 times for natsClient to be ready");
+                break;
             }
             tryTimes++;
         }
