@@ -35,7 +35,7 @@ quarkus:
     sql-load-script: no-file
     log:
       # the printed sql is containing ?
-      sql: false
+      sql: true
   package:
     jar:
       type: UBER_JAR
