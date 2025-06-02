@@ -2,7 +2,7 @@ package cn.valuetodays.api2.web.repository;
 
 
 import cn.valuetodays.api2.client.persist.StockAlertLogPersist;
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import cn.valuetodays.quarkus.commons.base.BaseJpaRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 
 /**
@@ -10,6 +10,9 @@ import jakarta.enterprise.context.ApplicationScoped;
  * @since 2025-04-16 08:40
  */
 @ApplicationScoped
-public class StockAlertLogDAO implements PanacheRepository<StockAlertLogPersist> {
+public class StockAlertLogDAO extends BaseJpaRepository<StockAlertLogPersist, Long> {
 
+    protected StockAlertLogDAO() {
+        super(StockAlertLogPersist.class);
+    }
 }

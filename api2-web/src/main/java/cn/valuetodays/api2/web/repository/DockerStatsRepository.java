@@ -1,7 +1,7 @@
 package cn.valuetodays.api2.web.repository;
 
 import cn.valuetodays.api2.client.persist.DockerStatsPersist;
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import cn.valuetodays.quarkus.commons.base.BaseJpaRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 
 /**
@@ -11,5 +11,8 @@ import jakarta.enterprise.context.ApplicationScoped;
  * @since 2025-01-24
  */
 @ApplicationScoped
-public class DockerStatsRepository implements PanacheRepository<DockerStatsPersist> {
+public class DockerStatsRepository extends BaseJpaRepository<DockerStatsPersist, Long> {
+    protected DockerStatsRepository() {
+        super(DockerStatsPersist.class);
+    }
 }

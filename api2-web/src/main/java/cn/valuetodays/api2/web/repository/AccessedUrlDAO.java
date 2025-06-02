@@ -1,7 +1,7 @@
 package cn.valuetodays.api2.web.repository;
 
 import cn.valuetodays.api2.client.persist.AccessedUrlPersist;
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import cn.valuetodays.quarkus.commons.base.BaseJpaRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 
 /**
@@ -9,6 +9,9 @@ import jakarta.enterprise.context.ApplicationScoped;
  * @since 2025-03-27 16:01
  */
 @ApplicationScoped
-public class AccessedUrlDAO implements PanacheRepository<AccessedUrlPersist> {
+public class AccessedUrlDAO extends BaseJpaRepository<AccessedUrlPersist, Long> {
 
+    protected AccessedUrlDAO() {
+        super(AccessedUrlPersist.class);
+    }
 }

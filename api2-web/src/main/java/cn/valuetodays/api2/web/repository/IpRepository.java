@@ -1,7 +1,7 @@
 package cn.valuetodays.api2.web.repository;
 
 import cn.valuetodays.api2.client.persist.IpPersist;
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import cn.valuetodays.quarkus.commons.base.BaseJpaRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 
 /**
@@ -11,6 +11,9 @@ import jakarta.enterprise.context.ApplicationScoped;
  * @since 2024-09-29
  */
 @ApplicationScoped
-public class IpRepository implements PanacheRepository<IpPersist> {
+public class IpRepository extends BaseJpaRepository<IpPersist, Long> {
 
+    protected IpRepository() {
+        super(IpPersist.class);
+    }
 }

@@ -29,6 +29,6 @@ public class IpServiceTest extends BaseTest {
         p.initUserIdAndTime(1L);
         IpPersist saved = ipService.save(p);
         log.info("saved={}", saved);
-        ipService.getRepository().deleteById(saved.getId());
+        ipService.deleteById(saved.getId());
     }
 }

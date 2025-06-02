@@ -2,7 +2,7 @@ package cn.valuetodays.module.codegenerator.dao;
 
 
 import cn.valuetodays.module.codegenerator.po.CgTemplatePO;
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import cn.valuetodays.quarkus.commons.base.BaseJpaRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 
 /**
@@ -10,6 +10,9 @@ import jakarta.enterprise.context.ApplicationScoped;
  * @since 2022-06-10 14:46
  */
 @ApplicationScoped
-public class CgTemplateDAO implements PanacheRepository<CgTemplatePO> {
+public class CgTemplateDAO extends BaseJpaRepository<CgTemplatePO, Long> {
 
+    protected CgTemplateDAO() {
+        super(CgTemplatePO.class);
+    }
 }

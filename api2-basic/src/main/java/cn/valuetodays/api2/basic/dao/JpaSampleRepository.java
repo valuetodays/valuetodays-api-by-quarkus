@@ -1,7 +1,7 @@
 package cn.valuetodays.api2.basic.dao;
 
 import cn.valuetodays.api2.basic.persist.JpaSamplePersist;
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import cn.valuetodays.quarkus.commons.base.BaseJpaRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 
 /**
@@ -9,7 +9,10 @@ import jakarta.enterprise.context.ApplicationScoped;
  * @since 2025-06-02 07:43
  */
 @ApplicationScoped
-public class JpaSampleRepository implements PanacheRepository<JpaSamplePersist> {
+public class JpaSampleRepository extends BaseJpaRepository<JpaSamplePersist, Long> {
 
+    protected JpaSampleRepository() {
+        super(JpaSamplePersist.class);
+    }
 }
 

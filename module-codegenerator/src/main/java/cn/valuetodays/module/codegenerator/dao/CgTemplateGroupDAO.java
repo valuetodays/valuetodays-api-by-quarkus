@@ -1,7 +1,7 @@
 package cn.valuetodays.module.codegenerator.dao;
 
 import cn.valuetodays.module.codegenerator.po.CgTemplateGroupPersist;
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import cn.valuetodays.quarkus.commons.base.BaseJpaRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 
 /**
@@ -11,5 +11,8 @@ import jakarta.enterprise.context.ApplicationScoped;
  * @since 2025-02-06
  */
 @ApplicationScoped
-public class CgTemplateGroupDAO implements PanacheRepository<CgTemplateGroupPersist> {
+public class CgTemplateGroupDAO extends BaseJpaRepository<CgTemplateGroupPersist, Long> {
+    protected CgTemplateGroupDAO() {
+        super(CgTemplateGroupPersist.class);
+    }
 }

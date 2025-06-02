@@ -1,10 +1,12 @@
 package cn.valuetodays.api2.extra.dao;
 
 import cn.valuetodays.api2.extra.persist.WeworkGroupUserPersist;
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
-import io.quarkus.panache.common.Page;
-import io.quarkus.panache.common.Sort;
+import cn.valuetodays.quarkus.commons.base.BaseJpaRepository;
+import cn.valuetodays.quarkus.commons.base.Operator;
+import cn.valuetodays.quarkus.commons.base.QuerySearch;
+import cn.valuetodays.quarkus.commons.base.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
@@ -15,19 +17,28 @@ import java.util.List;
  * @since 2025-05-26
  */
 @ApplicationScoped
-public class WeworkGroupUserDAO implements PanacheRepository<WeworkGroupUserPersist> {
+public class WeworkGroupUserDAO extends BaseJpaRepository<WeworkGroupUserPersist, Long> {
+
+    protected WeworkGroupUserDAO() {
+        super(WeworkGroupUserPersist.class);
+    }
 
     public List<WeworkGroupUserPersist> findByGroupIdIn(List<Long> ids) {
-        return list("groupId in ?1", ids);
+        return super.findAll(List.of(QuerySearch.of("groupId", StringUtils.join(ids, ","), Operator.IN)));
+//        return list("groupId in ?1", ids);
     }
 
     public WeworkGroupUserPersist findTop1ByEmailOrderByCreateTimeDesc(String email) {
-        return find("email=?1", Sort.descending("createTime"), email).page(Page.of(0, 1)).stream()
-            .findFirst().orElse(null);
+        List<QuerySearch> qs = List.of(QuerySearch.eq("email", email));
+        return super.findOne(qs, new Sort[]{Sort.ofDesc("createTime")}, 1);
+//        return find("email=?1", Sort.descending("createTime"), email).page(Page.of(0, 1)).stream()
+//            .findFirst().orElse(null);
     }
 
     public WeworkGroupUserPersist findTop1ByEmailOrderByCreateTimeAsc(String email) {
-        return find("email=?1", Sort.ascending("createTime"), email).page(Page.of(0, 1)).stream()
-            .findFirst().orElse(null);
+        List<QuerySearch> qs = List.of(QuerySearch.eq("email", email));
+        return super.findOne(qs, new Sort[]{Sort.ofAsc("createTime")}, 1);
+//        return find("email=?1", Sort.ascending("createTime"), email).page(Page.of(0, 1)).stream()
+//            .findFirst().orElse(null);
     }
 }
