@@ -62,3 +62,4 @@ mvn compile quarkus:dev -f api2-web/pom.xml -DskipTests "-Dquarkus.log.level=DEB
 
 + 发现重写dialect的isNoBackslashEscapesEnabled()
   即可。只能重写一个类继承org.hibernate.dialect.MySQLDialect，因为MySQLDialect中noBackslashEscapesEnabled是构造器赋值的，没有set方法。
++ add BeansProduces to expose bean that can not be injected automatically.
