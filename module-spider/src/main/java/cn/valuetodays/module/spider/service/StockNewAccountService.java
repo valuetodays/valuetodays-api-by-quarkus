@@ -1,7 +1,7 @@
-package cn.valuetodays.api2.web.service;
+package cn.valuetodays.module.spider.service;
 
-import cn.valuetodays.api2.client.persist.StockNewAccountPersist;
-import cn.valuetodays.api2.web.repository.StockNewAccountRepository;
+import cn.valuetodays.module.spider.client.persist.StockNewAccountPersist;
+import cn.valuetodays.module.spider.dao.StockNewAccountRepository;
 import cn.valuetodays.quarkus.commons.base.BaseService;
 import cn.vt.rest.third.sse.SseNewStockAccountClientUtils;
 import cn.vt.rest.third.sse.vo.StockNewAccountResp;

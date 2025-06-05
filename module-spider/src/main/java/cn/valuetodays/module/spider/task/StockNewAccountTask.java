@@ -1,6 +1,6 @@
-package cn.valuetodays.api2.web.task;
+package cn.valuetodays.module.spider.task;
 
-import cn.valuetodays.api2.web.service.StockNewAccountService;
+import cn.valuetodays.module.spider.service.StockNewAccountService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -14,7 +14,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 @ApplicationScoped
 public class StockNewAccountTask {
     @Inject
-    private StockNewAccountService stockNewAccountService;
+    StockNewAccountService stockNewAccountService;
 
     //    @Scheduled(cron = "1 15 1 * * SUN") // 每周日01:15:01
     @Scheduled(cron = "1 15 1 * * ?") // 每日01:15:01

@@ -1,4 +1,4 @@
-package cn.valuetodays.api2.web.properties;
+package cn.valuetodays.api2.web.common.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

@@ -10,6 +10,7 @@ import cn.vt.util.HttpClient4Utils;
 import cn.vt.util.JsonUtils;
 import cn.vt.util.SleepUtils;
 import io.quarkus.redis.datasource.RedisDataSource;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -17,7 +18,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Objects;
@@ -28,7 +28,7 @@ import java.util.Objects;
  * @author lei.liu
  * @since 2022-08-03
  */
-@Component
+@ApplicationScoped
 @Slf4j
 public class WxmpArticleSpider {
 

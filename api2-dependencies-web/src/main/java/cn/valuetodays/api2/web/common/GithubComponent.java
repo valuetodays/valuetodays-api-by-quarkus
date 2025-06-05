@@ -1,7 +1,8 @@
-package cn.valuetodays.api2.web.component;
+package cn.valuetodays.api2.web.common;
 
+import cn.valuetodays.api2.client.component.IWxmpArticleComponent;
 import cn.valuetodays.api2.client.req.UploadFileToGithubReq;
-import cn.valuetodays.api2.web.properties.GithubProperties;
+import cn.valuetodays.api2.web.common.properties.GithubProperties;
 import cn.vt.api.github.repos.ReposApi;
 import cn.vt.api.github.vo.CreateOrUpdateFileContentReq;
 import cn.vt.util.ClassPathResourceUtils;
@@ -32,7 +33,7 @@ public class GithubComponent {
     @Inject
     GithubProperties githubProperties;
     @Inject
-    WxmpArticleComponent wxmpArticleComponent;
+    IWxmpArticleComponent wxmpArticleComponent;
 
     private static boolean createFileOrUpdateFileContent0(File addedFile,
                                                           CreateOrUpdateFileContentReq req,

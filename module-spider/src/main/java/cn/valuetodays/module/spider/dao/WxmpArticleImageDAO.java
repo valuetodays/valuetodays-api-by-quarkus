@@ -1,8 +1,8 @@
-package cn.valuetodays.api2.web.repository;
+package cn.valuetodays.module.spider.dao;
 
 
 import cn.valuetodays.api2.client.enums.WxmpArticleImageEnums;
-import cn.valuetodays.api2.client.persist.WxmpArticleImagePersist;
+import cn.valuetodays.module.spider.client.persist.WxmpArticleImagePersist;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;

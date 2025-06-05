@@ -1,5 +1,6 @@
 package cn.valuetodays.api2.web.service;
 
+import cn.valuetodays.module.spider.service.WxmpArticleImageService;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;

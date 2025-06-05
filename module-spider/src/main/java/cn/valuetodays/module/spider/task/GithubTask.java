@@ -1,8 +1,8 @@
-package cn.valuetodays.api2.web.task;
+package cn.valuetodays.module.spider.task;
 
-import cn.valuetodays.api2.client.persist.WxmpArticleImagePersist;
-import cn.valuetodays.api2.web.component.WordPressComponent;
-import cn.valuetodays.api2.web.service.WxmpArticleImageService;
+import cn.valuetodays.module.spider.client.persist.WxmpArticleImagePersist;
+import cn.valuetodays.module.spider.component.WordPressComponent;
+import cn.valuetodays.module.spider.service.WxmpArticleImageService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.apache.commons.collections4.CollectionUtils;

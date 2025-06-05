@@ -1,8 +1,8 @@
-package cn.valuetodays.api2.web.controller;
+package cn.valuetodays.module.spider.controller;
 
-import cn.valuetodays.api2.client.persist.WxmpArticleImagePersist;
-import cn.valuetodays.api2.web.component.GithubComponent;
-import cn.valuetodays.api2.web.service.WxmpArticleImageService;
+import cn.valuetodays.api2.web.common.GithubComponent;
+import cn.valuetodays.module.spider.client.persist.WxmpArticleImagePersist;
+import cn.valuetodays.module.spider.service.WxmpArticleImageService;
 import cn.valuetodays.quarkus.commons.base.BaseController;
 import cn.vt.R;
 import cn.vt.exception.AssertUtils;

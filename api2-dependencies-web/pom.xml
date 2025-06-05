@@ -26,6 +26,11 @@
             </exclusions>
         </dependency>
         <dependency>
+            <groupId>cn.valuetodays</groupId>
+            <artifactId>module-api-github</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-rest-jackson</artifactId>
         </dependency>

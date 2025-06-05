@@ -1,6 +1,6 @@
-package cn.valuetodays.api2.web.component;
+package cn.valuetodays.module.spider.component;
 
-import cn.valuetodays.api2.client.persist.WxmpArticleImagePersist;
+import cn.valuetodays.module.spider.client.persist.WxmpArticleImagePersist;
 import cn.vt.util.DateUtils;
 import cn.vt.util.HttpClient4Utils;
 import jakarta.enterprise.context.ApplicationScoped;

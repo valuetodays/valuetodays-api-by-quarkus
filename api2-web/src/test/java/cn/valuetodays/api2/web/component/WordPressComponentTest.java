@@ -1,5 +1,6 @@
 package cn.valuetodays.api2.web.component;
 
+import cn.valuetodays.module.spider.component.WordPressComponent;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;

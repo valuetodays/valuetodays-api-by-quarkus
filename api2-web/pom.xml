@@ -35,7 +35,11 @@
             <artifactId>module-codegenerator</artifactId>
             <version>${project.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>cn.valuetodays</groupId>
+            <artifactId>module-spider</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <!--
         <dependency>
             <groupId>io.quarkus</groupId>
@@ -83,6 +87,7 @@
             <artifactId>jsoup</artifactId>
             <version>${jsoup.version}</version>
         </dependency>
+
     </dependencies>
 
     <build>

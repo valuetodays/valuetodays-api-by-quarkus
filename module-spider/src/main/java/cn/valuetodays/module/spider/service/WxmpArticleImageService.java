@@ -1,10 +1,10 @@
-package cn.valuetodays.api2.web.service;
+package cn.valuetodays.module.spider.service;
 
 import cn.valuetodays.api2.client.enums.WxmpArticleImageEnums;
-import cn.valuetodays.api2.client.persist.WxmpArticleImagePersist;
-import cn.valuetodays.api2.web.component.GithubComponent;
-import cn.valuetodays.api2.web.component.WordPressComponent;
-import cn.valuetodays.api2.web.repository.WxmpArticleImageDAO;
+import cn.valuetodays.api2.web.common.GithubComponent;
+import cn.valuetodays.module.spider.client.persist.WxmpArticleImagePersist;
+import cn.valuetodays.module.spider.component.WordPressComponent;
+import cn.valuetodays.module.spider.dao.WxmpArticleImageDAO;
 import cn.valuetodays.quarkus.commons.base.BaseService;
 import cn.vt.exception.AssertUtils;
 import io.smallrye.mutiny.tuples.Tuple2;

@@ -1,4 +1,4 @@
-package cn.valuetodays.api2.client.persist;
+package cn.valuetodays.module.spider.client.persist;
 
 import cn.valuetodays.api2.client.enums.WxmpArticleImageEnums;
 import cn.valuetodays.quarkus.commons.base.jpa.JpaLongIdBasePersist;

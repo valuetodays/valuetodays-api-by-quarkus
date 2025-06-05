@@ -1,15 +1,12 @@
 package cn.valuetodays.api2.web.controller;
 
 import cn.valuetodays.api2.client.persist.IpPersist;
-import cn.valuetodays.api2.web.properties.GreetingProperties;
 import cn.valuetodays.api2.web.service.IpService;
 import cn.valuetodays.api2.web.task.DemoTask;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.MediaType;
 
 import java.util.Map;
 
@@ -28,10 +25,6 @@ public class IndexController {
     @Inject
     DemoTask demoTask;
 
-    @Inject
-    GreetingProperties greetingProperties;
-
-
     @GET
     @Path("/")
     public Map<String, Object> hello() {
@@ -49,12 +42,6 @@ public class IndexController {
     @Path("counter")
     public int counter() {
         return demoTask.getCounter();
-    }
-    @GET
-    @Path("greetingProperties")
-    @Produces({MediaType.APPLICATION_JSON})
-    public GreetingProperties greetingProperties() {
-        return greetingProperties;
     }
 
 }

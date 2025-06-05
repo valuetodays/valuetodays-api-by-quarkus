@@ -1,5 +1,6 @@
 package cn.valuetodays.api2.web.component;
 
+import cn.valuetodays.module.spider.component.WxmpArticleComponent;
 import io.smallrye.mutiny.tuples.Tuple2;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;

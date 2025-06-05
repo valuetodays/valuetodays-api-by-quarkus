@@ -1,5 +1,6 @@
-package cn.valuetodays.api2.web.component;
+package cn.valuetodays.module.spider.component;
 
+import cn.valuetodays.api2.client.component.IWxmpArticleComponent;
 import cn.vt.util.HttpClient4Utils;
 import io.smallrye.mutiny.tuples.Tuple2;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -28,11 +29,12 @@ import java.util.stream.Collectors;
  */
 @ApplicationScoped
 @Slf4j
-public class WxmpArticleComponent {
+public class WxmpArticleComponent implements IWxmpArticleComponent {
 
     /**
      * 给定一个微信公众号url，下载正文中的图片到本地。
      */
+    @Override
     public Tuple2<String, List<File>> downloadImages(File baseDir, String url) {
 //        String url = "https://mp.weixin.qq.com/s/T6xLk7REm6NYqKkBBvnHFQ";
         String pagesource = HttpClient4Utils.doGet(url);
