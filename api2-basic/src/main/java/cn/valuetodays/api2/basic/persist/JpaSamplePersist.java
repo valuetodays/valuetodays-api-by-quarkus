@@ -48,6 +48,7 @@ public class JpaSamplePersist extends JpaCrudLongIdBasePersist {
     private LocalDate birthday2;
     @Column(name = "birthtime")
     private LocalDateTime birthtime;
+    // todo          // https://stackoverflow.com/questions/62246050/how-to-update-a-jsonb-column-in-postgresql-using-a-spring-data-jpa-query
     @Column(name = "json_list")
 //    @Type(JsonType.class)
     @Convert(converter = JsonSampleListJsonAttributeConverter.class)
