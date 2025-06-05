@@ -21,6 +21,7 @@
     </properties>
 
     <modules>
+        <module>module-spider</module>
         <module>module-codegenerator</module>
         <module>module-third-rest</module>
         <module>module-api-github</module>

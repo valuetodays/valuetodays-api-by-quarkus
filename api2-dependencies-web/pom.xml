@@ -54,6 +54,11 @@
         <!--            <artifactId>hypersistence-utils-hibernate-63</artifactId>-->
         <!--            <version>3.9.10</version>-->
         <!--        </dependency>-->
+        <dependency>
+            <groupId>cn.valuetodays</groupId>
+            <artifactId>common-spring-web</artifactId>
+            <version>${vt.common-spring-web.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

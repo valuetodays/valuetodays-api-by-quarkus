@@ -8,7 +8,7 @@
         <artifactId>api2-by-quarkus</artifactId>
         <version>1.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>module-codegenerator</artifactId>
+    <artifactId>module-spider</artifactId>
 
     <properties>
     </properties>
@@ -19,16 +19,10 @@
             <artifactId>api2-dependencies-web</artifactId>
             <version>${project.version}</version>
         </dependency>
-
         <dependency>
-            <groupId>com.mysql</groupId>
-            <artifactId>mysql-connector-j</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-core</artifactId>
-            <version>5.8.28</version>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
         </dependency>
     </dependencies>
 </project>
