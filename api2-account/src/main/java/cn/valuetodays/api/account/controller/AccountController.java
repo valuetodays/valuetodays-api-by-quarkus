@@ -73,7 +73,7 @@ public class AccountController extends BaseAuthorizationController {
     }
 
 
-    @Path("tryLoginByBrowserFingerprint.do")
+    @Path("/public/tryLoginByBrowserFingerprint.do")
     @POST
     public R<TokenInfoVO> tryLoginByBrowserFingerprint(@Valid LoginByBrowserFingerprintReq req,
                                                        HttpHeaders httpHeaders,
