@@ -27,6 +27,7 @@
         <module>module-api-github</module>
         <module>api2-dependencies-web</module>
         <module>api2-extra</module>
+        <module>api2-account</module>
         <module>api2-basic</module>
         <module>api2-client</module>
         <module>api2-web</module>

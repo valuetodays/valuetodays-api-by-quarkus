@@ -40,6 +40,11 @@
             <artifactId>module-spider</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>cn.valuetodays</groupId>
+            <artifactId>api2-account</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <!--
         <dependency>
             <groupId>io.quarkus</groupId>
