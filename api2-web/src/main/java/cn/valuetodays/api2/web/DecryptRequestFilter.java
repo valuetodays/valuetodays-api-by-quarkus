@@ -39,6 +39,7 @@ public class DecryptRequestFilter implements ContainerRequestFilter {
         if (!"true".equals(encryptrequestFlag)) {
             return;
         }
+        log.info("begin to decrypt request payload");
         // 读取原始 body 数据
         try (InputStream originalStream = requestContext.getEntityStream();) {
             byte[] bytes = originalStream.readAllBytes();
@@ -47,9 +48,11 @@ public class DecryptRequestFilter implements ContainerRequestFilter {
             try (JsonReader reader = Json.createReader(new ByteArrayInputStream(bytes))) {
                 JsonObject json = reader.readObject();
                 String encrypted = json.getString("data");
+                log.info("encrypted={}", encrypted);
 
                 // 解密
                 String decryptedJson = RSAUtils.decrypt(encrypted, PRIVATE_KEY_VALUE);
+                log.info("decryptedJson={}", decryptedJson);
 
                 // 替换请求体为解密后的 JSON
                 requestContext.setEntityStream(new ByteArrayInputStream(decryptedJson.getBytes()));
