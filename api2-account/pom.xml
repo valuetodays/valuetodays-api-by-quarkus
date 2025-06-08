@@ -15,6 +15,11 @@
             <artifactId>api2-dependencies-web</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>cn.valuetodays</groupId>
+            <artifactId>api2-basic</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
     </dependencies>
 
