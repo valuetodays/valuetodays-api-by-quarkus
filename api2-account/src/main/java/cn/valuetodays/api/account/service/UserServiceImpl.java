@@ -19,8 +19,8 @@ import cn.vt.encrypt.BCryptUtils;
 import cn.vt.exception.AssertUtils;
 import cn.vt.util.ConvertUtils;
 import cn.vt.util.MyUUIDGenerator;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import jakarta.transaction.Transactional;
 import org.springframework.lang.Nullable;
 
@@ -32,7 +32,7 @@ import java.util.Objects;
  * @author lei.liu
  * @since 2019-10-22 16:50
  */
-@Named
+@ApplicationScoped
 public class UserServiceImpl extends BaseService<Long, UserPO, UserDAO> {
     public static final String TOPIC_APPLICATION_MSG = "applicationmsg";
     @Inject
