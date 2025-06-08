@@ -6,12 +6,17 @@ import cn.valuetodays.api2.extra.vo.sonic.SonicPagedPostsResp;
 import cn.valuetodays.api2.extra.vo.sonic.SonicPostIdResp;
 import cn.valuetodays.api2.extra.vo.sonic.SonicPostItem;
 import cn.vt.exception.AssertUtils;
+import cn.vt.exception.CommonException;
 import cn.vt.util.HttpClient4Utils;
 import cn.vt.util.JsonUtils;
 import jakarta.enterprise.context.ApplicationScoped;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.io.FileUtils;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
@@ -63,13 +68,15 @@ public class EblogSyncToGithubPagesService {
         }
         SonicPostItem data = postDetailObj.getData();
         String originalContent = data.getOriginalContent();
-        // todo 写入markdown
+        File file = new File("x:/temp", data.getSlug() + ".md");
+        try {
+            FileUtils.writeStringToFile(file, originalContent, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new CommonException(e);
+        }
     }
 
     public SonicLoginResp login(String baseUrl, String user, String pass) {
-//        curl -XPOST 'http://eblog.valuetodays.cn' -H 'Admin-Authorization:adfsdf'
-//        -H 'content-type:application/json'
-//        -d '{"username": "valuetodays", "password":"xxx"}'
         SonicLoginReq sonicLoginReq = new SonicLoginReq();
         sonicLoginReq.setUsername(user);
         sonicLoginReq.setPassword(pass);
