@@ -2,7 +2,7 @@ package cn.valuetodays.api2.web;
 
 import cn.vt.R;
 import cn.vt.auth.AuthUser;
-import cn.vt.auth.AuthUserHolder;
+import cn.vt.auth.AuthUserParser;
 import cn.vt.util.StringExUtils;
 import jakarta.annotation.Priority;
 import jakarta.inject.Inject;
@@ -21,7 +21,7 @@ import java.util.Objects;
 @Slf4j
 public class AuthTokenFilter implements ContainerRequestFilter {
     @Inject
-    AuthUserHolder authUserHolder;
+    AuthUserParser authUserParser;
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
@@ -58,7 +58,7 @@ public class AuthTokenFilter implements ContainerRequestFilter {
     }
 
     private boolean isValidToken(String token) {
-        AuthUser authUserByToken = authUserHolder.getAuthUserByToken(token);
+        AuthUser authUserByToken = authUserParser.getAuthUserByToken(token);
         return Objects.nonNull(authUserByToken);
     }
 }
