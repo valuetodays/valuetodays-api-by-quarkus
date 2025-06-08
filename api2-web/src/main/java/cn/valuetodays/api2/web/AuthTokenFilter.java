@@ -26,13 +26,16 @@ public class AuthTokenFilter implements ContainerRequestFilter {
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
         String path = requestContext.getUriInfo().getPath();
+        log.info("check token 1 path={}", path);
         if (isWhiteListed(path)) {
             // 跳过验证
             return;
         }
+        log.info("check token 2 path={}", path);
 
         // 从 Header 中获取 Token
         String token = requestContext.getHeaderString("Authorization");
+        log.info("check token 3 token={}", token);
         if (token == null || !isValidToken(token)) {
             Response resp = Response.ok()
                 .entity(R.noAuthError("Unauthorized: token missing or invalid"))
