@@ -66,6 +66,7 @@ public class UserServiceImpl extends BaseService<Long, UserPO, UserDAO> {
      * @param passwordUsed  登录时使用的密码
      * @param checkPassword 是否校验密码，sso登录时不校验
      */
+    @Transactional
     public AccountBO loginByPO(@Nullable UserPO loginUser,
                                String userAgent, String usernameUsed, String passwordUsed,
                                boolean checkPassword) {
