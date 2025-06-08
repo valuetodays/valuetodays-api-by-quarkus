@@ -4,16 +4,16 @@ import cn.valuetodays.api.account.enums.UserEnums;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 public class AccountBO implements Serializable {
     public static final AccountBO EMPTY = new AccountBO();
     private Long id;
     //    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date createTime;
+    private LocalDateTime createTime;
     //    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date updateTime;
+    private LocalDateTime updateTime;
     private Long createUserId;
     private Long updateUserId;
     private String createUserName;
