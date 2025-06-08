@@ -18,6 +18,7 @@ import cn.valuetodays.quarkus.commons.base.BaseService;
 import cn.vt.encrypt.BCryptUtils;
 import cn.vt.exception.AssertUtils;
 import cn.vt.util.ConvertUtils;
+import cn.vt.util.ConvertUtils2;
 import cn.vt.util.MyUUIDGenerator;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -98,7 +99,7 @@ public class UserServiceImpl extends BaseService<Long, UserPO, UserDAO> {
         userLoginLogPO.setPassword("-");
         doWhenLoginSuccess(userLoginLogPO);
 
-        AccountBO accountBO = ConvertUtils.convertObj(loginUser, AccountBO.class);
+        AccountBO accountBO = ConvertUtils2.convertObj(loginUser, AccountBO.class);
         accountBO.setToken(MyUUIDGenerator.uuidTo16());
         return accountBO;
     }

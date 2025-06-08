@@ -9,14 +9,11 @@ import jakarta.json.JsonReader;
 import jakarta.ws.rs.Priorities;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
-import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.ext.Provider;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.List;
-import java.util.Map;
 
 @Provider
 @Priority(Priorities.ENTITY_CODER)
@@ -31,15 +28,17 @@ public class DecryptRequestFilter implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext) {
+        /*
         MultivaluedMap<String, String> headers = requestContext.getHeaders();
         for (Map.Entry<String, List<String>> e : headers.entrySet()) {
             log.info("header name={}, value={}", e.getKey(), e.getValue());
         }
+         */
         String encryptrequestFlag = requestContext.getHeaderString(HEADER_ENCRYPT_REQUEST);
         if (!"true".equals(encryptrequestFlag)) {
             return;
         }
-        log.info("begin to decrypt request payload");
+//        log.info("begin to decrypt request payload");
         // 读取原始 body 数据
         try (InputStream originalStream = requestContext.getEntityStream();) {
             byte[] bytes = originalStream.readAllBytes();
@@ -48,12 +47,10 @@ public class DecryptRequestFilter implements ContainerRequestFilter {
             try (JsonReader reader = Json.createReader(new ByteArrayInputStream(bytes))) {
                 JsonObject json = reader.readObject();
                 String encrypted = json.getString("data");
-                log.info("encrypted={}", encrypted);
-
+//                log.info("encrypted={}", encrypted);
                 // 解密
                 String decryptedJson = RSAUtils.decrypt(encrypted, PRIVATE_KEY_VALUE);
-                log.info("decryptedJson={}", decryptedJson);
-
+//                log.info("decryptedJson={}", decryptedJson);
                 // 替换请求体为解密后的 JSON
                 requestContext.setEntityStream(new ByteArrayInputStream(decryptedJson.getBytes()));
             }
