@@ -73,9 +73,9 @@ public class AccountController extends BaseAuthorizationController {
     }
 
 
-    @Path("/public/tryLoginByBrowserFingerprint.do")
+    @Path("/public/loginByBrowserFingerprint")
     @POST
-    public R<TokenInfoVO> tryLoginByBrowserFingerprint(@Valid LoginByBrowserFingerprintReq req,
+    public R<TokenInfoVO> loginByBrowserFingerprint(@Valid LoginByBrowserFingerprintReq req,
                                                        HttpHeaders httpHeaders,
                                                        @Context RoutingContext ctx) {
         String browserFingerprint = req.getBrowserFingerprint();
