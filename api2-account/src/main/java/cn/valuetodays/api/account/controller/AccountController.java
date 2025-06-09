@@ -26,7 +26,7 @@ public class AccountController extends BaseAuthorizationController {
     @Inject
     UserServiceImpl userService;
 
-    @Path("logout.do")
+    @Path("logout")
     @POST
     public R<String> logout(@Context RoutingContext ctx) {
 //        super.removeLoginAccount();
@@ -35,7 +35,7 @@ public class AccountController extends BaseAuthorizationController {
     }
 
     @POST
-    @Path("/current.do")
+    @Path("/current")
     public R<AccountBO> current() {
         UserPO userPO = userService.findById(getCurrentAccountId());
         AccountBO accountBO = ConvertUtils.convertObj(userPO, AccountBO.class);
