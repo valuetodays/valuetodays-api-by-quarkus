@@ -6,7 +6,7 @@ import cn.valuetodays.api.account.service.UserServiceImpl;
 import cn.valuetodays.quarkus.commons.base.BaseAuthorizationController;
 import cn.vt.R;
 import cn.vt.auth.AuthUserHolder;
-import cn.vt.util.ConvertUtils;
+import cn.vt.util.ConvertUtils2;
 import io.vertx.ext.web.RoutingContext;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.POST;
@@ -38,7 +38,7 @@ public class AccountController extends BaseAuthorizationController {
     @Path("/current")
     public R<AccountBO> current() {
         UserPO userPO = userService.findById(getCurrentAccountId());
-        AccountBO accountBO = ConvertUtils.convertObj(userPO, AccountBO.class);
+        AccountBO accountBO = ConvertUtils2.convertObj(userPO, AccountBO.class);
         return R.success(accountBO);
     }
 
