@@ -6,6 +6,8 @@ import cn.vt.util.DateUtils;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 
+import java.util.List;
+
 /**
  * @author lei.liu
  * @since 2025-06-09 19:57
@@ -24,6 +26,14 @@ public class RsaKeyPairRepository implements PanacheRepository<RsaKeyPairPersist
         delete(" createTime <=?1 ",
             DateUtils.minusDaysToday(n).toLocalDate().atStartOfDay()
         );
+    }
+
+    public RsaKeyPairPersist findByKeyId(String keyId) {
+        return find("keyId = ?1", keyId).firstResult();
+    }
+
+    public List<RsaKeyPairPersist> findEnabled() {
+        return find("enableStatus = ?1", CommonEnums.EnableStatus.YES).list();
     }
 }
 

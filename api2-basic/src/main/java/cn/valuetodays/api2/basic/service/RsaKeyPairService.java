@@ -10,6 +10,9 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.RandomUtils;
+
+import java.util.List;
 
 
 /**
@@ -22,6 +25,11 @@ import org.apache.commons.codec.digest.DigestUtils;
 @Slf4j
 public class RsaKeyPairService
     extends BaseService<Long, RsaKeyPairPersist, RsaKeyPairRepository> {
+
+    public RsaKeyPairPersist findByKeyId(String keyId) {
+        return getRepository().findByKeyId(keyId);
+    }
+
     @Transactional
     public void deleteOldKeyPairs() {
         getRepository().deleteOldKeyPairsBefore(3);
@@ -51,6 +59,12 @@ public class RsaKeyPairService
 
     private void disableAllKeyPairsBeforeToday() {
         getRepository().disableAllKeyPairsBeforeToday();
+    }
+
+    public RsaKeyPairPersist randomOne() {
+        List<RsaKeyPairPersist> list = getRepository().findEnabled();
+        int n = RandomUtils.secure().randomInt(0, list.size());
+        return list.get(n);
     }
 }
 

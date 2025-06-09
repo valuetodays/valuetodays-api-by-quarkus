@@ -3,6 +3,7 @@ package cn.valuetodays.api2.basic.controller;
 import cn.valuetodays.api2.basic.persist.RsaKeyPairPersist;
 import cn.valuetodays.api2.basic.service.RsaKeyPairService;
 import cn.valuetodays.quarkus.commons.base.BaseController;
+import cn.vt.R;
 import jakarta.ws.rs.Path;
 
 /**
@@ -18,5 +19,10 @@ public class RsaKeyPairController
     RsaKeyPairPersist,
     RsaKeyPairService
     > {
+
+    @Path("/public/getPublicKey")
+    public R<RsaKeyPairPersist> getPublicKey() {
+        return R.success(service.randomOne());
+    }
 
 }
