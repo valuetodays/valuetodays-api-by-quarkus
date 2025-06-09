@@ -1,8 +1,12 @@
 package cn.valuetodays.api2.web;
 
+import cn.valuetodays.api2.basic.persist.RsaKeyPairPersist;
+import cn.valuetodays.api2.basic.service.RsaKeyPairService;
+import cn.vt.exception.AssertUtils;
 import cn.vt.exception.CommonException;
 import cn.vt.util.RSAUtils;
 import jakarta.annotation.Priority;
+import jakarta.inject.Inject;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
@@ -11,9 +15,11 @@ import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
 import jakarta.ws.rs.ext.Provider;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 @Provider
 @Priority(Priorities.ENTITY_CODER)
@@ -25,6 +31,8 @@ public class DecryptRequestFilter implements ContainerRequestFilter {
     public static final String PUBLIC_KEY_VALUE =
         "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtxYG3R+LXl1XsP0TPR1DnPUvdNSir3KVVDbnJRD6DPYUK+mh6FwycapbwB8jeKtADhaRRg723ZLuHbiGtIoCEFK7jFse4bOBVKvsLCMrQOTUkygeyKvMCDI2Mdad0K53Rscyl/uXuOMiZCZ0MXpqWmRsH+cLo15IKolc7bx2xJSllVOzWRQfgH/qyfX0h78UyZ+LYLTnqkrcLvjidE1OB6GhQzpD719RGHyDQtwaFKlrlKCpTq8BAAsmRVeywWYEa1qzJsaASXh13hjBGGC1oB0rDG6wonjCtZe+as8Yv4I92vU/qQhMAQUnedQn9RaHD9rDTedL0vBw+ZxY3ryFhwIDAQAB";
 
+    @Inject
+    RsaKeyPairService rsaKeyPairService;
 
     @Override
     public void filter(ContainerRequestContext requestContext) {
@@ -46,13 +54,22 @@ public class DecryptRequestFilter implements ContainerRequestFilter {
             // 解析 JSON
             try (JsonReader reader = Json.createReader(new ByteArrayInputStream(bytes))) {
                 JsonObject json = reader.readObject();
+                String priKey = PRIVATE_KEY_VALUE;
+                String keyId = json.getString("keyId");
                 String encrypted = json.getString("data");
 //                log.info("encrypted={}", encrypted);
+                if (StringUtils.isNotBlank(keyId)) {
+                    RsaKeyPairPersist cached = rsaKeyPairService.findByKeyId(keyId);
+                    AssertUtils.assertNotNull(cached, "no priKey related to keyId=" + keyId);
+                    priKey = cached.getPriKey();
+                }
                 // 解密
-                String decryptedJson = RSAUtils.decrypt(encrypted, PRIVATE_KEY_VALUE);
+                String decryptedJson = RSAUtils.decrypt(encrypted, priKey);
 //                log.info("decryptedJson={}", decryptedJson);
                 // 替换请求体为解密后的 JSON
-                requestContext.setEntityStream(new ByteArrayInputStream(decryptedJson.getBytes()));
+                requestContext.setEntityStream(
+                    new ByteArrayInputStream(decryptedJson.getBytes(StandardCharsets.UTF_8))
+                );
             }
         } catch (Exception e) {
             throw new CommonException("请求解密失败: " + e.getMessage(), e);
