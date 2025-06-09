@@ -23,6 +23,6 @@ public class RsaKeyPairServiceTest {
 
     @Test
     public void renewKeyPairs() {
-        rsaKeyPairService.renewKeyPairs();
+        rsaKeyPairService.renewKeyPairs(1);
     }
 }

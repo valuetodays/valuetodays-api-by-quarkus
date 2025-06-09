@@ -36,13 +36,13 @@ public class RsaKeyPairService
     }
 
     @Transactional
-    public void renewKeyPairs() {
+    public void renewKeyPairs(int n) {
         disableAllKeyPairsBeforeToday();
-        createNewKeyPairs(3);
+        createNewKeyPairs(n < 1 ? 3 : n);
     }
 
     private void createNewKeyPairs(int count) {
-        AssertUtils.assertTrue(count > 1, "count should be greater than 1");
+        AssertUtils.assertTrue(count > 0, "count should be greater than 0");
         for (int i = 0; i < count; i++) {
             String[] arr = RSAUtils.genKeyPair();
             String pubKey = arr[0];
@@ -63,6 +63,7 @@ public class RsaKeyPairService
 
     public RsaKeyPairPersist randomOne() {
         List<RsaKeyPairPersist> list = getRepository().findEnabled();
+        AssertUtils.assertCollectionNotEmpty(list, "rsa_key_pair should not be empty");
         int n = RandomUtils.secure().randomInt(0, list.size());
         return list.get(n);
     }

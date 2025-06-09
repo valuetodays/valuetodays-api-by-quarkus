@@ -25,6 +25,6 @@ public class RsaKeyPairTask {
     @Scheduled(cron = "0 15 0 * * ?") // 每天00:05
 //    @Scheduled(every = "30s")
     public void renewKeyPairs() {
-        rsaKeyPairService.renewKeyPairs();
+        rsaKeyPairService.renewKeyPairs(3);
     }
 }
