@@ -2,8 +2,10 @@ package cn.valuetodays.api2.basic.controller;
 
 import cn.valuetodays.api2.basic.persist.RsaKeyPairPersist;
 import cn.valuetodays.api2.basic.service.RsaKeyPairService;
+import cn.valuetodays.api2.basic.vo.GetPublicKeyResp;
 import cn.valuetodays.quarkus.commons.base.BaseController;
 import cn.vt.R;
+import cn.vt.util.ConvertUtils2;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 
@@ -23,8 +25,10 @@ public class RsaKeyPairController
 
     @Path("/public/getPublicKey")
     @POST
-    public R<RsaKeyPairPersist> getPublicKey() {
-        return R.success(service.randomOne());
+    public R<GetPublicKeyResp> getPublicKey() {
+        RsaKeyPairPersist randomOne = service.randomOne();
+        GetPublicKeyResp copied = ConvertUtils2.convertObj(randomOne, GetPublicKeyResp.class);
+        return R.success(copied);
     }
 
 }
