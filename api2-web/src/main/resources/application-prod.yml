@@ -21,3 +21,7 @@ quarkus:
 nats:
   server: nats://aliyun2:4222
   token: by-command-line
+
+jasypt:
+  encryptor:
+    password: 'from-command-line'

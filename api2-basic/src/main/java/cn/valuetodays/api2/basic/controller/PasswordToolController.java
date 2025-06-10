@@ -2,8 +2,10 @@ package cn.valuetodays.api2.basic.controller;
 
 import cn.valuetodays.api2.basic.vo.EncryptPasswordReq;
 import cn.valuetodays.api2.basic.vo.EncryptPasswordResp;
+import cn.valuetodays.api2.web.common.properties.JasyptEncryptorProperties;
 import cn.vt.R;
 import cn.vt.encrypt.BCryptUtils;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 
@@ -15,6 +17,9 @@ import jakarta.ws.rs.Path;
  */
 @Path("/passwordTool")
 public class PasswordToolController {
+
+    @Inject
+    JasyptEncryptorProperties jasyptEncryptorProperties;
 
     @Path("/encryptPassword")
     @POST
