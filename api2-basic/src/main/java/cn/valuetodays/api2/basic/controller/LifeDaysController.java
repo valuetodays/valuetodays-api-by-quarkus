@@ -2,6 +2,7 @@ package cn.valuetodays.api2.basic.controller;
 
 import cn.valuetodays.api2.basic.vo.LeftDaysInLifeReq;
 import cn.valuetodays.api2.basic.vo.LeftDaysInLifeResp;
+import cn.vt.R;
 import cn.vt.core.Title;
 import cn.vt.util.DateUtils;
 import jakarta.validation.Valid;
@@ -25,20 +26,20 @@ public class LifeDaysController {
     @Title({"生命倒计时", "生命中剩余天数"})
     @Path("/defaultLeftDaysInLife")
     @POST
-    public List<LeftDaysInLifeResp> defaultLeftDaysInLife() {
+    public R<List<LeftDaysInLifeResp>> defaultLeftDaysInLife() {
         LeftDaysInLifeReq req = new LeftDaysInLifeReq();
         req.setUserName("Billy");
         req.setExpectedAge(65);
         req.setDayOfBirth(LocalDate.of(1992, 11, 1).format(DateUtils.DEFAULT_DATE_FORMATTER));
-        return this.leftDaysInLifeBatch(List.of(req));
+        return (this.leftDaysInLifeBatch(List.of(req)));
     }
 
     @Title({"生命倒计时", "生命中剩余天数"})
     @Path("/leftDaysInLife")
     @POST
-    public LeftDaysInLifeResp leftDaysInLife(@Valid LeftDaysInLifeReq req) {
+    public R<LeftDaysInLifeResp> leftDaysInLife(@Valid LeftDaysInLifeReq req) {
         LocalDate now = LocalDate.now();
-        return leftDaysInLife0(req, now);
+        return R.success(leftDaysInLife0(req, now));
     }
 
     public LeftDaysInLifeResp leftDaysInLife0(LeftDaysInLifeReq req, LocalDate targetDate) {
@@ -67,13 +68,16 @@ public class LifeDaysController {
     @Title({"生命倒计时(批量)", "生命中剩余天数(批量)"})
     @Path("/leftDaysInLifeBatch")
     @POST
-    public List<LeftDaysInLifeResp> leftDaysInLifeBatch(List<LeftDaysInLifeReq> reqList) {
+    public R<List<LeftDaysInLifeResp>> leftDaysInLifeBatch(List<LeftDaysInLifeReq> reqList) {
         if (CollectionUtils.isEmpty(reqList)) {
-            return List.of();
+            return R.success(List.of());
         }
-        return reqList.stream()
-            .map(this::leftDaysInLife)
-            .toList();
+        return R.success(
+            reqList.stream()
+                .map(this::leftDaysInLife)
+                .map(R::getData)
+                .toList()
+        );
     }
 
 }
