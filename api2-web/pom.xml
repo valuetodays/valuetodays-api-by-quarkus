@@ -45,16 +45,10 @@
             <artifactId>api2-account</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <!--
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-smallrye-openapi</artifactId>
-        </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-resteasy</artifactId>
         </dependency>
-        -->
         <!-- https://mvnrepository.com/artifact/p6spy/p6spy -->
         <dependency>
             <groupId>p6spy</groupId>
