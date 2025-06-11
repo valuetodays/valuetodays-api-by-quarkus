@@ -25,6 +25,7 @@
         <module>module-codegenerator</module>
         <module>module-third-rest</module>
         <module>module-api-github</module>
+        <module>module-tests</module>
         <module>api2-dependencies-web</module>
         <module>api2-extra</module>
         <module>api2-account</module>

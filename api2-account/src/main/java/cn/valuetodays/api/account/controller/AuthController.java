@@ -35,7 +35,7 @@ import java.util.Objects;
  * @author lei.liu
  * @since 2025-06-08
  */
-@Path("auth")
+@Path("/auth")
 @Slf4j
 public class AuthController extends BaseAuthorizationController {
     @Inject
