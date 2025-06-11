@@ -3,7 +3,7 @@ package cn.valuetodays.api2.basic.service;
 import cn.valuetodays.api2.basic.dao.RsaKeyPairRepository;
 import cn.valuetodays.api2.basic.enums.CommonEnums.EnableStatus;
 import cn.valuetodays.api2.basic.persist.RsaKeyPairPersist;
-import cn.valuetodays.quarkus.commons.base.BaseService;
+import cn.valuetodays.quarkus.commons.base.BaseCrudService;
 import cn.vt.exception.AssertUtils;
 import cn.vt.util.RSAUtils;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -24,7 +24,7 @@ import java.util.List;
 @ApplicationScoped
 @Slf4j
 public class RsaKeyPairService
-    extends BaseService<Long, RsaKeyPairPersist, RsaKeyPairRepository> {
+    extends BaseCrudService<Long, RsaKeyPairPersist, RsaKeyPairRepository> {
 
     public RsaKeyPairPersist findByKeyId(String keyId) {
         return getRepository().findByKeyId(keyId);

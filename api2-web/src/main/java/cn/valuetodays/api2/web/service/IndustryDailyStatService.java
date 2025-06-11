@@ -2,7 +2,7 @@ package cn.valuetodays.api2.web.service;
 
 import cn.valuetodays.api2.client.persist.IndustryDailyStatPersist;
 import cn.valuetodays.api2.web.repository.IndustryDailyStatRepository;
-import cn.valuetodays.quarkus.commons.base.BaseService;
+import cn.valuetodays.quarkus.commons.base.BaseCrudService;
 import cn.vt.rest.third.eastmoney.EastMoneyIndustryUtils;
 import cn.vt.rest.third.eastmoney.vo.EastMoneyIndustryInfoData;
 import cn.vt.rest.third.utils.NumberUtils;
@@ -24,7 +24,7 @@ import java.util.List;
  */
 @ApplicationScoped
 @Slf4j
-public class IndustryDailyStatService extends BaseService<Long, IndustryDailyStatPersist, IndustryDailyStatRepository> {
+public class IndustryDailyStatService extends BaseCrudService<Long, IndustryDailyStatPersist, IndustryDailyStatRepository> {
 
     public void refresh() {
         List<EastMoneyIndustryInfoData.IndustryInfoItemTyped> list = EastMoneyIndustryUtils.getIndustryDailyInfo();

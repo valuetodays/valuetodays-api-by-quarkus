@@ -3,7 +3,7 @@ package cn.valuetodays.api2.web.service;
 import cn.valuetodays.api2.client.persist.StockAlertLogPersist;
 import cn.valuetodays.api2.client.persist.StockAlertPersist;
 import cn.valuetodays.api2.web.repository.StockAlertLogDAO;
-import cn.valuetodays.quarkus.commons.base.BaseService;
+import cn.valuetodays.quarkus.commons.base.BaseCrudService;
 import cn.valuetodays.quarkus.commons.base.jpa.JpaIdBasePersist;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @ApplicationScoped
 @Slf4j
 public class StockAlertLogService
-    extends BaseService<Long, StockAlertLogPersist, StockAlertLogDAO> {
+    extends BaseCrudService<Long, StockAlertLogPersist, StockAlertLogDAO> {
 
     @Inject
     private StockAlertService stockAlertService;

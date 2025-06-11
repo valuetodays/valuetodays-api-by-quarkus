@@ -6,7 +6,7 @@ import cn.valuetodays.module.spider.client.reqresp.WxmpArticleGatherReq;
 import cn.valuetodays.module.spider.client.reqresp.WxmpArticleGatherResp;
 import cn.valuetodays.module.spider.dao.WxmpArticleDAO;
 import cn.valuetodays.module.spider.dao.WxmpAuthorDAO;
-import cn.valuetodays.quarkus.commons.base.BaseService;
+import cn.valuetodays.quarkus.commons.base.BaseCrudService;
 import cn.vt.exception.AssertUtils;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  */
 @ApplicationScoped
 public class WxmpArticleServiceImpl
-    extends BaseService<Long, WxmpArticlePO, WxmpArticleDAO> {
+    extends BaseCrudService<Long, WxmpArticlePO, WxmpArticleDAO> {
 
     @Inject
     WxmpArticleSpider wxmpArticleSpider;

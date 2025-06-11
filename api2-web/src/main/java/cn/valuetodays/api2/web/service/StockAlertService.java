@@ -5,7 +5,7 @@ import cn.valuetodays.api2.client.persist.StockAlertLogPersist;
 import cn.valuetodays.api2.client.persist.StockAlertPersist;
 import cn.valuetodays.api2.web.repository.StockAlertDAO;
 import cn.valuetodays.api2.web.repository.StockAlertLogDAO;
-import cn.valuetodays.quarkus.commons.base.BaseService;
+import cn.valuetodays.quarkus.commons.base.BaseCrudService;
 import cn.vt.rest.third.eastmoney.EastMoneyIndexUtils;
 import cn.vt.rest.third.eastmoney.EastMoneyStockUtils;
 import cn.vt.rest.third.eastmoney.vo.EastMoneyStockDetailDataTyped;
@@ -31,7 +31,7 @@ import java.util.Map;
 @ApplicationScoped
 @Slf4j
 public class StockAlertService
-    extends BaseService<Long, StockAlertPersist, StockAlertDAO> {
+    extends BaseCrudService<Long, StockAlertPersist, StockAlertDAO> {
 
     @Inject
     private StockAlertLogDAO stockAlertLogDAO;

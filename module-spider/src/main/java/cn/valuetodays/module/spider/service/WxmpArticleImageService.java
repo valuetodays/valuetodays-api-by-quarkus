@@ -5,7 +5,7 @@ import cn.valuetodays.api2.web.common.GithubComponent;
 import cn.valuetodays.module.spider.client.persist.WxmpArticleImagePersist;
 import cn.valuetodays.module.spider.component.WordPressComponent;
 import cn.valuetodays.module.spider.dao.WxmpArticleImageDAO;
-import cn.valuetodays.quarkus.commons.base.BaseService;
+import cn.valuetodays.quarkus.commons.base.BaseCrudService;
 import cn.vt.exception.AssertUtils;
 import io.smallrye.mutiny.tuples.Tuple2;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -28,7 +28,7 @@ import java.util.Objects;
 @ApplicationScoped
 @Slf4j
 public class WxmpArticleImageService
-    extends BaseService<Long, WxmpArticleImagePersist, WxmpArticleImageDAO> {
+    extends BaseCrudService<Long, WxmpArticleImagePersist, WxmpArticleImageDAO> {
 
     @Inject
     GithubComponent githubComponent;

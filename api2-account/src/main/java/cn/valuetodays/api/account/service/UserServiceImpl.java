@@ -14,7 +14,7 @@ import cn.valuetodays.api.account.reqresp.LoginBO;
 import cn.valuetodays.api.account.reqresp.LoginByIdBO;
 import cn.valuetodays.api.account.reqresp.LoginByOpenidBO;
 import cn.valuetodays.api2.basic.component.VtNatsClient;
-import cn.valuetodays.quarkus.commons.base.BaseService;
+import cn.valuetodays.quarkus.commons.base.BaseCrudService;
 import cn.vt.encrypt.BCryptUtils;
 import cn.vt.exception.AssertUtils;
 import cn.vt.util.ConvertUtils;
@@ -34,7 +34,7 @@ import java.util.Objects;
  * @since 2019-10-22 16:50
  */
 @ApplicationScoped
-public class UserServiceImpl extends BaseService<Long, UserPO, UserDAO> {
+public class UserServiceImpl extends BaseCrudService<Long, UserPO, UserDAO> {
     public static final String TOPIC_APPLICATION_MSG = "applicationmsg";
     @Inject
     VtNatsClient vtNatsClient;

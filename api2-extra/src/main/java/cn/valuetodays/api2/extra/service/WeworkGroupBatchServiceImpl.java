@@ -7,7 +7,7 @@ import cn.valuetodays.api2.extra.persist.WeworkGroupUserPersist;
 import cn.valuetodays.api2.extra.reqresp.SaveGroupAndMemberResp;
 import cn.valuetodays.api2.extra.reqresp.WeworkDiffGroupResp;
 import cn.valuetodays.api2.extra.reqresp.WeworkGroupAndMemberSaveReq;
-import cn.valuetodays.quarkus.commons.base.BaseService;
+import cn.valuetodays.quarkus.commons.base.BaseCrudService;
 import cn.vt.exception.AssertFailException;
 import cn.vt.exception.AssertUtils;
 import cn.vt.util.DateUtils;
@@ -38,7 +38,7 @@ import java.util.stream.IntStream;
 @ApplicationScoped
 @Slf4j
 public class WeworkGroupBatchServiceImpl
-    extends BaseService<Long, WeworkGroupBatchPersist, WeworkGroupBatchDAO> {
+    extends BaseCrudService<Long, WeworkGroupBatchPersist, WeworkGroupBatchDAO> {
     @Inject
     WeworkGroupUserDAO weworkGroupUserDAO;
 

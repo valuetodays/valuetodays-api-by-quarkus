@@ -2,7 +2,7 @@ package cn.valuetodays.module.spider.service;
 
 import cn.valuetodays.module.spider.client.persist.StockNewAccountPersist;
 import cn.valuetodays.module.spider.dao.StockNewAccountRepository;
-import cn.valuetodays.quarkus.commons.base.BaseService;
+import cn.valuetodays.quarkus.commons.base.BaseCrudService;
 import cn.vt.rest.third.sse.SseNewStockAccountClientUtils;
 import cn.vt.rest.third.sse.vo.StockNewAccountResp;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -24,7 +24,7 @@ import java.util.Objects;
  */
 @ApplicationScoped
 @Slf4j
-public class StockNewAccountService extends BaseService<Long, StockNewAccountPersist, StockNewAccountRepository> {
+public class StockNewAccountService extends BaseCrudService<Long, StockNewAccountPersist, StockNewAccountRepository> {
 
 
     public void refresh() {

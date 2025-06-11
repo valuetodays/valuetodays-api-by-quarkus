@@ -2,7 +2,7 @@ package cn.valuetodays.api2.basic.service;
 
 import cn.valuetodays.api2.basic.dao.SmsLogDAO;
 import cn.valuetodays.api2.basic.persist.SmsLogPO;
-import cn.valuetodays.quarkus.commons.base.BaseService;
+import cn.valuetodays.quarkus.commons.base.BaseCrudService;
 import jakarta.enterprise.context.ApplicationScoped;
 
 /**
@@ -13,6 +13,6 @@ import jakarta.enterprise.context.ApplicationScoped;
  */
 @ApplicationScoped
 public class SmsLogServiceImpl
-    extends BaseService<Long, SmsLogPO, SmsLogDAO> {
+    extends BaseCrudService<Long, SmsLogPO, SmsLogDAO> {
 
 }

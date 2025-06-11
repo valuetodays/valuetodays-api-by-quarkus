@@ -2,7 +2,7 @@ package cn.valuetodays.module.codegenerator.service;
 
 import cn.valuetodays.module.codegenerator.dao.CgTemplateGroupDAO;
 import cn.valuetodays.module.codegenerator.po.CgTemplateGroupPersist;
-import cn.valuetodays.quarkus.commons.base.BaseService;
+import cn.valuetodays.quarkus.commons.base.BaseCrudService;
 import jakarta.enterprise.context.ApplicationScoped;
 
 /**
@@ -13,6 +13,6 @@ import jakarta.enterprise.context.ApplicationScoped;
  */
 @ApplicationScoped
 public class CgTemplateGroupService
-    extends BaseService<Long, CgTemplateGroupPersist, CgTemplateGroupDAO> {
+    extends BaseCrudService<Long, CgTemplateGroupPersist, CgTemplateGroupDAO> {
 
 }

@@ -4,7 +4,7 @@ import cn.valuetodays.api2.basic.dao.DictTypeDAO;
 import cn.valuetodays.api2.basic.persist.DictItemPO;
 import cn.valuetodays.api2.basic.persist.DictTypePO;
 import cn.valuetodays.api2.basic.vo.BarkDict;
-import cn.valuetodays.quarkus.commons.base.BaseService;
+import cn.valuetodays.quarkus.commons.base.BaseCrudService;
 import cn.vt.exception.AssertUtils;
 import cn.vt.util.JsonUtils;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @ApplicationScoped
 @Slf4j
 public class DictTypeService
-    extends BaseService<Long, DictTypePO, DictTypeDAO> {
+    extends BaseCrudService<Long, DictTypePO, DictTypeDAO> {
     @Inject
     DictItemService dictItemService;
 

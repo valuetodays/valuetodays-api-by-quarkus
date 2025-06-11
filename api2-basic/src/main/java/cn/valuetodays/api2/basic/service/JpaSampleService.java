@@ -2,7 +2,7 @@ package cn.valuetodays.api2.basic.service;
 
 import cn.valuetodays.api2.basic.dao.JpaSampleRepository;
 import cn.valuetodays.api2.basic.persist.JpaSamplePersist;
-import cn.valuetodays.quarkus.commons.base.BaseService;
+import cn.valuetodays.quarkus.commons.base.BaseCrudService;
 import jakarta.enterprise.context.ApplicationScoped;
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,6 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 @ApplicationScoped
 @Slf4j
 public class JpaSampleService
-    extends BaseService<Long, JpaSamplePersist, JpaSampleRepository> {
+    extends BaseCrudService<Long, JpaSamplePersist, JpaSampleRepository> {
 }
 
