@@ -34,7 +34,8 @@ public class CgTemplateServiceTest {
         req.setPageNum(1);
         req.setPageSize(10);
         List<QuerySearch> searches = List.of(
-            QuerySearch.of("title", "quarkus", Operator.LIKE)
+            QuerySearch.of("title", "", Operator.LIKE),
+            QuerySearch.of("fileName", "trolle", Operator.LIKE)
         );
         req.setSearches(searches);
         RestPageImpl<CgTemplatePO> query = cgTemplateService.query(req);
