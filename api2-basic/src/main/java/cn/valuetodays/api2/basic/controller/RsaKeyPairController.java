@@ -3,7 +3,7 @@ package cn.valuetodays.api2.basic.controller;
 import cn.valuetodays.api2.basic.persist.RsaKeyPairPersist;
 import cn.valuetodays.api2.basic.service.RsaKeyPairService;
 import cn.valuetodays.api2.basic.vo.GetPublicKeyResp;
-import cn.valuetodays.quarkus.commons.base.BaseController;
+import cn.valuetodays.quarkus.commons.base.BaseCrudController;
 import cn.vt.R;
 import cn.vt.util.ConvertUtils2;
 import jakarta.ws.rs.POST;
@@ -17,7 +17,7 @@ import jakarta.ws.rs.Path;
  */
 @Path("/rsaKeyPair")
 public class RsaKeyPairController
-    extends BaseController<
+    extends BaseCrudController<
     Long,
     RsaKeyPairPersist,
     RsaKeyPairService

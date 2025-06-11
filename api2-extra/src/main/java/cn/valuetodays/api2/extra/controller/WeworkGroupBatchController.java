@@ -6,7 +6,7 @@ import cn.valuetodays.api2.extra.reqresp.WeworkDiffGroupReq;
 import cn.valuetodays.api2.extra.reqresp.WeworkDiffGroupResp;
 import cn.valuetodays.api2.extra.reqresp.WeworkGroupAndMemberSaveReq;
 import cn.valuetodays.api2.extra.service.WeworkGroupBatchServiceImpl;
-import cn.valuetodays.quarkus.commons.base.BaseController;
+import cn.valuetodays.quarkus.commons.base.BaseCrudController;
 import cn.vt.R;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.ws.rs.POST;
@@ -21,7 +21,7 @@ import jakarta.ws.rs.Path;
 @RequestScoped
 @Path("/extra/weworkGroupBatch")
 public class WeworkGroupBatchController
-    extends BaseController<
+    extends BaseCrudController<
     Long,
     WeworkGroupBatchPersist,
     WeworkGroupBatchServiceImpl

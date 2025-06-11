@@ -2,7 +2,7 @@ package cn.valuetodays.api2.web.controller;
 
 import cn.valuetodays.api2.client.persist.StockAlertPersist;
 import cn.valuetodays.api2.web.service.StockAlertService;
-import cn.valuetodays.quarkus.commons.base.BaseController;
+import cn.valuetodays.quarkus.commons.base.BaseCrudController;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.ws.rs.Path;
 
@@ -15,7 +15,7 @@ import jakarta.ws.rs.Path;
 @RequestScoped
 @Path("/stockAlert")
 public class StockAlertController
-    extends BaseController<
+    extends BaseCrudController<
     Long,
     StockAlertPersist,
     StockAlertService

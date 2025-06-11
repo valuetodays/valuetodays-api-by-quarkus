@@ -3,7 +3,7 @@ package cn.valuetodays.module.spider.controller;
 import cn.valuetodays.api2.web.common.GithubComponent;
 import cn.valuetodays.module.spider.client.persist.WxmpArticleImagePersist;
 import cn.valuetodays.module.spider.service.WxmpArticleImageService;
-import cn.valuetodays.quarkus.commons.base.BaseController;
+import cn.valuetodays.quarkus.commons.base.BaseCrudController;
 import cn.vt.R;
 import cn.vt.exception.AssertUtils;
 import cn.vt.web.req.SimpleTypesReq;
@@ -24,7 +24,7 @@ import java.util.List;
 @RequestScoped
 @Path("/wxmpArticleImage")
 public class WxmpArticleImageController
-    extends BaseController<
+    extends BaseCrudController<
     Long,
     WxmpArticleImagePersist,
     WxmpArticleImageService

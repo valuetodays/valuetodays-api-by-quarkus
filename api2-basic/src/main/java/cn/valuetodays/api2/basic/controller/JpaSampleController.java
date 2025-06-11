@@ -2,7 +2,7 @@ package cn.valuetodays.api2.basic.controller;
 
 import cn.valuetodays.api2.basic.persist.JpaSamplePersist;
 import cn.valuetodays.api2.basic.service.JpaSampleService;
-import cn.valuetodays.quarkus.commons.base.BaseController;
+import cn.valuetodays.quarkus.commons.base.BaseCrudController;
 import jakarta.ws.rs.Path;
 
 /**
@@ -13,6 +13,6 @@ import jakarta.ws.rs.Path;
  */
 @Path("/basic/jpaSample")
 public class JpaSampleController
-    extends BaseController<Long, JpaSamplePersist, JpaSampleService> {
+    extends BaseCrudController<Long, JpaSamplePersist, JpaSampleService> {
 
 }
