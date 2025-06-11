@@ -8,7 +8,7 @@
         <artifactId>api2-by-quarkus</artifactId>
         <version>1.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>module-tests</artifactId>
+    <artifactId>module-fortune</artifactId>
 
     <properties>
     </properties>
@@ -16,7 +16,12 @@
     <dependencies>
         <dependency>
             <groupId>cn.valuetodays</groupId>
-            <artifactId>api2-web</artifactId>
+            <artifactId>api2-dependencies-web</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.valuetodays</groupId>
+            <artifactId>module-third-rest</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
