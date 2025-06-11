@@ -10,6 +10,7 @@ import cn.valuetodays.api2.basic.vo.SendSmsCodeVO;
 import cn.valuetodays.api2.basic.vo.SendSmsIO;
 import cn.valuetodays.api2.basic.vo.SmsResultVO;
 import cn.valuetodays.api2.basic.vo.VerifySmsCodeIO;
+import cn.valuetodays.api2.web.common.ProfileUtils;
 import cn.vt.exception.AssertUtils;
 import cn.vt.util.JsonUtils;
 import cn.vt.util.Randoms;
@@ -20,8 +21,6 @@ import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
-import org.springframework.core.env.Environment;
-import org.springframework.core.env.Profiles;
 
 import java.time.Duration;
 import java.util.Objects;
@@ -36,11 +35,11 @@ import java.util.UUID;
 public class SmsServiceImpl {
 
     @Inject
-    private Environment environment;
+    ProfileUtils profileUtils;
     @Inject
-    private RedisDataSource basicCache;
+    RedisDataSource basicCache;
     @Inject
-    private SmsLogDAO smsLogDAO;
+    SmsLogDAO smsLogDAO;
 
     private String getSmscode() {
         int i = Randoms.RANDOM.nextInt(9000) + 1000;
@@ -82,7 +81,7 @@ public class SmsServiceImpl {
                 setArgs);
             // 开发环境将短信验证码返回
             String returnSmscode = StringUtils.EMPTY;
-            if (environment.acceptsProfiles(Profiles.of("dev"))) {
+            if (profileUtils.isDev()) {
                 returnSmscode = smscode;
             }
             return SmsResultVO.success(returnSmscode);
