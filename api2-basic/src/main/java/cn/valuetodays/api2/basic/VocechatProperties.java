@@ -1,11 +1,11 @@
 package cn.valuetodays.api2.basic;
 
+import java.util.Objects;
+
 import cn.valuetodays.api2.basic.vo.PushBaseReq;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-
-import java.util.Objects;
 
 /**
  * .
@@ -20,6 +20,7 @@ public class VocechatProperties {
     private String urlSendToGroup;
     private String urlSendToUser;
     private String apiKey;
+    private String botFortuneApiKey;
 
     @JsonIgnore
     public String buildUrl(PushBaseReq req) {
