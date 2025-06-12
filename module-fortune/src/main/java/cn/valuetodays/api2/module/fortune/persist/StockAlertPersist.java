@@ -1,6 +1,8 @@
-package cn.valuetodays.api2.client.persist;
+package cn.valuetodays.api2.module.fortune.persist;
 
-import cn.valuetodays.api2.client.enums.StockAlertEnums;
+import java.math.BigDecimal;
+
+import cn.valuetodays.api2.module.fortune.enums.StockAlertEnums;
 import cn.valuetodays.quarkus.commons.base.jpa.JpaCrudLongIdBasePersist;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
@@ -10,8 +12,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.math.BigDecimal;
 
 /**
  * 股票告警

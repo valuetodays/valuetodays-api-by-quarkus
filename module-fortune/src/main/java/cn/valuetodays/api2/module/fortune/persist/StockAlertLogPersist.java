@@ -1,4 +1,8 @@
-package cn.valuetodays.api2.client.persist;
+package cn.valuetodays.api2.module.fortune.persist;
+
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 
 import cn.valuetodays.quarkus.commons.base.jpa.JpaCrudLongIdBasePersist;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -8,10 +12,6 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 股票告警记录表
@@ -25,7 +25,6 @@ import java.util.Map;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class StockAlertLogPersist extends JpaCrudLongIdBasePersist {
-
 
     @Column(name = "alert_id")
     private Long alertId;

@@ -1,4 +1,6 @@
-package cn.valuetodays.api2.client.persist;
+package cn.valuetodays.api2.module.fortune.persist;
+
+import java.math.BigDecimal;
 
 import cn.valuetodays.quarkus.commons.base.jpa.JpaCrudLongIdBasePersist;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -8,8 +10,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.math.BigDecimal;
 
 /**
  * 行业每日统计
@@ -24,7 +24,6 @@ import java.math.BigDecimal;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class IndustryDailyStatPersist extends JpaCrudLongIdBasePersist {
-
 
     @Column(name = "stat_date")
     private Integer statDate;

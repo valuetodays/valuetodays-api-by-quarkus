@@ -1,12 +1,12 @@
-package cn.valuetodays.api2.web.repository;
+package cn.valuetodays.api2.module.fortune.dao;
 
 
-import cn.valuetodays.api2.client.persist.IndustryDailyStatPersist;
+import java.util.List;
+
+import cn.valuetodays.api2.module.fortune.persist.IndustryDailyStatPersist;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
-
-import java.util.List;
 
 /**
  * .

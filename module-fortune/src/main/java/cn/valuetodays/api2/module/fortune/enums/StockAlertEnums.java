@@ -1,4 +1,4 @@
-package cn.valuetodays.api2.client.enums;
+package cn.valuetodays.api2.module.fortune.enums;
 
 import cn.vt.core.TitleCapable;
 import lombok.Getter;

@@ -1,11 +1,11 @@
-package cn.valuetodays.api2.web.repository;
-
-import cn.valuetodays.api2.client.enums.StockAlertEnums;
-import cn.valuetodays.api2.client.persist.StockAlertPersist;
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
-import jakarta.enterprise.context.ApplicationScoped;
+package cn.valuetodays.api2.module.fortune.dao;
 
 import java.util.List;
+
+import cn.valuetodays.api2.module.fortune.enums.StockAlertEnums;
+import cn.valuetodays.api2.module.fortune.persist.StockAlertPersist;
+import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import jakarta.enterprise.context.ApplicationScoped;
 
 /**
  * @author lei.liu

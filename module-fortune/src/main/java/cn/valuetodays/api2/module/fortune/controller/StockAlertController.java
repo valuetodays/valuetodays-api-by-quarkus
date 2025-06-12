@@ -1,7 +1,7 @@
-package cn.valuetodays.api2.web.controller;
+package cn.valuetodays.api2.module.fortune.controller;
 
-import cn.valuetodays.api2.client.persist.StockAlertPersist;
-import cn.valuetodays.api2.web.service.StockAlertService;
+import cn.valuetodays.api2.module.fortune.persist.StockAlertPersist;
+import cn.valuetodays.api2.module.fortune.service.StockAlertService;
 import cn.valuetodays.quarkus.commons.base.BaseCrudController;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.ws.rs.Path;

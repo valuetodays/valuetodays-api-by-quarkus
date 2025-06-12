@@ -275,9 +275,6 @@ public class VocechatServiceImpl {
         Map<String, String> bodyForSendToUser = Map.of("path", path);
         try {
             String s = doPostString(urlForSendToGroup, JsonUtils.toJson(bodyForSendToUser), contentType, apiKey);
-//            String s = HttpClient4Utils.doPostPlainString(
-//                urlForSendToGroup, JsonUtils.toJson(bodyForSendToUser), contentType, headerMap, null
-//            );
             log.info("respStr: {}", s);
         } catch (Exception e) {
             log.error("error when pushVocechatText()", e);

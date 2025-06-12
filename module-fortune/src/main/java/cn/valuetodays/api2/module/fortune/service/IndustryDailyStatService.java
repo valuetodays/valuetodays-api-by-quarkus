@@ -1,7 +1,11 @@
-package cn.valuetodays.api2.web.service;
+package cn.valuetodays.api2.module.fortune.service;
 
-import cn.valuetodays.api2.client.persist.IndustryDailyStatPersist;
-import cn.valuetodays.api2.web.repository.IndustryDailyStatRepository;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
+
+import cn.valuetodays.api2.module.fortune.dao.IndustryDailyStatRepository;
+import cn.valuetodays.api2.module.fortune.persist.IndustryDailyStatPersist;
 import cn.valuetodays.quarkus.commons.base.BaseCrudService;
 import cn.vt.rest.third.eastmoney.EastMoneyIndustryUtils;
 import cn.vt.rest.third.eastmoney.vo.EastMoneyIndustryInfoData;
@@ -11,10 +15,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.hibernate.exception.ConstraintViolationException;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.List;
 
 /**
  * .

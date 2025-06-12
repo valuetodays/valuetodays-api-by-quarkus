@@ -1,8 +1,12 @@
-package cn.valuetodays.api2.web.controller;
+package cn.valuetodays.api2.module.fortune.controller;
 
-import cn.valuetodays.api2.client.persist.IndustryDailyStatPersist;
-import cn.valuetodays.api2.client.req.IndustryDailyStatDaysReq;
-import cn.valuetodays.api2.web.service.IndustryDailyStatService;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Objects;
+
+import cn.valuetodays.api2.module.fortune.persist.IndustryDailyStatPersist;
+import cn.valuetodays.api2.module.fortune.reqresp.IndustryDailyStatDaysReq;
+import cn.valuetodays.api2.module.fortune.service.IndustryDailyStatService;
 import cn.vt.R;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
@@ -11,10 +15,6 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Objects;
 
 /**
  * .
@@ -28,7 +28,7 @@ import java.util.Objects;
 @Consumes({MediaType.APPLICATION_JSON})
 public class IndustryDailyStatController {
     @Inject
-    private IndustryDailyStatService industryDailyStatService;
+    IndustryDailyStatService industryDailyStatService;
 
     @POST
     @Path("/getByLatestDays")

@@ -1,8 +1,8 @@
-package cn.valuetodays.api2.client.req;
-
-import lombok.Data;
+package cn.valuetodays.api2.module.fortune.reqresp;
 
 import java.io.Serializable;
+
+import lombok.Data;
 
 /**
  * .

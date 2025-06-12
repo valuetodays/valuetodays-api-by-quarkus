@@ -1,6 +1,6 @@
 package cn.valuetodays.api2.web.task;
 
-import cn.valuetodays.api2.web.service.IndustryDailyStatService;
+import cn.valuetodays.api2.module.fortune.service.IndustryDailyStatService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;

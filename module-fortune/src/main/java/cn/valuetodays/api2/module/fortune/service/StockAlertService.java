@@ -1,10 +1,15 @@
-package cn.valuetodays.api2.web.service;
+package cn.valuetodays.api2.module.fortune.service;
 
-import cn.valuetodays.api2.client.enums.StockAlertEnums;
-import cn.valuetodays.api2.client.persist.StockAlertLogPersist;
-import cn.valuetodays.api2.client.persist.StockAlertPersist;
-import cn.valuetodays.api2.web.repository.StockAlertDAO;
-import cn.valuetodays.api2.web.repository.StockAlertLogDAO;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.List;
+import java.util.Map;
+
+import cn.valuetodays.api2.module.fortune.dao.StockAlertDAO;
+import cn.valuetodays.api2.module.fortune.dao.StockAlertLogDAO;
+import cn.valuetodays.api2.module.fortune.enums.StockAlertEnums;
+import cn.valuetodays.api2.module.fortune.persist.StockAlertLogPersist;
+import cn.valuetodays.api2.module.fortune.persist.StockAlertPersist;
 import cn.valuetodays.quarkus.commons.base.BaseCrudService;
 import cn.vt.rest.third.eastmoney.EastMoneyIndexUtils;
 import cn.vt.rest.third.eastmoney.EastMoneyStockUtils;
@@ -16,11 +21,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 股票告警
@@ -34,7 +34,7 @@ public class StockAlertService
     extends BaseCrudService<Long, StockAlertPersist, StockAlertDAO> {
 
     @Inject
-    private StockAlertLogDAO stockAlertLogDAO;
+    StockAlertLogDAO stockAlertLogDAO;
 
     public void scheduleAlert(StockAlertEnums.ScheduleType scheduleType) {
         List<StockAlertPersist> list = getRepository().findAllByStatusAndScheduleType(StockAlertEnums.Status.NORMAL, scheduleType);
