@@ -1,17 +1,17 @@
 package cn.valuetodays.api2.module.tests;
 
-import cn.vt.test.jupiter.condition.EnabledOnFile;
-import cn.vt.util.JsonUtils;
-import com.fasterxml.jackson.core.type.TypeReference;
-import org.apache.commons.io.FileUtils;
-import org.junit.jupiter.api.Test;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import cn.vt.test.jupiter.condition.EnabledOnFile;
+import cn.vt.util.JsonUtils;
+import com.fasterxml.jackson.core.type.TypeReference;
+import org.apache.commons.io.FileUtils;
+import org.junit.jupiter.api.Test;
 
 /**
  * .
@@ -37,11 +37,11 @@ public class ProcessRpgMakerGameJsonTest {
                     continue;
                 }
                 Object exp = map.get("exp");
-                map.put("exp", ((Integer)exp)*10);
+                map.put("exp", ((Integer) exp) * 10);
                 Object gold = map.get("gold");
-                map.put("gold", ((Integer)gold)*100);
+                map.put("gold", ((Integer) gold) * 100);
                 //noinspection unchecked
-                List<Integer> paramsAsIntList = (List<Integer>)params;
+                List<Integer> paramsAsIntList = (List<Integer>) params;
                 paramsAsIntList.set(0, 1); // 将所有敌人的hp置为1
             }
         }

@@ -1,5 +1,8 @@
 package cn.valuetodays.api2.module.tests;
 
+import java.io.IOException;
+import java.io.StringWriter;
+
 import cn.vt.test.TestBase;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
@@ -8,11 +11,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-import java.io.StringWriter;
-
 /**
- *
  * @author lei.liu
  * @since 2023-01-17
  */
@@ -67,7 +66,7 @@ class ParseChromeBookmarkFileTest extends TestBase {
                     String childInDlTagName = childInDl.tagName();
                     if (StringUtils.equalsIgnoreCase("dt", childInDlTagName)) {
                         Element innerAOrH3Ele = childInDl.child(0);
-                        parseFolderAndAElement(innerAOrH3Ele, stringWriter, indent+1);
+                        parseFolderAndAElement(innerAOrH3Ele, stringWriter, indent + 1);
                     }
                 }
             }
