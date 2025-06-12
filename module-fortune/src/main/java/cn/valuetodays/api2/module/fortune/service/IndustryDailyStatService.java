@@ -7,11 +7,13 @@ import java.util.List;
 import cn.valuetodays.api2.module.fortune.dao.IndustryDailyStatRepository;
 import cn.valuetodays.api2.module.fortune.persist.IndustryDailyStatPersist;
 import cn.valuetodays.quarkus.commons.base.BaseCrudService;
+import cn.vt.exception.CommonException;
 import cn.vt.rest.third.eastmoney.EastMoneyIndustryUtils;
 import cn.vt.rest.third.eastmoney.vo.EastMoneyIndustryInfoData;
 import cn.vt.rest.third.utils.NumberUtils;
 import cn.vt.util.DateUtils;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.hibernate.exception.ConstraintViolationException;
@@ -26,6 +28,7 @@ import org.hibernate.exception.ConstraintViolationException;
 @Slf4j
 public class IndustryDailyStatService extends BaseCrudService<Long, IndustryDailyStatPersist, IndustryDailyStatRepository> {
 
+    @Transactional
     public void refresh() {
         List<EastMoneyIndustryInfoData.IndustryInfoItemTyped> list = EastMoneyIndustryUtils.getIndustryDailyInfo();
         if (CollectionUtils.isEmpty(list)) {
@@ -55,6 +58,7 @@ public class IndustryDailyStatService extends BaseCrudService<Long, IndustryDail
                 // fall through
             } catch (Exception e) {
                 log.error("error when insert ", e);
+                throw new CommonException(e);
             }
         }
     }

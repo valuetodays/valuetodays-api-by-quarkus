@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 public class IndustryDailyStatServiceTest {
 
     @Inject
-    private IndustryDailyStatService industryDailyStatService;
+    IndustryDailyStatService industryDailyStatService;
 
     @Test
     public void refresh() {

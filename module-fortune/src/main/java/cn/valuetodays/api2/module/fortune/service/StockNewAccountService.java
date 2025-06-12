@@ -1,20 +1,21 @@
-package cn.valuetodays.module.spider.service;
-
-import cn.valuetodays.module.spider.client.persist.StockNewAccountPersist;
-import cn.valuetodays.module.spider.dao.StockNewAccountRepository;
-import cn.valuetodays.quarkus.commons.base.BaseCrudService;
-import cn.vt.rest.third.sse.SseNewStockAccountClientUtils;
-import cn.vt.rest.third.sse.vo.StockNewAccountResp;
-import jakarta.enterprise.context.ApplicationScoped;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.hibernate.exception.ConstraintViolationException;
+package cn.valuetodays.api2.module.fortune.service;
 
 import java.math.BigDecimal;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
+
+import cn.valuetodays.api2.module.fortune.dao.StockNewAccountRepository;
+import cn.valuetodays.api2.module.fortune.persist.StockNewAccountPersist;
+import cn.valuetodays.quarkus.commons.base.BaseCrudService;
+import cn.vt.rest.third.sse.SseNewStockAccountClientUtils;
+import cn.vt.rest.third.sse.vo.StockNewAccountResp;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.exception.ConstraintViolationException;
 
 /**
  * .
@@ -27,6 +28,7 @@ import java.util.Objects;
 public class StockNewAccountService extends BaseCrudService<Long, StockNewAccountPersist, StockNewAccountRepository> {
 
 
+    @Transactional
     public void refresh() {
         refresh(YearMonth.now().minusMonths(1L));
     }
@@ -34,6 +36,7 @@ public class StockNewAccountService extends BaseCrudService<Long, StockNewAccoun
     /**
      * @param yearMonth 注意要小于等于上月
      */
+    @Transactional
     public void refresh(YearMonth yearMonth) {
         String yyyyMM = yearMonth.format(DateTimeFormatter.ofPattern("yyyyMM"));
         StockNewAccountResp resp = SseNewStockAccountClientUtils.getStockNewAccount(yyyyMM);

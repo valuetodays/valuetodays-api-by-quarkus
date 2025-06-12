@@ -1,6 +1,6 @@
-package cn.valuetodays.module.spider.dao;
+package cn.valuetodays.api2.module.fortune.dao;
 
-import cn.valuetodays.module.spider.client.persist.StockNewAccountPersist;
+import cn.valuetodays.api2.module.fortune.persist.StockNewAccountPersist;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 

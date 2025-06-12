@@ -1,6 +1,6 @@
-package cn.valuetodays.module.spider.task;
+package cn.valuetodays.api2.module.fortune.task;
 
-import cn.valuetodays.module.spider.service.StockNewAccountService;
+import cn.valuetodays.api2.module.fortune.service.StockNewAccountService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.springframework.scheduling.annotation.Scheduled;

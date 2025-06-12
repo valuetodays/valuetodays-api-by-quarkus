@@ -1,12 +1,12 @@
 package cn.valuetodays.api2.web.service;
 
-import cn.valuetodays.module.spider.service.StockNewAccountService;
+import java.time.LocalDate;
+import java.time.YearMonth;
+
+import cn.valuetodays.api2.module.fortune.service.StockNewAccountService;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
-
-import java.time.LocalDate;
-import java.time.YearMonth;
 
 /**
  * .
@@ -17,7 +17,7 @@ import java.time.YearMonth;
 @QuarkusTest
 public class StockNewAccountServiceTest extends BaseTest {
     @Inject
-    private StockNewAccountService stockNewAccountService;
+    StockNewAccountService stockNewAccountService;
 
     @Test
     public void refresh() {

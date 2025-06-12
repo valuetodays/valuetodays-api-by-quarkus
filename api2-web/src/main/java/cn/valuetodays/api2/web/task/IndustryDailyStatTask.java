@@ -1,10 +1,11 @@
 package cn.valuetodays.api2.web.task;
 
 import cn.valuetodays.api2.module.fortune.service.IndustryDailyStatService;
+import io.quarkus.scheduler.Scheduled;
+import io.smallrye.common.annotation.Blocking;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Scheduled;
 
 /**
  * .
@@ -16,16 +17,18 @@ import org.springframework.scheduling.annotation.Scheduled;
 @Slf4j
 public class IndustryDailyStatTask {
     @Inject
-    private IndustryDailyStatService industryDailyStatService;
+    IndustryDailyStatService industryDailyStatService;
 
-    @Scheduled(cron = "10 00 18 ? * MON-FRI") // 每工作日18:00:10
+    @Blocking
+    @Scheduled(cron = "10 0 18 ? * MON-FRI") // 每工作日18:00:10
     public void scheduleRefresh() {
         log.info("begin to refresh scheduleRefresh");
         industryDailyStatService.refresh();
         log.info("end to refresh scheduleRefresh");
     }
 
-    @Scheduled(cron = "10 00 23 ? * MON-FRI") // 每工作日23:00:10
+    @Blocking
+    @Scheduled(cron = "10 0 23 ? * MON-FRI") // 每工作日23:00:10
     public void scheduleRefreshTwice() {
         scheduleRefresh();
     }
