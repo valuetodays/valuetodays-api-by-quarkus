@@ -39,14 +39,14 @@ public class ImPushController {
         return true;
     }
 
-    @Path("/vocechat/plainText.do")
+    @Path("/vocechat/plainText")
     @POST
     public Boolean pushVocechatPlainText(PushVocechatTextReq req) {
         req.setPlainText(true);
         return vocechatService.pushVocechatText(req);
     }
 
-    @Path("/vocechat/markdownText.do")
+    @Path("/vocechat/markdownText")
     @POST
     public Boolean pushVocechatMarkdownText(PushVocechatTextReq req) {
         req.setPlainText(false);
