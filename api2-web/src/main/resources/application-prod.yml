@@ -22,9 +22,9 @@ nats:
   server: nats://aliyun2:4222
   token: by-command-line
 
-vt:
-  vocechat:
-    base-path: http://aliyun-prod:3009
+#vt:
+#  vocechat:
+#    base-path: http://aliyun-prod:3009
 
 jasypt:
   encryptor:
