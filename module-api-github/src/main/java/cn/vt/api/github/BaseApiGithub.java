@@ -1,5 +1,9 @@
 package cn.vt.api.github;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
 import cn.vt.exception.CommonException;
 import cn.vt.util.EnvironmentPropertyUtils;
 import cn.vt.util.JsonUtils;
@@ -12,10 +16,6 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 
 /**
  * .
@@ -52,7 +52,6 @@ public abstract class BaseApiGithub {
         Request.Builder builder = new Request.Builder();
         fillHeaders(builder);
         okhttp3.Request request = builder.url(replacePathVariables(url, uriVariables))
-            .url(replacePathVariables(url, uriVariables))
             .get()
             .build();
         try (Response response = httpClient.newCall(request).execute()) {
