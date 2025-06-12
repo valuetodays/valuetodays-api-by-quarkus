@@ -19,7 +19,6 @@ import cn.valuetodays.api2.basic.vo.PushVocechatTextReq;
 import cn.valuetodays.api2.basic.vo.VocechatWebhookReq;
 import cn.vt.exception.CommonException;
 import cn.vt.util.JsonUtils;
-import io.smallrye.common.annotation.Blocking;
 import jakarta.activation.MimetypesFileTypeMap;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -78,7 +77,6 @@ public class VocechatServiceImpl {
         }
     }
 
-    @Blocking
     public Boolean pushVocechatText(PushVocechatTextReq req) {
         String url = buildUrl(req);
         if (StringUtils.isBlank(url)) {
@@ -203,7 +201,6 @@ public class VocechatServiceImpl {
         return null;
     }
 
-    @Blocking
     public void processWebhook(VocechatWebhookReq req) {
         if (Objects.isNull(req)) {
             return;

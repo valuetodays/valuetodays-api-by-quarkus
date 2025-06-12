@@ -3,6 +3,7 @@ package cn.valuetodays.api2.basic.controller;
 import cn.valuetodays.api2.basic.service.VocechatServiceImpl;
 import cn.valuetodays.api2.basic.vo.PushVocechatTextReq;
 import cn.valuetodays.api2.basic.vo.VocechatWebhookReq;
+import io.smallrye.common.annotation.Blocking;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
@@ -15,6 +16,7 @@ import jakarta.ws.rs.Path;
  * @since 2025-06-12
  */
 @Path("/basic/imPush")
+@Blocking
 public class ImPushController {
 
     @Inject
