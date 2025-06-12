@@ -82,6 +82,28 @@ public class VocechatServiceImpl {
         return true;
     }
 
+    public static void main22() {
+        PushVocechatTextReq req = new PushVocechatTextReq();
+        req.setContent("111111111");
+        req.setPlainText(true);
+        req.setToUserId(1);
+        req.setFromUserId(3);
+
+        String url = "http://vocechat.valuetodays.cn/api/bot/send_to_user/1";
+        log.info("url={}", url);
+        String apiKey = "d89f3c09119950ca10b98b100326ea851bde454de092b67b480bd0163106bbc57b22756964223a332c226e6f6e6365223a22336c485a42776446536d6741414141414966364855766c636a422f7a47545249227d";
+        String contentType = req.isPlainText() ? "text/plain" : "text/markdown";
+        Map<String, String> headerMap = Map.of(
+            "x-api-key", apiKey
+        );
+        try {
+            String s = HttpClient4Utils.doPostPlainString(url, req.getContent(), contentType, headerMap, null);
+            log.debug("respStr: {}", s);
+        } catch (Exception e) {
+            log.error("error when pushVocechatText()", e);
+        }
+    }
+
     private String findApiKeyByUid(Integer fromUserId) {
         List<VocechatProperties.Bot> botList = vocechatProperties.botList();
         log.info("botList={}", botList);
@@ -89,6 +111,7 @@ public class VocechatServiceImpl {
             .filter(e -> Objects.equals(fromUserId, e.uid()))
             .findFirst().orElse(botList.getFirst()).apiKey();
         log.info("apikey={}", apikey);
+        main22();
         return apikey;
     }
 
