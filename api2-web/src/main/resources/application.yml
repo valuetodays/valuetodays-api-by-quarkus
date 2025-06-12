@@ -47,8 +47,9 @@ quarkus:
       type: UBER_JAR
     runner-suffix: -runner
   thread-pool:
-    max-threads: 3
-    queue-size: 16
+    max-threads: 200
+    core-threads: 10
+    queue-size: 1000
   redis:
     hosts: redis://localhost:6379
     password: 'abc123'
