@@ -63,6 +63,7 @@ public class VocechatServiceImpl {
 
     public Boolean pushVocechatText(PushVocechatTextReq req) {
         String url = buildUrl(req);
+        log.info("url={}", url);
         if (StringUtils.isBlank(url)) {
             return false;
         }
