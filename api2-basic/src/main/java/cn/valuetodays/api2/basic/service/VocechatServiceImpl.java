@@ -18,7 +18,6 @@ import cn.valuetodays.api2.basic.vo.PushVocechatFileReq;
 import cn.valuetodays.api2.basic.vo.PushVocechatTextReq;
 import cn.valuetodays.api2.basic.vo.VocechatWebhookReq;
 import cn.vt.exception.CommonException;
-import cn.vt.util.HttpClient4Utils;
 import cn.vt.util.JsonUtils;
 import jakarta.activation.MimetypesFileTypeMap;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -26,16 +25,17 @@ import jakarta.inject.Inject;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.entity.mime.content.ContentBody;
 
@@ -50,6 +50,12 @@ import org.apache.http.entity.mime.content.ContentBody;
 public class VocechatServiceImpl {
     @Inject
     VocechatProperties vocechatProperties;
+
+    private final OkHttpClient client = new OkHttpClient.Builder()
+        .connectTimeout(10, TimeUnit.SECONDS)
+        .readTimeout(30, TimeUnit.SECONDS)
+        .writeTimeout(10, TimeUnit.SECONDS)
+        .build();
 
     public static List<ContentBody> splitFile(File srcFile, int size) throws IOException {
         List<ContentBody> segmentList = new ArrayList<>();
@@ -71,112 +77,49 @@ public class VocechatServiceImpl {
 
     public Boolean pushVocechatText(PushVocechatTextReq req) {
         String url = buildUrl(req);
-        log.info("url={}", url);
         if (StringUtils.isBlank(url)) {
             return false;
         }
         String apiKey = findApiKeyByUid(req.getFromUserId());
         String contentType = req.isPlainText() ? "text/plain" : "text/markdown";
-        Map<String, String> headerMap = Map.of(
-            "x-api-key", apiKey
-        );
         try {
-            String s = HttpClient4Utils.doPostPlainString(url, req.getContent(), contentType, headerMap, null);
-            log.debug("respStr: {}", s);
+            String s = doPostString(url, req.getContent(), contentType, apiKey);
+            log.info("respStr: {}", s);
         } catch (Exception e) {
             log.error("error when pushVocechatText()", e);
+            throw new CommonException(e);
         }
 
         return true;
     }
 
-//    public static void main(String[] args) {
-//        main33();
-//    }
-
-    public static void main33() {
-        OkHttpClient client = new OkHttpClient.Builder()
-            .connectTimeout(10, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
-            .writeTimeout(10, TimeUnit.SECONDS)
-            .build();
-
-        String content = "hello - by okhttp";
-
+    private String doPostString(String url, String content, String contentType, String apiKey) {
         byte[] contentBytes = content.getBytes(StandardCharsets.UTF_8);
-        RequestBody body = RequestBody.create(null, contentBytes);
-        String apiKey = "d89f3c09119950ca10b98b100326ea851bde454de092b67b480bd0163106bbc57b22756964223a332c226e6f6e6365223a22336c485a42776446536d6741414141414966364855766c636a422f7a47545249227d";
-
+        RequestBody body = RequestBody.create(contentBytes, null);
         Request request = new Request.Builder()
-            .url("http://vocechat.valuetodays.cn/api/bot/send_to_user/1")
+            .url(url)
             .post(body)
             .header("x-api-key", apiKey)
-            .header("Content-Type", "text/plain")  // 显式声明Content-Type
+            .header("Content-Type", contentType)  // 显式声明Content-Type
             .build();
 
         try (Response response = client.newCall(request).execute()) {
-            if (!response.isSuccessful()) {
+            ResponseBody respBody = response.body();
+            if (Objects.nonNull(respBody)) {
+                return respBody.string();
             }
-            System.out.println("响应成功: " + response.body().string());
         } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    public static void main22() {
-        PushVocechatTextReq req = new PushVocechatTextReq();
-        req.setContent("111111111");
-        req.setPlainText(true);
-        req.setToUserId(1);
-        req.setFromUserId(3);
-
-        String url = "http://vocechat.valuetodays.cn/api/bot/send_to_user/1";
-        log.info("url={}", url);
-        String apiKey = "d89f3c09119950ca10b98b100326ea851bde454de092b67b480bd0163106bbc57b22756964223a332c226e6f6e6365223a22336c485a42776446536d6741414141414966364855766c636a422f7a47545249227d";
-        String contentType = req.isPlainText() ? "text/plain" : "text/markdown";
-        Map<String, String> headerMap = Map.of(
-            "x-api-key", apiKey
-        );
-        OkHttpClient client = new OkHttpClient.Builder()
-            .connectTimeout(10, TimeUnit.SECONDS)
-            .readTimeout(10, TimeUnit.SECONDS)
-            .writeTimeout(10, TimeUnit.SECONDS)
-            .build();
-        RequestBody body = RequestBody.create(MediaType.parse(contentType), req.getContent() + " by okhttp");
-        Request.Builder builder = new Request.Builder();
-        okhttp3.Request request = builder.url(url)
-            .post(body)
-            .header("x-api-key", apiKey)
-            .header("Content-Type", "text/plain")  // 显式声明Content-Type
-            .build();
-        try (Response response = client.newCall(request).execute()) {
-            if (!response.isSuccessful()) {
-                throw new IOException("Unexpected code " + response);
-            }
-
-            String json = response.body() != null ? response.body().string() : null;
-            log.info("response.body()={}", json);
-        } catch (IOException e) {
-            log.error("", e);
+            log.error("error when doPostString()", e);
             throw new CommonException(e);
         }
-//        try {
-            String s = HttpClient4Utils.doPostPlainString(url, req.getContent(), contentType, headerMap, null);
-//            log.debug("respStr: {}", s);
-//        } catch (Exception e) {
-//            log.error("error when pushVocechatText()", e);
-//        }
+        return null;
     }
 
     private String findApiKeyByUid(Integer fromUserId) {
         List<VocechatProperties.Bot> botList = vocechatProperties.botList();
-        log.info("botList={}", botList);
-        String apikey = botList.stream()
+        return botList.stream()
             .filter(e -> Objects.equals(fromUserId, e.uid()))
             .findFirst().orElse(botList.getFirst()).apiKey();
-        log.info("apikey={}", apikey);
-//        main22();
-        main33();
-        return apikey;
     }
 
     public void pushVocechatFile(PushVocechatFileReq req) {
@@ -187,7 +130,7 @@ public class VocechatServiceImpl {
 
         String basePath = vocechatProperties.basePath();
         String urlForPrepare = basePath + "/api/bot/file/prepare";
-        String fileIdStr = prepareFile(urlForPrepare, headerMap, req);
+        final String fileIdStr = prepareFile(urlForPrepare, apiKey, req);
 
         Map<String, String> headerForUpload = Map.of(
             "accept", "application/json; charset=utf-8",
@@ -201,33 +144,61 @@ public class VocechatServiceImpl {
         try (
             FileInputStream inputStream = FileUtils.openInputStream(req.getFile())
         ) {
-            byte[] buffer = new byte[200_000_000];
+            int _1M = (int) (1.0 * 1024 * 1024);
+            byte[] buffer = new byte[_1M];
             int len = 0;
-            // IOUtils.read(inputStream, buffer) 读取完后，再读取则返回值为0
             while ((len = IOUtils.read(inputStream, buffer)) > 0) {
-                byte[] temp = new byte[len];
-                System.arraycopy(buffer, 0, temp, 0, len);
-                ByteArrayBody byteArrayBody = new ByteArrayBody(temp, "");
+                byte[] chunkData = new byte[len];
+                System.arraycopy(buffer, 0, chunkData, 0, len);
                 int available = inputStream.available();
                 boolean isLast = (available == 0);
-                Map<String, String> formMapForUpload = Map.of(
-                    "file_id", fileIdStr,
-                    "chunk_is_last", isLast ? "true" : "false"
-                );
-                Map<String, ContentBody> paramsByFile = new HashMap<>();
-                paramsByFile.put("chunk_data", byteArrayBody);
+                String s = doPostFileByOkhttp(chunkData, fileIdStr, isLast, headerToUseForUpload, urlForUpload);
+                log.info("respStrForUpload={}", s);
                 if (isLast) {
-                    String s = HttpClient4Utils.doPostFile(urlForUpload, null, formMapForUpload, paramsByFile, headerToUseForUpload, null);
-//                log.info("respStrForUpload={}", s);
                     UploadResp uploadResp = JsonUtils.fromJson(s, UploadResp.class);
                     String path = uploadResp.getPath();
-                    pushVocechatFileMsg(path, headerMap, req);
+                    pushVocechatFileMsg(path, req, apiKey);
                 }
+
             }
         } catch (Exception e) {
             log.error("error when pushVocechatFile()", e);
         }
     }
+
+    private String doPostFileByOkhttp(byte[] chunkData,
+                                      String fileIdStr,
+                                      boolean isLast,
+                                      Map<String, String> headerForUpload,
+                                      String urlForUpload) {
+        RequestBody fileBody = RequestBody.create(MediaType.parse("application/octet-stream"), chunkData);
+        MultipartBody requestBody = new MultipartBody.Builder()
+            .setType(MultipartBody.FORM)
+            .addFormDataPart("chunk_data", "", fileBody)
+            .addFormDataPart("file_id", fileIdStr)
+            .addFormDataPart("chunk_is_last", isLast ? "true" : "false")
+            .build();
+        Request.Builder builder = new Request.Builder();
+        for (Map.Entry<String, String> kv : headerForUpload.entrySet()) {
+            String key = kv.getKey();
+            String value = kv.getValue();
+            builder.header(key, value);
+        }
+        Request request = builder
+            .url(urlForUpload)
+            .post(requestBody)
+            .build();
+        try (Response response = client.newCall(request).execute()) {
+            ResponseBody body = response.body();
+            if (Objects.nonNull(body)) {
+                return body.string();
+            }
+        } catch (IOException e) {
+            throw new CommonException(e);
+        }
+        return null;
+    }
+
 
     public void processWebhook(VocechatWebhookReq req) {
         if (Objects.isNull(req)) {
@@ -235,6 +206,35 @@ public class VocechatServiceImpl {
         }
         log.info("webhookreq: {}", req);
         PushVocechatTextReq pushVocechatTextReq = new PushVocechatTextReq();
+        InnerResult innerResult = processChatIsFromUserOrGroupId(req, pushVocechatTextReq);
+        if (!innerResult.toMe()) {
+            return;
+        }
+        pushVocechatTextReq.setFromUserId(innerResult.meId());
+        String rawContent = innerResult.detail().getContent();
+        // 把消息中的@我改为@发送者
+        String replacedContent = StringUtils.replace(rawContent,
+            " @" + innerResult.meId() + " ",
+            " @" + req.getFrom_uid() + " ");
+        Pair<PushBaseReq.ContentType, String> tuple2 = Pair.of(PushBaseReq.ContentType.PLAIN_TEXT, replacedContent);
+        PushBaseReq.ContentType t1 = tuple2.getLeft();
+        String t2 = tuple2.getRight();
+        if (t1 == PushBaseReq.ContentType.PLAIN_TEXT) {
+            pushVocechatTextReq.setContent(t2);
+            pushVocechatTextReq.setPlainText(true);
+            this.pushVocechatText(pushVocechatTextReq);
+        } else if (t1 == PushBaseReq.ContentType.FILE) {
+            PushVocechatFileReq reqForPushFile = new PushVocechatFileReq();
+            reqForPushFile.setToUserId(pushVocechatTextReq.getToUserId());
+            reqForPushFile.setToGroupId(pushVocechatTextReq.getToGroupId());
+            File file = new File(t2);
+            reqForPushFile.setFileName(file.getName());
+            reqForPushFile.setFile(file);
+            this.pushVocechatFile(reqForPushFile);
+        }
+    }
+
+    private InnerResult processChatIsFromUserOrGroupId(VocechatWebhookReq req, PushVocechatTextReq pushVocechatTextReq) {
         boolean toMe = false;
         List<VocechatProperties.Bot> botList = vocechatProperties.botList();
         Integer meId = null;
@@ -266,41 +266,18 @@ public class VocechatServiceImpl {
                 }
             }
         }
-        if (!toMe) {
-            return;
-        }
-        pushVocechatTextReq.setFromUserId(meId);
-        String rawContent = detail.getContent();
-        // 把消息中的@我改为@发送者
-        String replacedContent = StringUtils.replace(rawContent,
-            " @" + meId + " ",
-            " @" + req.getFrom_uid() + " ");
-        Pair<PushBaseReq.ContentType, String> tuple2 = Pair.of(PushBaseReq.ContentType.PLAIN_TEXT, replacedContent);
-        PushBaseReq.ContentType t1 = tuple2.getLeft();
-        String t2 = tuple2.getRight();
-        if (t1 == PushBaseReq.ContentType.PLAIN_TEXT) {
-            pushVocechatTextReq.setContent(t2);
-            pushVocechatTextReq.setPlainText(true);
-            this.pushVocechatText(pushVocechatTextReq);
-        } else if (t1 == PushBaseReq.ContentType.FILE) {
-            PushVocechatFileReq reqForPushFile = new PushVocechatFileReq();
-            reqForPushFile.setToUserId(pushVocechatTextReq.getToUserId());
-            reqForPushFile.setToGroupId(pushVocechatTextReq.getToGroupId());
-            File file = new File(t2);
-            reqForPushFile.setFileName(file.getName());
-            reqForPushFile.setFile(file);
-            this.pushVocechatFile(reqForPushFile);
-        }
+        return new InnerResult(toMe, meId, detail);
     }
 
-    private void pushVocechatFileMsg(String path, Map<String, String> headerMap, PushVocechatFileReq req) {
+    private void pushVocechatFileMsg(String path, PushVocechatFileReq req, String apiKey) {
         String urlForSendToGroup = buildUrl(req);
         String contentType = "vocechat/file";
         Map<String, String> bodyForSendToUser = Map.of("path", path);
         try {
-            String s = HttpClient4Utils.doPostPlainString(
-                urlForSendToGroup, JsonUtils.toJson(bodyForSendToUser), contentType, headerMap, null
-            );
+            String s = doPostString(urlForSendToGroup, JsonUtils.toJson(bodyForSendToUser), contentType, apiKey);
+//            String s = HttpClient4Utils.doPostPlainString(
+//                urlForSendToGroup, JsonUtils.toJson(bodyForSendToUser), contentType, headerMap, null
+//            );
             log.info("respStr: {}", s);
         } catch (Exception e) {
             log.error("error when pushVocechatText()", e);
@@ -308,14 +285,39 @@ public class VocechatServiceImpl {
 
     }
 
-    private String prepareFile(String urlForPrepare, Map<String, String> headerMap, PushVocechatFileReq req) {
+    private String prepareFile(String urlForPrepare, String apiKey, PushVocechatFileReq req) {
         File f = req.getFile();
         // 根据扩展名去解析
         String contentType = new MimetypesFileTypeMap().getContentType(f);
         Map<String, Object> dataForPrepare = Map.of("filename", req.getFileName(), "content_type", contentType);
-        String respStrForPrepare = HttpClient4Utils.doPostJson(new HttpPost(urlForPrepare), dataForPrepare, null, headerMap);
-//        log.info("respStrForPrepare={}", respStrForPrepare);
+        String respStrForPrepare = doPostJsonByOkhttp(urlForPrepare, apiKey, dataForPrepare);
+        log.info("respStrForPrepare={}", respStrForPrepare);
         return JsonUtils.fromJson(respStrForPrepare, String.class);
+    }
+
+    private String doPostJsonByOkhttp(String url, String apiKey, Map<String, Object> data) {
+        byte[] contentBytes = JsonUtils.toJson(data).getBytes(StandardCharsets.UTF_8);
+        RequestBody body = RequestBody.create(contentBytes, null);
+        Request request = new Request.Builder()
+            .url(url)
+            .post(body)
+            .header("x-api-key", apiKey)
+            .header("Content-Type", "application/json")  // 显式声明Content-Type
+            .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            ResponseBody respBody = response.body();
+            if (Objects.nonNull(respBody)) {
+                return respBody.string();
+            }
+        } catch (IOException e) {
+            log.error("error when doPostJsonByOkhttp()", e);
+            throw new CommonException(e);
+        }
+        return null;
+    }
+
+    private record InnerResult(boolean toMe, Integer meId, VocechatWebhookReq.DetailVo detail) {
     }
 
     @Data

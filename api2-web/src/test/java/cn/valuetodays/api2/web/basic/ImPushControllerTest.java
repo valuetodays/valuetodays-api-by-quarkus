@@ -1,4 +1,6 @@
-package cn.valuetodays.api2.basic.controller;
+package cn.valuetodays.api2.web.basic;
+
+import cn.valuetodays.api2.basic.controller.ImPushController;
 
 /**
  * Tests for {@link ImPushController}.
