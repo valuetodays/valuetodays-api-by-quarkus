@@ -62,7 +62,7 @@ public class VocechatServiceImpl {
     }
 
     public Boolean pushVocechatText(PushVocechatTextReq req) {
-        String url = vocechatProperties.buildUrl(req);
+        String url = buildUrl(req);
         if (StringUtils.isBlank(url)) {
             return false;
         }
@@ -82,10 +82,10 @@ public class VocechatServiceImpl {
     }
 
     private String findApiKeyByUid(Integer fromUserId) {
-        List<VocechatProperties.Bot> botList = vocechatProperties.getBotList();
+        List<VocechatProperties.Bot> botList = vocechatProperties.botList();
         return botList.stream()
-            .filter(e -> Objects.equals(fromUserId, e.getUid()))
-            .findFirst().orElse(botList.getFirst()).getApiKey();
+            .filter(e -> Objects.equals(fromUserId, e.uid()))
+            .findFirst().orElse(botList.getFirst()).apiKey();
     }
 
     public void pushVocechatFile(PushVocechatFileReq req) {
@@ -94,7 +94,7 @@ public class VocechatServiceImpl {
             "x-api-key", apiKey
         );
 
-        String basePath = vocechatProperties.getBasePath();
+        String basePath = vocechatProperties.basePath();
         String urlForPrepare = basePath + "/api/bot/file/prepare";
         String fileIdStr = prepareFile(urlForPrepare, headerMap, req);
 
@@ -145,9 +145,9 @@ public class VocechatServiceImpl {
         log.info("webhookreq: {}", req);
         PushVocechatTextReq pushVocechatTextReq = new PushVocechatTextReq();
         boolean toMe = false;
-        List<VocechatProperties.Bot> botList = vocechatProperties.getBotList();
+        List<VocechatProperties.Bot> botList = vocechatProperties.botList();
         Integer meId = null;
-        List<Integer> meIds = botList.stream().map(VocechatProperties.Bot::getUid).toList();
+        List<Integer> meIds = botList.stream().map(VocechatProperties.Bot::uid).toList();
         VocechatWebhookReq.DetailVo detail = req.getDetail();
         // uid有值，说明是两人私聊
         // gid有值，说明是群聊，mentions即是@的人的列表
@@ -203,7 +203,7 @@ public class VocechatServiceImpl {
     }
 
     private void pushVocechatFileMsg(String path, Map<String, String> headerMap, PushVocechatFileReq req) {
-        String urlForSendToGroup = vocechatProperties.buildUrl(req);
+        String urlForSendToGroup = buildUrl(req);
         String contentType = "vocechat/file";
         Map<String, String> bodyForSendToUser = Map.of("path", path);
         try {
@@ -234,4 +234,17 @@ public class VocechatServiceImpl {
         private long size;
     }
 
+    private String buildUrl(PushBaseReq req) {
+        String url = null;
+        Integer toGroupId = req.getToGroupId();
+        if (Objects.nonNull(toGroupId)) {
+            url = vocechatProperties.urlSendToGroup() + toGroupId;
+        }
+        Integer toUserId = req.getToUserId();
+        if (Objects.nonNull(toUserId)) {
+            url = vocechatProperties.urlSendToUser() + toUserId;
+        }
+
+        return url;
+    }
 }
