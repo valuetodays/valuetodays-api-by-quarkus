@@ -50,6 +50,8 @@ import org.apache.http.entity.mime.content.ContentBody;
 public class VocechatServiceImpl {
     @Inject
     VocechatProperties vocechatProperties;
+    @Inject
+    KeywordsModuleImpl keywordsModule;
 
     private final OkHttpClient client = new OkHttpClient.Builder()
         .connectTimeout(10, TimeUnit.SECONDS)
@@ -216,7 +218,8 @@ public class VocechatServiceImpl {
         String replacedContent = StringUtils.replace(rawContent,
             " @" + innerResult.meId() + " ",
             " @" + req.getFrom_uid() + " ");
-        Pair<PushBaseReq.ContentType, String> tuple2 = Pair.of(PushBaseReq.ContentType.PLAIN_TEXT, replacedContent);
+//        Pair<PushBaseReq.ContentType, String> tuple2 = Pair.of(PushBaseReq.ContentType.PLAIN_TEXT, replacedContent);
+        Pair<PushBaseReq.ContentType, String> tuple2 = keywordsModule.replyKeywords(replacedContent);
         PushBaseReq.ContentType t1 = tuple2.getLeft();
         String t2 = tuple2.getRight();
         if (t1 == PushBaseReq.ContentType.PLAIN_TEXT) {
