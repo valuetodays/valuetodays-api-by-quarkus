@@ -33,9 +33,9 @@ public class StockAlertTask {
     @Scheduled(cron = "0 0/10 * ? * MON-FRI") // 每10分钟
 //    @DistributeLock(id = "scheduleRefresh10Min", milliSeconds = TimeConstants.T3m)
     public void scheduleRefresh10Min() {
-        if (Stock) {
-
-        }
+//        if (Stock) {
+//
+//        }
         log.info("begin to refresh scheduleRefresh10Min");
         stockAlertService.scheduleAlert(StockAlertEnums.ScheduleType.EVERY_10_MIN);
         log.info("end to refresh scheduleRefresh10Min");
