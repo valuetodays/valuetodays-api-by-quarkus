@@ -1,5 +1,15 @@
 package cn.valuetodays.api2.basic.service;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
 import cn.valuetodays.api2.basic.VocechatProperties;
 import cn.valuetodays.api2.basic.vo.PushBaseReq;
 import cn.valuetodays.api2.basic.vo.PushVocechatFileReq;
@@ -20,16 +30,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.entity.mime.content.ContentBody;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 /**
  * .
@@ -66,9 +66,10 @@ public class VocechatServiceImpl {
         if (StringUtils.isBlank(url)) {
             return false;
         }
+        String apiKey = findApiKeyByUid(req.getFromUserId());
         String contentType = req.isPlainText() ? "text/plain" : "text/markdown";
         Map<String, String> headerMap = Map.of(
-            "x-api-key", vocechatProperties.getApiKey()
+            "x-api-key", apiKey
         );
         try {
             String s = HttpClient4Utils.doPostPlainString(url, req.getContent(), contentType, headerMap, null);
@@ -80,9 +81,17 @@ public class VocechatServiceImpl {
         return true;
     }
 
+    private String findApiKeyByUid(Integer fromUserId) {
+        List<VocechatProperties.Bot> botList = vocechatProperties.getBotList();
+        return botList.stream()
+            .filter(e -> Objects.equals(fromUserId, e.getUid()))
+            .findFirst().orElse(botList.getFirst()).getApiKey();
+    }
+
     public void pushVocechatFile(PushVocechatFileReq req) {
+        String apiKey = findApiKeyByUid(req.getFromUserId());
         final Map<String, String> headerMap = Map.of(
-            "x-api-key", vocechatProperties.getApiKey()
+            "x-api-key", apiKey
         );
 
         String basePath = vocechatProperties.getBasePath();
@@ -136,14 +145,17 @@ public class VocechatServiceImpl {
         log.info("webhookreq: {}", req);
         PushVocechatTextReq pushVocechatTextReq = new PushVocechatTextReq();
         boolean toMe = false;
-        Integer meId = 2;
+        List<VocechatProperties.Bot> botList = vocechatProperties.getBotList();
+        Integer meId = null;
+        List<Integer> meIds = botList.stream().map(VocechatProperties.Bot::getUid).toList();
         VocechatWebhookReq.DetailVo detail = req.getDetail();
         // uid有值，说明是两人私聊
         // gid有值，说明是群聊，mentions即是@的人的列表
         VocechatWebhookReq.TargetVo target = req.getTarget();
         Integer uid = target.getUid();
-        if (Objects.equals(meId, uid)) {
+        if (meIds.contains(uid)) {
             toMe = true;
+            meId = uid;
             pushVocechatTextReq.useToUserId(req.getFrom_uid());
         } else {
             Map<String, Object> properties = detail.getProperties();
@@ -153,7 +165,9 @@ public class VocechatServiceImpl {
                     try {
                         @SuppressWarnings("unchecked")
                         List<Integer> mentionIds = (List<Integer>) mentionsObj;
-                        toMe = mentionIds.contains(meId);
+                        Integer first = meIds.stream().filter(mentionIds::contains).findFirst().orElse(null);
+                        toMe = Objects.nonNull(first);
+                        meId = first;
                         pushVocechatTextReq.useToGroupId(target.getGid());
                     } catch (Exception ignored) {
 
@@ -164,6 +178,7 @@ public class VocechatServiceImpl {
         if (!toMe) {
             return;
         }
+        pushVocechatTextReq.setFromUserId(meId);
         String rawContent = detail.getContent();
         // 把消息中的@我改为@发送者
         String replacedContent = StringUtils.replace(rawContent,

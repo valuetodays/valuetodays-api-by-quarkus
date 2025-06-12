@@ -1,8 +1,8 @@
 package cn.valuetodays.api2.basic.vo;
 
-import lombok.Data;
-
 import java.io.Serializable;
+
+import lombok.Data;
 
 /**
  * .
@@ -14,6 +14,7 @@ import java.io.Serializable;
 public class PushBaseReq implements Serializable {
     private Integer toGroupId = 1;
     private Integer toUserId = null;
+    private Integer fromUserId = null;
 
     public void useToGroupId(Integer toGroupId) {
         this.toGroupId = toGroupId;

@@ -1,5 +1,7 @@
 package cn.valuetodays.api2.basic;
 
+import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 import cn.valuetodays.api2.basic.vo.PushBaseReq;
@@ -19,8 +21,14 @@ public class VocechatProperties {
     private String basePath;
     private String urlSendToGroup;
     private String urlSendToUser;
-    private String apiKey;
-    private String botFortuneApiKey;
+    private List<Bot> botList;
+
+    @Data
+    public static class Bot implements Serializable {
+        private Integer uid;
+        private String title;
+        private String apiKey;
+    }
 
     @JsonIgnore
     public String buildUrl(PushBaseReq req) {
