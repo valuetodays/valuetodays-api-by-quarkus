@@ -37,7 +37,11 @@ public class ImPushController {
     @POST
     @Blocking
     public Boolean vocechatWebhookPost(VocechatWebhookReq req) {
-        vocechatService.processWebhook(req);
+        new Thread(
+            () -> {
+                vocechatService.processWebhook(req);
+            }
+        ).start();
         return true;
     }
 
