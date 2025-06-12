@@ -84,9 +84,12 @@ public class VocechatServiceImpl {
 
     private String findApiKeyByUid(Integer fromUserId) {
         List<VocechatProperties.Bot> botList = vocechatProperties.botList();
-        return botList.stream()
+        log.info("botList={}", botList);
+        String apikey = botList.stream()
             .filter(e -> Objects.equals(fromUserId, e.uid()))
             .findFirst().orElse(botList.getFirst()).apiKey();
+        log.info("apikey={}", apikey);
+        return apikey;
     }
 
     public void pushVocechatFile(PushVocechatFileReq req) {
