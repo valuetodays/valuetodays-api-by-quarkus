@@ -16,7 +16,6 @@ import jakarta.ws.rs.Path;
  * @since 2025-06-12
  */
 @Path("/basic/imPush")
-@Blocking
 public class ImPushController {
 
     @Inject
@@ -36,6 +35,7 @@ public class ImPushController {
      */
     @Path("/public/vocechat/webhook")
     @POST
+    @Blocking
     public Boolean vocechatWebhookPost(VocechatWebhookReq req) {
         vocechatService.processWebhook(req);
         return true;
@@ -43,6 +43,7 @@ public class ImPushController {
 
     @Path("/vocechat/plainText")
     @POST
+    @Blocking
     public Boolean pushVocechatPlainText(PushVocechatTextReq req) {
         req.setPlainText(true);
         return vocechatService.pushVocechatText(req);
@@ -50,6 +51,7 @@ public class ImPushController {
 
     @Path("/vocechat/markdownText")
     @POST
+    @Blocking
     public Boolean pushVocechatMarkdownText(PushVocechatTextReq req) {
         req.setPlainText(false);
         return vocechatService.pushVocechatText(req);
