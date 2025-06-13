@@ -94,7 +94,7 @@ public class VocechatServiceImpl {
         String contentType = req.isPlainText() ? "text/plain" : "text/markdown";
         try {
             String respStr = doPostStringAsync(vocechatProperties.basePath() + url,
-                req.getContent() + "\n---\n  by " + bot.title(),
+                req.getContent() + "\n---\nby " + bot.title(),
                 contentType,
                 apiKey);
             log.info("respStr: {}", respStr);
