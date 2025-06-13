@@ -93,7 +93,7 @@ public class VocechatServiceImpl {
         String apiKey = bot.apiKey();
         String contentType = req.isPlainText() ? "text/plain" : "text/markdown";
         try {
-            String respStr = doPostString(vocechatProperties.basePath() + url,
+            String respStr = doPostStringAsync(vocechatProperties.basePath() + url,
                 req.getContent() + "\n---\n  by " + bot.title(),
                 contentType,
                 apiKey);
@@ -115,7 +115,7 @@ public class VocechatServiceImpl {
         return true;
     }
 
-    private String doPostString(String url, String content, String contentType, String apiKey) {
+    private String doPostStringAsync(String url, String content, String contentType, String apiKey) {
         byte[] contentBytes = content.getBytes(StandardCharsets.UTF_8);
         RequestBody body = RequestBody.create(contentBytes, null);
         Request request = new Request.Builder()
@@ -130,18 +130,15 @@ public class VocechatServiceImpl {
             @Override
             public void onFailure(Call call, IOException e) {
                 // 请求失败的处理逻辑
-                System.out.println("请求失败：" + e.getMessage());
+                log.error("error when doPostStringAsync()", e);
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                // 请求成功的处理逻辑
-                if (response.isSuccessful()) {
-                    // 获取响应体
-                    String responseBody = response.body().string();
-                    System.out.println("请求成功, 响应数据: " + responseBody);
-                } else {
-                    System.out.println("请求失败，状态码: " + response.code());
+                ResponseBody respBody = response.body();
+                if (Objects.nonNull(respBody)) {
+                    String responseBody = respBody.string();
+                    log.info("respStr={}", responseBody);
                 }
             }
         });
@@ -316,7 +313,7 @@ public class VocechatServiceImpl {
         String contentType = "vocechat/file";
         Map<String, String> bodyForSendToUser = Map.of("path", path);
         try {
-            String s = doPostString(urlForSendToGroup, JsonUtils.toJson(bodyForSendToUser), contentType, apiKey);
+            String s = doPostStringAsync(urlForSendToGroup, JsonUtils.toJson(bodyForSendToUser), contentType, apiKey);
             log.info("respStr: {}", s);
         } catch (Exception e) {
             log.error("error when pushVocechatText()", e);
