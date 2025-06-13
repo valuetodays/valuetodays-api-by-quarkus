@@ -13,12 +13,14 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import cn.valuetodays.api2.basic.VocechatProperties;
+import cn.valuetodays.api2.basic.service.restclient.VocechatClient;
 import cn.valuetodays.api2.basic.vo.PushBaseReq;
 import cn.valuetodays.api2.basic.vo.PushVocechatFileReq;
 import cn.valuetodays.api2.basic.vo.PushVocechatTextReq;
 import cn.valuetodays.api2.basic.vo.VocechatWebhookReq;
 import cn.vt.exception.CommonException;
 import cn.vt.util.JsonUtils;
+import io.smallrye.mutiny.Uni;
 import jakarta.activation.MimetypesFileTypeMap;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -38,6 +40,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.entity.mime.content.ContentBody;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 /**
  * .
@@ -52,6 +55,9 @@ public class VocechatServiceImpl {
     VocechatProperties vocechatProperties;
     @Inject
     KeywordsModuleImpl keywordsModule;
+    @Inject
+    @RestClient
+    VocechatClient vocechatClient;
 
     private final OkHttpClient client = new OkHttpClient.Builder()
         .connectTimeout(10, TimeUnit.SECONDS)
@@ -86,7 +92,15 @@ public class VocechatServiceImpl {
         String contentType = req.isPlainText() ? "text/plain" : "text/markdown";
         try {
             String s = doPostString(url, req.getContent(), contentType, apiKey);
-            log.info("respStr: {}", s);
+            Uni<String> sUni = vocechatClient.sendToUserOrGroup(url, apiKey, contentType, req.getContent());
+            sUni.onItem().transform(response -> {
+                    log.info("respStr: {}", response);
+                    return "处理后的结果: " + response;
+                })
+                .onFailure().recoverWithItem(throwable -> {
+                    // 可以统一处理异常
+                    return "发送失败: " + throwable.getMessage();
+                });
         } catch (Exception e) {
             log.error("error when pushVocechatText()", e);
             throw new CommonException(e);
