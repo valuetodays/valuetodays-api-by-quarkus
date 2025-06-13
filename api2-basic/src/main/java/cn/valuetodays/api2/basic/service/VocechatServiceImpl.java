@@ -20,7 +20,6 @@ import cn.valuetodays.api2.basic.vo.PushVocechatTextReq;
 import cn.valuetodays.api2.basic.vo.VocechatWebhookReq;
 import cn.vt.exception.CommonException;
 import cn.vt.util.JsonUtils;
-import io.smallrye.mutiny.Uni;
 import jakarta.activation.MimetypesFileTypeMap;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -90,19 +89,24 @@ public class VocechatServiceImpl {
         if (StringUtils.isBlank(url)) {
             return false;
         }
-        String apiKey = findApiKeyByUid(req.getFromUserId());
+        VocechatProperties.Bot bot = findApiKeyByUid(req.getFromUserId());
+        String apiKey = bot.apiKey();
         String contentType = req.isPlainText() ? "text/plain" : "text/markdown";
         try {
-            String s = doPostString(vocechatProperties.basePath() + url, req.getContent() + " by bot", contentType, apiKey);
-            Uni<String> sUni = vocechatClient.sendToUserOrGroup(url, apiKey, contentType, req.getContent());
-            sUni.onItem().transform(response -> {
-                    log.info("respStr: {}", response);
-                    return "处理后的结果: " + response;
-                })
-                .onFailure().recoverWithItem(throwable -> {
-                    // 可以统一处理异常
-                    return "发送失败: " + throwable.getMessage();
-                });
+            String respStr = doPostString(vocechatProperties.basePath() + url,
+                req.getContent() + "\n---\n  by " + bot.title(),
+                contentType,
+                apiKey);
+            log.info("respStr: {}", respStr);
+//            Uni<String> sUni = vocechatClient.sendToUserOrGroup(url, apiKey, contentType, req.getContent());
+//            sUni.onItem().transform(response -> {
+//                    log.info("respStr: {}", response);
+//                    return "处理后的结果: " + response;
+//                })
+//                .onFailure().recoverWithItem(throwable -> {
+//                    // 可以统一处理异常
+//                    return "发送失败: " + throwable.getMessage();
+//                });
         } catch (Exception e) {
             log.error("error when pushVocechatText()", e);
             throw new CommonException(e);
@@ -153,22 +157,22 @@ public class VocechatServiceImpl {
         return null;
     }
 
-    private String findApiKeyByUid(Integer fromUserId) {
+    private VocechatProperties.Bot findApiKeyByUid(Integer fromUserId) {
         List<VocechatProperties.Bot> botList = vocechatProperties.botList();
         return botList.stream()
             .filter(e -> Objects.equals(fromUserId, e.uid()))
-            .findFirst().orElse(botList.getFirst()).apiKey();
+            .findFirst().orElse(botList.getFirst());
     }
 
     public void pushVocechatFile(PushVocechatFileReq req) {
-        String apiKey = findApiKeyByUid(req.getFromUserId());
+        VocechatProperties.Bot bot = findApiKeyByUid(req.getFromUserId());
         final Map<String, String> headerMap = Map.of(
-            "x-api-key", apiKey
+            "x-api-key", bot.apiKey()
         );
 
         String basePath = vocechatProperties.basePath();
         String urlForPrepare = basePath + "/api/bot/file/prepare";
-        final String fileIdStr = prepareFile(urlForPrepare, apiKey, req);
+        final String fileIdStr = prepareFile(urlForPrepare, bot.apiKey(), req);
 
         Map<String, String> headerForUpload = Map.of(
             "accept", "application/json; charset=utf-8",
@@ -195,7 +199,7 @@ public class VocechatServiceImpl {
                 if (isLast) {
                     UploadResp uploadResp = JsonUtils.fromJson(s, UploadResp.class);
                     String path = uploadResp.getPath();
-                    pushVocechatFileMsg(path, req, apiKey);
+                    pushVocechatFileMsg(path, req, bot.apiKey());
                 }
 
             }
