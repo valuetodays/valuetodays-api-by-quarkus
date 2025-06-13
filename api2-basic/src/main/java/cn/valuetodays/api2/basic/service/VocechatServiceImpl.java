@@ -26,6 +26,8 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -91,7 +93,7 @@ public class VocechatServiceImpl {
         String apiKey = findApiKeyByUid(req.getFromUserId());
         String contentType = req.isPlainText() ? "text/plain" : "text/markdown";
         try {
-            String s = doPostString(url, req.getContent(), contentType, apiKey);
+            String s = doPostString(vocechatProperties.basePath() + url, req.getContent(), contentType, apiKey);
             Uni<String> sUni = vocechatClient.sendToUserOrGroup(url, apiKey, contentType, req.getContent());
             sUni.onItem().transform(response -> {
                     log.info("respStr: {}", response);
@@ -119,15 +121,35 @@ public class VocechatServiceImpl {
             .header("Content-Type", contentType)  // 显式声明Content-Type
             .build();
 
-        try (Response response = client.newCall(request).execute()) {
-            ResponseBody respBody = response.body();
-            if (Objects.nonNull(respBody)) {
-                return respBody.string();
+        Call call = client.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                // 请求失败的处理逻辑
+                System.out.println("请求失败：" + e.getMessage());
             }
-        } catch (IOException e) {
-            log.error("error when doPostString()", e);
-            throw new CommonException(e);
-        }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                // 请求成功的处理逻辑
+                if (response.isSuccessful()) {
+                    // 获取响应体
+                    String responseBody = response.body().string();
+                    System.out.println("请求成功, 响应数据: " + responseBody);
+                } else {
+                    System.out.println("请求失败，状态码: " + response.code());
+                }
+            }
+        });
+//        try (Response response = call.execute()) {
+//            ResponseBody respBody = response.body();
+//            if (Objects.nonNull(respBody)) {
+//                return respBody.string();
+//            }
+//        } catch (IOException e) {
+//            log.error("error when doPostString()", e);
+//            throw new CommonException(e);
+//        }
         return null;
     }
 

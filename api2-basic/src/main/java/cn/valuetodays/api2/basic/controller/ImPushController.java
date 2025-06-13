@@ -26,6 +26,7 @@ public class ImPushController {
      */
     @Path("/public/vocechat/webhook")
     @GET
+    @Blocking
     public Boolean vocechatWebhookGet() {
         return true;
     }
@@ -35,19 +36,19 @@ public class ImPushController {
      */
     @Path("/public/vocechat/webhook")
     @POST
-    @Blocking
+//    @Blocking
     public Boolean vocechatWebhookPost(VocechatWebhookReq req) {
-        new Thread(
-            () -> {
+//        new Thread(
+//            () -> {
                 vocechatService.processWebhook(req);
-            }
-        ).start();
+//            }
+//        ).start();
         return true;
     }
 
     @Path("/vocechat/plainText")
     @POST
-    @Blocking
+//    @Blocking
     public Boolean pushVocechatPlainText(PushVocechatTextReq req) {
         req.setPlainText(true);
         return vocechatService.pushVocechatText(req);
@@ -55,7 +56,7 @@ public class ImPushController {
 
     @Path("/vocechat/markdownText")
     @POST
-    @Blocking
+//    @Blocking
     public Boolean pushVocechatMarkdownText(PushVocechatTextReq req) {
         req.setPlainText(false);
         return vocechatService.pushVocechatText(req);
