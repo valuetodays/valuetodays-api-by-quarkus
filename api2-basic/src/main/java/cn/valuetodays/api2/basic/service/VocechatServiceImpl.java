@@ -93,7 +93,7 @@ public class VocechatServiceImpl {
         String apiKey = findApiKeyByUid(req.getFromUserId());
         String contentType = req.isPlainText() ? "text/plain" : "text/markdown";
         try {
-            String s = doPostString(vocechatProperties.basePath() + url, req.getContent(), contentType, apiKey);
+            String s = doPostString(vocechatProperties.basePath() + url, req.getContent() + " by bot", contentType, apiKey);
             Uni<String> sUni = vocechatClient.sendToUserOrGroup(url, apiKey, contentType, req.getContent());
             sUni.onItem().transform(response -> {
                     log.info("respStr: {}", response);
