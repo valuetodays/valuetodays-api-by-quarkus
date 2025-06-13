@@ -1,6 +1,7 @@
 package cn.valuetodays.api2.basic.controller;
 
 import cn.valuetodays.api2.basic.service.VocechatServiceImpl;
+import cn.valuetodays.api2.basic.vo.PushVocechatFileReq;
 import cn.valuetodays.api2.basic.vo.PushVocechatTextReq;
 import cn.valuetodays.api2.basic.vo.VocechatWebhookReq;
 import io.smallrye.common.annotation.Blocking;
@@ -36,19 +37,13 @@ public class ImPushController {
      */
     @Path("/public/vocechat/webhook")
     @POST
-//    @Blocking
     public Boolean vocechatWebhookPost(VocechatWebhookReq req) {
-//        new Thread(
-//            () -> {
                 vocechatService.processWebhook(req);
-//            }
-//        ).start();
         return true;
     }
 
     @Path("/vocechat/plainText")
     @POST
-//    @Blocking
     public Boolean pushVocechatPlainText(PushVocechatTextReq req) {
         req.setPlainText(true);
         return vocechatService.pushVocechatText(req);
@@ -56,10 +51,15 @@ public class ImPushController {
 
     @Path("/vocechat/markdownText")
     @POST
-//    @Blocking
     public Boolean pushVocechatMarkdownText(PushVocechatTextReq req) {
         req.setPlainText(false);
         return vocechatService.pushVocechatText(req);
+    }
+
+    @Path("/vocechat/pushVocechatFile")
+    @POST
+    public Boolean pushVocechatFile(PushVocechatFileReq req) {
+        return vocechatService.pushVocechatFile(req);
     }
 
 }

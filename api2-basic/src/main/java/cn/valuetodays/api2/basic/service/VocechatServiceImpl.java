@@ -161,7 +161,7 @@ public class VocechatServiceImpl {
             .findFirst().orElse(botList.getFirst());
     }
 
-    public void pushVocechatFile(PushVocechatFileReq req) {
+    public boolean pushVocechatFile(PushVocechatFileReq req) {
         VocechatProperties.Bot bot = findApiKeyByUid(req.getFromUserId());
         final Map<String, String> headerMap = Map.of(
             "x-api-key", bot.apiKey()
@@ -203,6 +203,7 @@ public class VocechatServiceImpl {
         } catch (Exception e) {
             log.error("error when pushVocechatFile()", e);
         }
+        return true;
     }
 
     private String doPostFileByOkhttp(byte[] chunkData,
