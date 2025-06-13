@@ -1,5 +1,6 @@
 package cn.valuetodays.api2.basic.vo;
 
+import cn.valuetodays.api2.web.basic.push.vocechat.PushBaseReq;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

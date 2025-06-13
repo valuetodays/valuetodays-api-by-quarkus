@@ -1,4 +1,4 @@
-package cn.valuetodays.api2.module.tests;
+package cn.valuetodays.api2.web.tests;
 
 import java.io.IOException;
 import java.io.StringWriter;

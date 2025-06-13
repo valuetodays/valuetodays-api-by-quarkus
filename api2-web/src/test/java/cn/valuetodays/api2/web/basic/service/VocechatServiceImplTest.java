@@ -48,6 +48,28 @@ public class VocechatServiceImplTest {
         req.setDetail(detail);
         vocechatService.processWebhook(req);
     }
+
+    @Test
+    @EnabledOnOs(OS.WINDOWS)
+    public void processWebhookByAutoReplyContent() {
+        VocechatWebhookReq req = new VocechatWebhookReq();
+        req.setCreated_at(System.currentTimeMillis());
+        req.setFrom_uid(1);
+        req.setMid(System.currentTimeMillis());
+        TargetVo targetVo = new TargetVo();
+        targetVo.setGid(1);
+        req.setTarget(targetVo);
+        DetailVo detail = new DetailVo();
+        detail.setContent("image");
+        detail.setContent_type("text/plain");
+        detail.setExpires_in(604800L);
+        detail.setProperties(Map.of("mentions", List.of(3)));
+        detail.setType("normal");
+        detail.setDetail(null);
+        req.setDetail(detail);
+        vocechatService.processWebhook(req);
+    }
+
     @Test
     @EnabledOnOs(OS.WINDOWS)
     public void pushVocechatText() {

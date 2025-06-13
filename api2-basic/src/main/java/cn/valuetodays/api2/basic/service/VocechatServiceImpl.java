@@ -13,11 +13,10 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import cn.valuetodays.api2.basic.VocechatProperties;
-import cn.valuetodays.api2.basic.service.restclient.VocechatClient;
-import cn.valuetodays.api2.basic.vo.PushBaseReq;
 import cn.valuetodays.api2.basic.vo.PushVocechatFileReq;
 import cn.valuetodays.api2.basic.vo.PushVocechatTextReq;
 import cn.valuetodays.api2.basic.vo.VocechatWebhookReq;
+import cn.valuetodays.api2.web.basic.push.vocechat.PushBaseReq;
 import cn.vt.exception.CommonException;
 import cn.vt.util.JsonUtils;
 import jakarta.activation.MimetypesFileTypeMap;
@@ -41,7 +40,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.entity.mime.content.ContentBody;
-import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 /**
  * .
@@ -56,9 +54,6 @@ public class VocechatServiceImpl {
     VocechatProperties vocechatProperties;
     @Inject
     KeywordsModuleImpl keywordsModule;
-    @Inject
-    @RestClient
-    VocechatClient vocechatClient;
 
     private final OkHttpClient client = new OkHttpClient.Builder()
         .connectTimeout(10, TimeUnit.SECONDS)
@@ -93,20 +88,11 @@ public class VocechatServiceImpl {
         String apiKey = bot.apiKey();
         String contentType = req.isPlainText() ? "text/plain" : "text/markdown";
         try {
-            String respStr = doPostStringAsync(vocechatProperties.basePath() + url,
+            String respStr = doPostStringAsync(url,
                 req.getContent() + "\n---\nby " + bot.title(),
                 contentType,
                 apiKey);
             log.info("respStr: {}", respStr);
-//            Uni<String> sUni = vocechatClient.sendToUserOrGroup(url, apiKey, contentType, req.getContent());
-//            sUni.onItem().transform(response -> {
-//                    log.info("respStr: {}", response);
-//                    return "处理后的结果: " + response;
-//                })
-//                .onFailure().recoverWithItem(throwable -> {
-//                    // 可以统一处理异常
-//                    return "发送失败: " + throwable.getMessage();
-//                });
         } catch (Exception e) {
             log.error("error when pushVocechatText()", e);
             throw new CommonException(e);
@@ -251,17 +237,25 @@ public class VocechatServiceImpl {
         }
         pushVocechatTextReq.setFromUserId(innerResult.meId());
         String rawContent = innerResult.detail().getContent();
-        // 把消息中的@我改为@发送者
-        String replacedContent = StringUtils.replace(rawContent,
-            " @" + innerResult.meId() + " ",
-            " @" + req.getFrom_uid() + " ");
 //        Pair<PushBaseReq.ContentType, String> tuple2 = Pair.of(PushBaseReq.ContentType.PLAIN_TEXT, replacedContent);
-        Pair<PushBaseReq.ContentType, String> tuple2 = keywordsModule.replyKeywords(replacedContent);
+        Pair<PushBaseReq.ContentType, String> tuple2 = keywordsModule.replyKeywords(rawContent);
         PushBaseReq.ContentType t1 = tuple2.getLeft();
         String t2 = tuple2.getRight();
         if (t1 == PushBaseReq.ContentType.PLAIN_TEXT) {
-            pushVocechatTextReq.setContent(t2);
+            // 把消息中的@我改为@发送者
+            String replacedContent = StringUtils.replace(t2,
+                " @" + innerResult.meId() + " ",
+                " @" + req.getFrom_uid() + " ");
+            pushVocechatTextReq.setContent(replacedContent);
             pushVocechatTextReq.setPlainText(true);
+            this.pushVocechatText(pushVocechatTextReq);
+        } else if (t1 == PushBaseReq.ContentType.MARKDOWN_TEXT) {
+            // 把消息中的@我改为@发送者
+            String replacedContent = StringUtils.replace(t2,
+                " @" + innerResult.meId() + " ",
+                " @" + req.getFrom_uid() + " ");
+            pushVocechatTextReq.setContent(replacedContent);
+            pushVocechatTextReq.setPlainText(false);
             this.pushVocechatText(pushVocechatTextReq);
         } else if (t1 == PushBaseReq.ContentType.FILE) {
             PushVocechatFileReq reqForPushFile = new PushVocechatFileReq();

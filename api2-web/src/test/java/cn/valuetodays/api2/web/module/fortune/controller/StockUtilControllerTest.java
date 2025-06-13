@@ -1,8 +1,9 @@
-package cn.valuetodays.api2.module.fortune.controller;
+package cn.valuetodays.api2.web.module.fortune.controller;
 
 import java.math.BigDecimal;
 import java.util.List;
 
+import cn.valuetodays.api2.module.fortune.controller.StockUtilController;
 import cn.valuetodays.api2.module.fortune.reqresp.StockPriceGradientReq;
 import cn.valuetodays.api2.module.fortune.reqresp.StockPriceGradientResp;
 import cn.valuetodays.api2.module.fortune.reqresp.StockPriceGradientResp.GradientItem;

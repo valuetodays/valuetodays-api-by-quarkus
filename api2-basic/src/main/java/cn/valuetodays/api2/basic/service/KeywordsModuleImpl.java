@@ -2,8 +2,8 @@ package cn.valuetodays.api2.basic.service;
 
 import java.util.List;
 
-import cn.valuetodays.api2.basic.service.vocechat.AutoReplyContent;
-import cn.valuetodays.api2.basic.vo.PushBaseReq;
+import cn.valuetodays.api2.web.basic.push.vocechat.AutoReplyContent;
+import cn.valuetodays.api2.web.basic.push.vocechat.PushBaseReq;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;

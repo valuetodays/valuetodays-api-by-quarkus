@@ -1,10 +1,11 @@
 package cn.valuetodays.api2.basic.vo;
 
+import java.io.File;
+
+import cn.valuetodays.api2.web.basic.push.vocechat.PushBaseReq;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.io.File;
 
 /**
  * 发送文件 - 请求对象.

@@ -3,10 +3,12 @@ package cn.valuetodays.api2.basic.service.vocechat;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import cn.valuetodays.api2.basic.vo.PushBaseReq;
+import cn.valuetodays.api2.web.basic.push.vocechat.AutoReplyContent;
+import cn.valuetodays.api2.web.basic.push.vocechat.PushBaseReq;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -17,6 +19,7 @@ import org.apache.commons.lang3.tuple.Pair;
  * @since 2024-11-28
  */
 @ApplicationScoped
+@Slf4j
 public class AllAutoReplyContent implements AutoReplyContent {
     @Inject
     Instance<AutoReplyContent> autoReplyContents;
@@ -29,7 +32,7 @@ public class AllAutoReplyContent implements AutoReplyContent {
     @Override
     public Pair<PushBaseReq.ContentType, String> replyContent(String value) {
         String titlesAsString = autoReplyContents.stream()
-            .filter(e -> e != this)
+            .filter(e -> !e.getClass().getSimpleName().startsWith(AllAutoReplyContent.class.getSimpleName()))
             .map(e -> StringUtils.join(e.sampleValue(), " / "))
             .collect(Collectors.joining("\n"));
         return AutoReplyContent.makePlainText(

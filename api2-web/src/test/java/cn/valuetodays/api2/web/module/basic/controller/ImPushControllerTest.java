@@ -1,4 +1,4 @@
-package cn.valuetodays.api2.module.basic.controller;
+package cn.valuetodays.api2.web.module.basic.controller;
 
 import cn.valuetodays.api2.basic.controller.ImPushController;
 import cn.valuetodays.api2.basic.vo.PushVocechatTextReq;

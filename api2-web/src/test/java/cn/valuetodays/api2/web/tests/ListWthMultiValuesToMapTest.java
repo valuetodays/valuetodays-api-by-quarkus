@@ -1,4 +1,4 @@
-package cn.valuetodays.api2.module.tests;
+package cn.valuetodays.api2.web.tests;
 
 import java.time.LocalDate;
 import java.util.Collection;

@@ -1,4 +1,4 @@
-package cn.valuetodays.api2.module.tests;
+package cn.valuetodays.api2.web.tests;
 
 import cn.vt.encrypt.BCryptUtils;
 import lombok.extern.slf4j.Slf4j;

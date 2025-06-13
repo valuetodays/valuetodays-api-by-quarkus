@@ -38,7 +38,7 @@ public class ImPushController {
     @Path("/public/vocechat/webhook")
     @POST
     public Boolean vocechatWebhookPost(VocechatWebhookReq req) {
-                vocechatService.processWebhook(req);
+        vocechatService.processWebhook(req);
         return true;
     }
 

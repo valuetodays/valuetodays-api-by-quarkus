@@ -1,4 +1,4 @@
-package cn.valuetodays.api2.basic.vo;
+package cn.valuetodays.api2.web.basic.push.vocechat;
 
 import java.io.Serializable;
 
