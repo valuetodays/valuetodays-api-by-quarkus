@@ -11,7 +11,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>cn.valuetodays</groupId>
+            <groupId>cn.vt.commons</groupId>
             <artifactId>common-spring-web</artifactId>
             <version>${vt-simple-common-modules.version}</version>
         </dependency>
