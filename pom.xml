@@ -8,7 +8,7 @@
         <version>quarkus3.2025.06.01</version>
     </parent>
 
-    <groupId>cn.valuetodays</groupId>
+    <groupId>cn.valuetodays.api2</groupId>
     <artifactId>api2-by-quarkus</artifactId>
     <version>1.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
