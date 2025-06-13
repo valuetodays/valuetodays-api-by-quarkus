@@ -1,6 +1,6 @@
 package cn.valuetodays.api.account.persist;
 
-import cn.valuetodays.api.account.enums.UserLoginLogEnums;
+import cn.valuetodays.api.account.enums.AuthRoleEnums;
 import cn.valuetodays.quarkus.commons.base.jpa.JpaCrudLongIdBasePersist;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
@@ -12,27 +12,26 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 用户登录日志表
+ * 角色
  *
  * @author lei.liu
- * @since 2020-07-22 13:32
+ * @since 2020-09-24 10:14
  */
-@Table(name = "account_user_login_log")
+@Table(name = "account_auth_role")
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class UserLoginLogPO extends JpaCrudLongIdBasePersist {
+public class AuthRolePO extends JpaCrudLongIdBasePersist {
 
-    @Column(name = "status")
+    @Column(name = "product")
     @Enumerated(EnumType.STRING)
-    private UserLoginLogEnums.Status status;
+    private AuthRoleEnums.Product product;
     @Column(name = "name")
     private String name;
-    @Column(name = "password")
-    private String password;
-    @Column(name = "user_agent")
-    private String userAgent;
-    @Column(name = "reason")
-    private String reason;
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private AuthRoleEnums.Status status;
+    @Column(name = "order_num")
+    private Integer orderNum;
 }

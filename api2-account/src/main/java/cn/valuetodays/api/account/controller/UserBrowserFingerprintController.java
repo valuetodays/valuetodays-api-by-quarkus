@@ -1,13 +1,13 @@
 package cn.valuetodays.api.account.controller;
 
+import java.util.List;
+
 import cn.valuetodays.api.account.persist.UserBrowserFingerprintPersist;
 import cn.valuetodays.api.account.service.UserBrowserFingerprintServiceImpl;
 import cn.valuetodays.quarkus.commons.base.BaseCrudController;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.List;
 
 /**
  * .
@@ -22,7 +22,7 @@ public class UserBrowserFingerprintController
         UserBrowserFingerprintPersist,
         UserBrowserFingerprintServiceImpl> {
 
-    @Path("listByCurrentAccount.do")
+    @Path("/listByCurrentAccount")
     @POST
     public List<UserBrowserFingerprintPersist> listByCurrentAccount() {
         Long currentAccountId = getCurrentAccountId();
