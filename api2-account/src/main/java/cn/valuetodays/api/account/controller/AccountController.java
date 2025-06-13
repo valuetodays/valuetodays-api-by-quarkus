@@ -50,13 +50,16 @@ public class AccountController extends BaseAuthorizationController {
 
     @POST
     @Path("/listCascadeMenu")
-    public MenuLocationResp listCascadeMenu() {
+    public R<MenuLocationResp> listCascadeMenu() {
         Long currentAccountId = getCurrentAccountId();
         MenuLocationReq req = new MenuLocationReq();
         req.setProduct(AuthMenuEnums.Product.ADMIN);
         req.setUserId(currentAccountId);
         req.setOnlyQueryNormalStatus(true);
-        return authMenuService.listTree(req.getProduct(), req.getUserId(), req.isOnlyQueryNormalStatus());
+        MenuLocationResp menuLocationResp = authMenuService.listTree(
+            req.getProduct(), req.getUserId(), req.isOnlyQueryNormalStatus()
+        );
+        return R.success(menuLocationResp);
     }
 
 }

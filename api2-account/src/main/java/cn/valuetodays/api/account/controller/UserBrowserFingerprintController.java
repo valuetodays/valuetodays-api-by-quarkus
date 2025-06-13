@@ -5,6 +5,7 @@ import java.util.List;
 import cn.valuetodays.api.account.persist.UserBrowserFingerprintPersist;
 import cn.valuetodays.api.account.service.UserBrowserFingerprintServiceImpl;
 import cn.valuetodays.quarkus.commons.base.BaseCrudController;
+import cn.vt.R;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import lombok.extern.slf4j.Slf4j;
@@ -24,9 +25,9 @@ public class UserBrowserFingerprintController
 
     @Path("/listByCurrentAccount")
     @POST
-    public List<UserBrowserFingerprintPersist> listByCurrentAccount() {
+    public R<List<UserBrowserFingerprintPersist>> listByCurrentAccount() {
         Long currentAccountId = getCurrentAccountId();
-        return service.findTop20ByAccountId(currentAccountId);
+        return R.success(service.findTop20ByAccountId(currentAccountId));
     }
 
 }
