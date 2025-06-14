@@ -1,7 +1,6 @@
 package cn.valuetodays.api2.module.fortune.task;
 
 import cn.valuetodays.api2.module.fortune.service.StockNewAccountService;
-import io.smallrye.common.annotation.Blocking;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -13,7 +12,6 @@ import org.springframework.scheduling.annotation.Scheduled;
  * @since 2025-04-24
  */
 @ApplicationScoped
-@Blocking
 public class StockNewAccountTask {
     @Inject
     StockNewAccountService stockNewAccountService;

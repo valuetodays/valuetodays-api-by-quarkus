@@ -17,7 +17,7 @@ import jakarta.inject.Inject;
 @ApplicationScoped
 public class AccessedUrlListener {
     @Inject
-    private AccessedUrlService accessedUrlService;
+    AccessedUrlService accessedUrlService;
 
     @ConsumeEvent(value = Events.EVENT_ACCESSED_URL)
     @Blocking
