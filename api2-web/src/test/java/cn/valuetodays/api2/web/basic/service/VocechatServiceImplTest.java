@@ -57,7 +57,7 @@ public class VocechatServiceImplTest {
         req.setFrom_uid(1);
         req.setMid(System.currentTimeMillis());
         TargetVo targetVo = new TargetVo();
-        targetVo.setGid(1);
+        targetVo.setUid(3);
         req.setTarget(targetVo);
         DetailVo detail = new DetailVo();
         detail.setContent("image");

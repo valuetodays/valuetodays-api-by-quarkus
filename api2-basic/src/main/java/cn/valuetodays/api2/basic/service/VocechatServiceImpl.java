@@ -264,6 +264,7 @@ public class VocechatServiceImpl {
             File file = new File(t2);
             reqForPushFile.setFileName(file.getName());
             reqForPushFile.setFile(file);
+            reqForPushFile.setFromUserId(innerResult.meId());
             this.pushVocechatFile(reqForPushFile);
         }
     }
@@ -304,11 +305,11 @@ public class VocechatServiceImpl {
     }
 
     private void pushVocechatFileMsg(String path, PushVocechatFileReq req, String apiKey) {
-        String urlForSendToGroup = buildUrl(req);
+        String url = buildUrl(req);
         String contentType = "vocechat/file";
         Map<String, String> bodyForSendToUser = Map.of("path", path);
         try {
-            String s = doPostStringAsync(urlForSendToGroup, JsonUtils.toJson(bodyForSendToUser), contentType, apiKey);
+            String s = doPostStringAsync(url, JsonUtils.toJson(bodyForSendToUser), contentType, apiKey);
             log.info("respStr: {}", s);
         } catch (Exception e) {
             log.error("error when pushVocechatText()", e);
