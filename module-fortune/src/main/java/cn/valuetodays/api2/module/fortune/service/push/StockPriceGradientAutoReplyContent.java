@@ -37,8 +37,8 @@ public class StockPriceGradientAutoReplyContent implements AutoReplyContent {
             value = value + "#2";
         }
         String[] arr = StringUtils.split(value, "#");
-        req.setCode(arr[0]);
-        req.setRangeValue(new BigDecimal(arr[1]));
+        req.setCode(arr[0].strip());
+        req.setRangeValue(new BigDecimal(arr[1].strip()));
         R<StockPriceGradientResp> r = stockUtilController.stockPriceGradient(req);
         StockPriceGradientResp data = r.getData();
         String code = data.getCode();
