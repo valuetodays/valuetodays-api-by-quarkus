@@ -4,6 +4,7 @@ import cn.valuetodays.api2.basic.service.VocechatServiceImpl;
 import cn.valuetodays.api2.basic.vo.PushVocechatFileReq;
 import cn.valuetodays.api2.basic.vo.PushVocechatTextReq;
 import cn.valuetodays.api2.basic.vo.VocechatWebhookReq;
+import cn.valuetodays.quarkus.commons.base.RunAsync;
 import io.smallrye.common.annotation.Blocking;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
@@ -17,7 +18,7 @@ import jakarta.ws.rs.Path;
  * @since 2025-06-12
  */
 @Path("/basic/imPush")
-public class ImPushController {
+public class ImPushController extends RunAsync {
 
     @Inject
     VocechatServiceImpl vocechatService;
@@ -38,28 +39,39 @@ public class ImPushController {
     @Path("/public/vocechat/webhook")
     @POST
     public Boolean vocechatWebhookPost(VocechatWebhookReq req) {
-        vocechatService.processWebhook(req);
+        super.executeAsync(() -> {
+            vocechatService.processWebhook(req);
+        });
         return true;
     }
 
     @Path("/vocechat/plainText")
     @POST
     public Boolean pushVocechatPlainText(PushVocechatTextReq req) {
-        req.setPlainText(true);
-        return vocechatService.pushVocechatText(req);
+        super.executeAsync(() -> {
+            req.setPlainText(true);
+            vocechatService.pushVocechatText(req);
+        });
+        return true;
     }
 
     @Path("/vocechat/markdownText")
     @POST
     public Boolean pushVocechatMarkdownText(PushVocechatTextReq req) {
-        req.setPlainText(false);
-        return vocechatService.pushVocechatText(req);
+        super.executeAsync(() -> {
+            req.setPlainText(false);
+            vocechatService.pushVocechatText(req);
+        });
+        return true;
     }
 
     @Path("/vocechat/pushVocechatFile")
     @POST
     public Boolean pushVocechatFile(PushVocechatFileReq req) {
-        return vocechatService.pushVocechatFile(req);
+        super.executeAsync(() -> {
+            vocechatService.pushVocechatFile(req);
+        });
+        return true;
     }
 
 }

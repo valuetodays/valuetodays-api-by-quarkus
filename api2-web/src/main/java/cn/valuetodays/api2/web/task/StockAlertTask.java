@@ -1,12 +1,14 @@
 package cn.valuetodays.api2.web.task;
 
+import cn.valuetodays.api2.basic.component.VtNatsClient;
 import cn.valuetodays.api2.module.fortune.enums.StockAlertEnums;
 import cn.valuetodays.api2.module.fortune.service.StockAlertService;
 import cn.valuetodays.api2.module.fortune.util.StockUtils;
+import cn.valuetodays.quarkus.commons.base.RunAsync;
+import io.quarkus.scheduler.Scheduled;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Scheduled;
 
 /**
  * .
@@ -16,20 +18,25 @@ import org.springframework.scheduling.annotation.Scheduled;
  */
 @ApplicationScoped
 @Slf4j
-public class StockAlertTask {
+public class StockAlertTask extends RunAsync {
     @Inject
     StockAlertService stockAlertService;
-
+    @Inject
+    VtNatsClient vtNatsClient;
     /**
      * 要比 cn.valuetodays.module.fortune.task.QuoteDailyStatTask#scheduleRefreshAll() 晚
      */
-    @Scheduled(cron = "10 00 15 ? * MON-FRI") // 每天15:00:10
+    @Scheduled(cron = "10 0 15 ? * MON-FRI") // 每天15:00:10
 //    @DistributeLock(id = "scheduleRefreshAfterMarketClose", milliSeconds = TimeConstants.T3m)
     public void scheduleRefreshAfterMarketClose() {
         if (StockUtils.isInTradeTime()) {
-            log.info("begin to refresh scheduleRefreshAfterMarketClose");
-            stockAlertService.scheduleAlert(StockAlertEnums.ScheduleType.CLOSE);
-            log.info("end to refresh scheduleRefreshAfterMarketClose");
+            super.executeAsync(() -> {
+                vtNatsClient.publishApplicationMessage("begin to refresh scheduleRefreshAfterMarketClose");
+                log.info("begin to refresh scheduleRefreshAfterMarketClose");
+                stockAlertService.scheduleAlert(StockAlertEnums.ScheduleType.CLOSE);
+                log.info("end to refresh scheduleRefreshAfterMarketClose");
+                vtNatsClient.publishApplicationMessage("end to refresh scheduleRefreshAfterMarketClose");
+            });
         }
     }
 
@@ -37,9 +44,11 @@ public class StockAlertTask {
 //    @DistributeLock(id = "scheduleRefresh10Min", milliSeconds = TimeConstants.T3m)
     public void scheduleRefresh10Min() {
         if (StockUtils.isInTradeTime()) {
-            log.info("begin to refresh scheduleRefresh10Min");
-            stockAlertService.scheduleAlert(StockAlertEnums.ScheduleType.EVERY_10_MIN);
-            log.info("end to refresh scheduleRefresh10Min");
+            super.executeAsync(() -> {
+                log.info("begin to refresh scheduleRefresh10Min");
+                stockAlertService.scheduleAlert(StockAlertEnums.ScheduleType.EVERY_10_MIN);
+                log.info("end to refresh scheduleRefresh10Min");
+            });
         }
     }
 
@@ -47,9 +56,11 @@ public class StockAlertTask {
 //    @DistributeLock(id = "scheduleRefresh20Min", milliSeconds = TimeConstants.T3m)
     public void scheduleRefresh20Min() {
         if (StockUtils.isInTradeTime()) {
-            log.info("begin to refresh scheduleRefresh20Min");
-            stockAlertService.scheduleAlert(StockAlertEnums.ScheduleType.EVERY_20_MIN);
-            log.info("end to refresh scheduleRefresh20Min");
+            super.executeAsync(() -> {
+                log.info("begin to refresh scheduleRefresh20Min");
+                stockAlertService.scheduleAlert(StockAlertEnums.ScheduleType.EVERY_20_MIN);
+                log.info("end to refresh scheduleRefresh20Min");
+            });
         }
     }
 }

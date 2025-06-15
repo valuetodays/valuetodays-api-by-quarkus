@@ -1,6 +1,9 @@
 package cn.valuetodays.api2.web;
 
+import java.util.List;
+
 import cn.valuetodays.api2.basic.component.VtNatsClient;
+import cn.valuetodays.quarkus.commons.base.RunAsync;
 import cn.vt.R;
 import cn.vt.exception.CommonException;
 import jakarta.inject.Inject;
@@ -8,16 +11,10 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
 import lombok.extern.slf4j.Slf4j;
-import org.eclipse.microprofile.context.ManagedExecutor;
-
-import java.util.List;
 
 @Provider
 @Slf4j
-public class DefaultExceptionHandler implements ExceptionMapper<Exception> {
-    @Inject
-    ManagedExecutor managedExecutor;
-
+public class DefaultExceptionHandler extends RunAsync implements ExceptionMapper<Exception> {
     @Inject
     VtNatsClient natsClient;
     private List<String> excludeMsgsPrefixNotNotify = List.of("No static resource");
@@ -34,7 +31,7 @@ public class DefaultExceptionHandler implements ExceptionMapper<Exception> {
 
         boolean excludeByMsgPrefix = excludeMsgsPrefixNotNotify.stream().anyMatch(msg::startsWith);
         if (!excludeByMsgPrefix) {
-            managedExecutor.execute(() -> {
+            super.executeAsync(() -> {
                 natsClient.publishApplicationException(msg, exception);
             });
         }

@@ -1,8 +1,16 @@
 package cn.valuetodays.api2.web.controller;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
 import cn.valuetodays.api2.client.persist.DockerStatsPersist;
 import cn.valuetodays.api2.client.vo.save.DockerStatsReq;
 import cn.valuetodays.api2.web.service.DockerStatsService;
+import cn.valuetodays.quarkus.commons.base.RunAsync;
 import cn.vt.util.JsonUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import jakarta.enterprise.context.RequestScoped;
@@ -16,17 +24,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.eclipse.microprofile.context.ManagedExecutor;
 import org.jboss.resteasy.reactive.server.multipart.FileItem;
 import org.jboss.resteasy.reactive.server.multipart.FormValue;
 import org.jboss.resteasy.reactive.server.multipart.MultipartFormDataInput;
-
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 
 /**
  * .
@@ -37,11 +37,10 @@ import java.util.Map;
 @RequestScoped
 @Path("/dockerStats")
 @Slf4j
-public class DockerStatsController {
+public class DockerStatsController extends RunAsync {
     @Inject
     DockerStatsService dockerStatsService;
-    @Inject
-    ManagedExecutor managedExecutor;
+
 
     @GET
     @Path("getById")
@@ -59,7 +58,7 @@ public class DockerStatsController {
             return Map.of();
         }
 
-        managedExecutor.execute(() -> {
+        super.executeAsync(() -> {
             String json = "[" + StringUtils.substringBeforeLast(text, ",") + "]";
             List<DockerStatsReq> dockerStatsReqs = JsonUtils.fromJson(json, new TypeReference<List<DockerStatsReq>>() {
             });

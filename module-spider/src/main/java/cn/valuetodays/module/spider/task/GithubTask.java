@@ -1,16 +1,16 @@
 package cn.valuetodays.module.spider.task;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import cn.valuetodays.module.spider.client.persist.WxmpArticleImagePersist;
 import cn.valuetodays.module.spider.component.WordPressComponent;
 import cn.valuetodays.module.spider.service.WxmpArticleImageService;
+import io.quarkus.scheduler.Scheduled;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.scheduling.annotation.Scheduled;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * .

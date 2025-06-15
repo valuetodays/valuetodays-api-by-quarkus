@@ -11,9 +11,6 @@ import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.cache.annotation.Cacheable;
 
 /**
  * .
@@ -23,8 +20,6 @@ import org.springframework.cache.annotation.Cacheable;
  */
 @Schema(name = "短信发送记录")
 @EqualsAndHashCode(callSuper = true)
-@Cacheable
-@Cache(region = "orm.module.SmsLog", usage = CacheConcurrencyStrategy.READ_WRITE)
 @Entity
 @Table(name = "ty_sms_log")
 @JsonIgnoreProperties(

@@ -1,9 +1,9 @@
 package cn.valuetodays.api2.module.fortune.task;
 
 import cn.valuetodays.api2.module.fortune.service.StockNewAccountService;
+import io.quarkus.scheduler.Scheduled;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import org.springframework.scheduling.annotation.Scheduled;
 
 /**
  * .

@@ -1,6 +1,8 @@
 package cn.valuetodays.api2.web.task;
 
+import cn.valuetodays.api2.basic.component.VtNatsClient;
 import cn.valuetodays.api2.module.fortune.service.IndustryDailyStatService;
+import cn.valuetodays.quarkus.commons.base.RunAsync;
 import io.quarkus.scheduler.Scheduled;
 import io.smallrye.common.annotation.Blocking;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -15,16 +17,22 @@ import lombok.extern.slf4j.Slf4j;
  */
 @ApplicationScoped
 @Slf4j
-public class IndustryDailyStatTask {
+public class IndustryDailyStatTask extends RunAsync {
     @Inject
     IndustryDailyStatService industryDailyStatService;
+    @Inject
+    VtNatsClient vtNatsClient;
 
     @Blocking
     @Scheduled(cron = "10 0 18 ? * MON-FRI") // 每工作日18:00:10
     public void scheduleRefresh() {
-        log.info("begin to refresh scheduleRefresh");
-        industryDailyStatService.refresh();
-        log.info("end to refresh scheduleRefresh");
+        super.executeAsync(() -> {
+            vtNatsClient.publishApplicationMessage("begin to refresh scheduleRefresh");
+            log.info("begin to refresh scheduleRefresh");
+            industryDailyStatService.refresh();
+            log.info("end to refresh scheduleRefresh");
+            vtNatsClient.publishApplicationMessage("end to refresh scheduleRefresh");
+        });
     }
 
     @Blocking

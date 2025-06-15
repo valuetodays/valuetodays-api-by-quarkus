@@ -1,5 +1,7 @@
 package cn.valuetodays.module.spider.controller;
 
+import java.util.List;
+
 import cn.valuetodays.api2.web.common.GithubComponent;
 import cn.valuetodays.module.spider.client.persist.WxmpArticleImagePersist;
 import cn.valuetodays.module.spider.service.WxmpArticleImageService;
@@ -11,9 +13,6 @@ import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
-import org.eclipse.microprofile.context.ManagedExecutor;
-
-import java.util.List;
 
 /**
  * .
@@ -30,14 +29,12 @@ public class WxmpArticleImageController
     WxmpArticleImageService
     > {
     @Inject
-    ManagedExecutor managedExecutor;
-    @Inject
     GithubComponent githubComponent;
 
     @Path("/scheduleDownloadImage")
     @POST
     public R<String> scheduleDownloadImage() {
-        managedExecutor.execute(() -> service.scheduleDownloadImage());
+        super.executeAsync(() -> service.scheduleDownloadImage());
         return R.success("SUCCESS");
     }
 
