@@ -1,9 +1,9 @@
-package cn.valuetodays.api2.web.task;
+package cn.valuetodays.api2.module.fortune.task;
 
-import cn.valuetodays.api2.basic.component.VtNatsClient;
 import cn.valuetodays.api2.module.fortune.enums.StockAlertEnums;
 import cn.valuetodays.api2.module.fortune.service.StockAlertService;
 import cn.valuetodays.api2.module.fortune.util.StockUtils;
+import cn.valuetodays.api2.web.common.IVtNatsClient;
 import cn.valuetodays.quarkus.commons.base.RunAsync;
 import io.quarkus.scheduler.Scheduled;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -22,20 +22,20 @@ public class StockAlertTask extends RunAsync {
     @Inject
     StockAlertService stockAlertService;
     @Inject
-    VtNatsClient vtNatsClient;
+    IVtNatsClient vtNatsClient;
     /**
      * 要比 cn.valuetodays.module.fortune.task.QuoteDailyStatTask#scheduleRefreshAll() 晚
      */
-    @Scheduled(cron = "10 0 15 ? * MON-FRI") // 每天15:00:10
+    @Scheduled(cron = "10 57 14 ? * MON-FRI") // 每天14:57:10
 //    @DistributeLock(id = "scheduleRefreshAfterMarketClose", milliSeconds = TimeConstants.T3m)
     public void scheduleRefreshAfterMarketClose() {
         if (StockUtils.isInTradeTime()) {
             super.executeAsync(() -> {
-                vtNatsClient.publishApplicationMessage("begin to refresh scheduleRefreshAfterMarketClose");
+                vtNatsClient.publishApplicationMessage(StockAlertTask.class.getSimpleName() + "#scheduleRefreshAfterMarketClose() begin");
                 log.info("begin to refresh scheduleRefreshAfterMarketClose");
                 stockAlertService.scheduleAlert(StockAlertEnums.ScheduleType.CLOSE);
                 log.info("end to refresh scheduleRefreshAfterMarketClose");
-                vtNatsClient.publishApplicationMessage("end to refresh scheduleRefreshAfterMarketClose");
+                vtNatsClient.publishApplicationMessage(StockAlertTask.class.getSimpleName() + "#scheduleRefreshAfterMarketClose() end");
             });
         }
     }

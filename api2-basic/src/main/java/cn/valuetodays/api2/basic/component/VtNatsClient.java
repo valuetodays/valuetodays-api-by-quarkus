@@ -1,5 +1,10 @@
 package cn.valuetodays.api2.basic.component;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Objects;
+import java.util.function.Consumer;
+
+import cn.valuetodays.api2.web.common.IVtNatsClient;
 import cn.valuetodays.quarkus.commons.base.ProfileUtils;
 import cn.vt.exception.AssertUtils;
 import cn.vt.exception.CommonException;
@@ -18,10 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Objects;
-import java.util.function.Consumer;
-
 /**
  * .
  *
@@ -30,7 +31,7 @@ import java.util.function.Consumer;
  */
 @Singleton
 @Slf4j
-public class VtNatsClient {
+public class VtNatsClient implements IVtNatsClient {
     public static final String TOPIC_APPLICATION_MESSAGE = "applicationmsg";
     @Inject
     ProfileUtils profileUtils;
@@ -61,16 +62,19 @@ public class VtNatsClient {
     }
 
 
+    @Override
     public void publish(String topic, String msg) {
         if (profileUtils.isProd()) {
             connection.publish(topic, msg.getBytes(StandardCharsets.UTF_8));
         }
     }
 
+    @Override
     public void publishApplicationMessage(String msg) {
         this.publish(TOPIC_APPLICATION_MESSAGE, msg);
     }
 
+    @Override
     public void publishApplicationException(String msgPrefix, Throwable ex) {
         String exceptionStackTraceString = ExceptionUtil.generateStackTrace(ex);
         String first800 = StringUtils.substring(exceptionStackTraceString, 0, 800);

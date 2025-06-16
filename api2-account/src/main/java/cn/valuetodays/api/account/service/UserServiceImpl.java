@@ -1,6 +1,10 @@
 package cn.valuetodays.api.account.service;
 
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
+
 import cn.valuetodays.api.account.dao.UserDAO;
 import cn.valuetodays.api.account.dao.UserLoginLogDAO;
 import cn.valuetodays.api.account.dao.UserRoleDAO;
@@ -13,7 +17,7 @@ import cn.valuetodays.api.account.reqresp.AssignRoleReq;
 import cn.valuetodays.api.account.reqresp.LoginBO;
 import cn.valuetodays.api.account.reqresp.LoginByIdBO;
 import cn.valuetodays.api.account.reqresp.LoginByOpenidBO;
-import cn.valuetodays.api2.basic.component.VtNatsClient;
+import cn.valuetodays.api2.web.common.IVtNatsClient;
 import cn.valuetodays.quarkus.commons.base.BaseCrudService;
 import cn.vt.encrypt.BCryptUtils;
 import cn.vt.exception.AssertUtils;
@@ -25,10 +29,6 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.springframework.lang.Nullable;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
-
 /**
  * @author lei.liu
  * @since 2019-10-22 16:50
@@ -37,7 +37,7 @@ import java.util.Objects;
 public class UserServiceImpl extends BaseCrudService<Long, UserPO, UserDAO> {
     public static final String TOPIC_APPLICATION_MSG = "applicationmsg";
     @Inject
-    VtNatsClient vtNatsClient;
+    IVtNatsClient vtNatsClient;
     @Inject
     private UserDAO userDAO;
     @Inject

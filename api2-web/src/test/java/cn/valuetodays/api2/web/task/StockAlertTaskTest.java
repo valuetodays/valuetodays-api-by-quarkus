@@ -1,5 +1,6 @@
 package cn.valuetodays.api2.web.task;
 
+import cn.valuetodays.api2.module.fortune.task.StockAlertTask;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;

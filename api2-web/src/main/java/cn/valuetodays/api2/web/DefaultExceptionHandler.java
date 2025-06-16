@@ -2,7 +2,7 @@ package cn.valuetodays.api2.web;
 
 import java.util.List;
 
-import cn.valuetodays.api2.basic.component.VtNatsClient;
+import cn.valuetodays.api2.web.common.IVtNatsClient;
 import cn.valuetodays.quarkus.commons.base.RunAsync;
 import cn.vt.R;
 import cn.vt.exception.CommonException;
@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DefaultExceptionHandler extends RunAsync implements ExceptionMapper<Exception> {
     @Inject
-    VtNatsClient natsClient;
+    IVtNatsClient natsClient;
     private List<String> excludeMsgsPrefixNotNotify = List.of("No static resource");
 
     @Override
