@@ -239,6 +239,9 @@ public class VocechatServiceImpl {
         String rawContent = innerResult.detail().getContent();
 //        Pair<PushBaseReq.ContentType, String> tuple2 = Pair.of(PushBaseReq.ContentType.PLAIN_TEXT, replacedContent);
         Pair<PushBaseReq.ContentType, String> tuple2 = keywordsModule.replyKeywords(rawContent);
+        if (Objects.isNull(tuple2)) {
+            return;
+        }
         PushBaseReq.ContentType t1 = tuple2.getLeft();
         String t2 = tuple2.getRight();
         if (t1 == PushBaseReq.ContentType.PLAIN_TEXT) {
