@@ -29,8 +29,9 @@ public class WebpToJpgUtils {
     public static File webpToJpg(File webpFile) throws IOException {
         String imageType = getImageType(webpFile);
         if (!StringUtils.contains(imageType, "WebP")) {
-            webpFile.renameTo(new File(webpFile.getParentFile(), webpFile.getName() + ".jpg"));
-            return webpFile;
+            File dest = new File(webpFile.getParentFile(), webpFile.getName() + ".jpg");
+            webpFile.renameTo(dest);
+            return dest;
         }
 
         /* Convert webp to jpg start */
