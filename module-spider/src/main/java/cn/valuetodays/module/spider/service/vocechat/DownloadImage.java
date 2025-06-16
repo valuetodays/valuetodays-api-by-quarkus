@@ -10,15 +10,12 @@ import java.util.Objects;
 
 import cn.vt.exception.CommonException;
 import cn.vt.util.JsonUtils;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.SystemUtils;
 
@@ -28,7 +25,7 @@ public class DownloadImage {
     public static List<File> executeJson() {
         OkHttpClient client = new OkHttpClient().newBuilder().build();
         Request request = new Request.Builder()
-            .url("https://api.suyanw.cn/api/loveanimer.php?screen=3")
+            .url("https://api.vvhan.com/api/wallpaper/mobileGirl?type=json")
             .get()
             .build();
         try (Response response = client.newCall(request).execute()) {
@@ -46,16 +43,10 @@ public class DownloadImage {
                 if (!loveanimerResponse.isSuccess()) {
                     return null;
                 }
-                List<LoveanimerResponse.LoveanimerData> data = loveanimerResponse.getData();
-                if (CollectionUtils.isEmpty(data)) {
-                    return null;
-                }
                 List<File> files = new ArrayList<>();
-                for (LoveanimerResponse.LoveanimerData d : data) {
-                    String url = d.getUrl();
-                    String file = OkhttpFileDownloader.downloadFile(url, SystemUtils.getJavaIoTmpDir().getAbsolutePath());
-                    files.add(new File(file));
-                }
+                String url = loveanimerResponse.getUrl();
+                String file = OkhttpFileDownloader.downloadFile(url, SystemUtils.getJavaIoTmpDir().getAbsolutePath());
+                files.add(new File(file));
                 return files;
             }
         } catch (IOException e) {
@@ -106,30 +97,12 @@ public class DownloadImage {
 
     }
 
+
     @Data
-    static abstract class BaseListResponse<T> implements Serializable {
-        private int code;
-        private String text;
-        private List<T> data;
-
-        @JsonIgnore
-        public boolean isSuccess() {
-            return 1 == code;
-        }
-    }
-
-    @EqualsAndHashCode(callSuper = true)
-    @Data
-    static class LoveanimerResponse extends BaseListResponse<LoveanimerResponse.LoveanimerData> {
-
-        @Data
-        static class LoveanimerData implements Serializable {
-            private int width;
-            private int height;
-            private int size;
-            private String url;
-            private String tag;
-        }
+    static class LoveanimerResponse implements Serializable {
+        private boolean success;
+        private String type;
+        private String url;
     }
 
 
