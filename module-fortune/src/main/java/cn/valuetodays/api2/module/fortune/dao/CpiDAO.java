@@ -14,8 +14,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class CpiDAO implements PanacheRepository<CpiPO> {
     public List<Integer> findAllYearMonth() {
-        return find("select u.statYearMonth from CpiPO u").stream()
-            .map(CpiPO::getStatYearMonth)
-            .toList();
+        return find("select u.statYearMonth from CpiPO u").project(Integer.class).list();
     }
 }

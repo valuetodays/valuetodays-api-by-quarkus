@@ -17,7 +17,9 @@ import jakarta.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class StockTradeInterestDAO implements PanacheRepository<StockTradeInterestPO> {
     public BigDecimal sumAllInterest() {
-        StockTradeInterestPO o = find("select sum(o.amountFee) as amountFee from StockTradeInterestPO o").firstResult();
-        return Optional.ofNullable(o).map(StockTradeInterestPO::getAmountFee).orElse(BigDecimal.ZERO);
+        BigDecimal o = find("select sum(o.amountFee) as amountFee from StockTradeInterestPO o")
+            .project(BigDecimal.class)
+            .firstResult();
+        return Optional.ofNullable(o).orElse(BigDecimal.ZERO);
     }
 }
