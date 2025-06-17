@@ -10,6 +10,7 @@ import java.util.Objects;
 
 import cn.vt.exception.CommonException;
 import cn.vt.util.JsonUtils;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -21,9 +22,12 @@ import org.apache.commons.lang3.SystemUtils;
 
 
 public class DownloadImage {
+    private static OkHttpClient client = new OkHttpClient().newBuilder().build();
 
-    public static List<File> executeJson() {
-        OkHttpClient client = new OkHttpClient().newBuilder().build();
+    /**
+     * see <a href="https://api.vvhan.com/article/mobileGirl.html">page</a>
+     */
+    public static List<File> getImageFileFromVvhan() {
         Request request = new Request.Builder()
             .url("https://api.vvhan.com/api/wallpaper/mobileGirl?type=json")
             .get()
@@ -31,17 +35,14 @@ public class DownloadImage {
         try (Response response = client.newCall(request).execute()) {
             ResponseBody respBody = response.body();
             if (Objects.isNull(respBody)) {
-                return null;
+                return List.of();
             }
             MediaType respMediaType = respBody.contentType();
-            System.out.println(respMediaType);
             if (isText(respMediaType)) {
                 String respString = respBody.string();
-                System.out.println(respString);
                 LoveanimerResponse loveanimerResponse = JsonUtils.fromJson(respString, LoveanimerResponse.class);
-                System.out.println(loveanimerResponse);
                 if (!loveanimerResponse.isSuccess()) {
-                    return null;
+                    return List.of();
                 }
                 List<File> files = new ArrayList<>();
                 String url = loveanimerResponse.getUrl();
@@ -52,7 +53,50 @@ public class DownloadImage {
         } catch (IOException e) {
             throw new CommonException(e);
         }
-        return null;
+        return List.of();
+    }
+
+    /**
+     * @see <a href="https://xxapi.cn/doc/heisi">page</a>
+     */
+    public static List<File> getHeisiImageFileFromXxapi() {
+        return getImageFileFromXxapi("https://v2.xxapi.cn/api/heisi");
+    }
+
+    /**
+     * @see <a href="https://xxapi.cn/doc/baisi">page</a>
+     */
+    public static List<File> getBaisiImageFileFromXxapi() {
+        return getImageFileFromXxapi("https://v2.xxapi.cn/api/baisi");
+    }
+
+    public static List<File> getImageFileFromXxapi(String url) {
+        Request request = new Request.Builder()
+            .url(url)
+            .get()
+            .build();
+        try (Response response = client.newCall(request).execute()) {
+            ResponseBody respBody = response.body();
+            if (Objects.isNull(respBody)) {
+                return List.of();
+            }
+            MediaType respMediaType = respBody.contentType();
+            if (isText(respMediaType)) {
+                String respString = respBody.string();
+                XxapiStringDataResponse respObj = JsonUtils.fromJson(respString, XxapiStringDataResponse.class);
+                if (!respObj.isSuccess()) {
+                    return List.of();
+                }
+                List<File> files = new ArrayList<>();
+                String fileUrl = respObj.getData();
+                String file = OkhttpFileDownloader.downloadFile(fileUrl, SystemUtils.getJavaIoTmpDir().getAbsolutePath());
+                files.add(new File(file));
+                return files;
+            }
+        } catch (IOException e) {
+            throw new CommonException(e);
+        }
+        return List.of();
     }
 
     private static boolean isText(MediaType mediaType) {
@@ -81,14 +125,10 @@ public class DownloadImage {
                 return;
             }
             MediaType respMediaType = respBody.contentType();
-            System.out.println(respMediaType);
             if (isText(respMediaType)) {
                 String respString = respBody.string();
-                System.out.println(respString);
             } else {
                 File tempFile = File.createTempFile("tmpf", ".jpg");
-                System.out.println(tempFile);
-                System.out.println(tempFile.getParent());
                 try (InputStream is = respBody.byteStream();) {
                     FileUtils.copyInputStreamToFile(is, tempFile);
                 }
@@ -103,6 +143,17 @@ public class DownloadImage {
         private boolean success;
         private String type;
         private String url;
+    }
+
+    @Data
+    static class XxapiStringDataResponse implements Serializable {
+        private int code;
+        private String data;
+
+        @JsonIgnore
+        public boolean isSuccess() {
+            return 200 == code;
+        }
     }
 
 
