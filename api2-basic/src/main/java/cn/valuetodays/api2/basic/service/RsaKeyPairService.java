@@ -1,8 +1,10 @@
 package cn.valuetodays.api2.basic.service;
 
+import java.util.List;
+
 import cn.valuetodays.api2.basic.dao.RsaKeyPairRepository;
-import cn.valuetodays.api2.basic.enums.CommonEnums.EnableStatus;
 import cn.valuetodays.api2.basic.persist.RsaKeyPairPersist;
+import cn.valuetodays.api2.web.common.CommonEnums.EnableStatus;
 import cn.valuetodays.quarkus.commons.base.BaseCrudService;
 import cn.vt.exception.AssertUtils;
 import cn.vt.util.RSAUtils;
@@ -11,8 +13,6 @@ import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomUtils;
-
-import java.util.List;
 
 
 /**

@@ -14,7 +14,7 @@ import jakarta.ws.rs.Path;
  * @since 2022-10-05
  */
 @Path("/extra/sanguoEvent")
-public class SanguoEventFeignController {
+public class SanguoEventController {
 
     @Inject
     SanguoEventServiceImpl sanguoEventService;

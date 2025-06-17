@@ -2,8 +2,8 @@ package cn.valuetodays.api2.basic.dao;
 
 import java.util.List;
 
-import cn.valuetodays.api2.basic.enums.CommonEnums;
 import cn.valuetodays.api2.basic.persist.RsaKeyPairPersist;
+import cn.valuetodays.api2.web.common.CommonEnums;
 import cn.vt.util.DateUtils;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;

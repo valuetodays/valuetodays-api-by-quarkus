@@ -1,6 +1,6 @@
 package cn.valuetodays.api2.basic.persist;
 
-import cn.valuetodays.api2.basic.enums.CommonEnums;
+import cn.valuetodays.api2.web.common.CommonEnums;
 import cn.valuetodays.quarkus.commons.base.jpa.JpaCrudLongIdBasePersist;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
