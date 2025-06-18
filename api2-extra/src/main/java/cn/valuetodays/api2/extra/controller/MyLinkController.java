@@ -7,6 +7,7 @@ import cn.valuetodays.api2.extra.MyLinkConstant;
 import cn.valuetodays.api2.extra.persist.MyLinkPO;
 import cn.valuetodays.api2.extra.service.MyLinkServiceImpl;
 import cn.valuetodays.api2.extra.vo.MyLinkTreeVo;
+import cn.valuetodays.api2.web.common.UserIdVo;
 import cn.valuetodays.quarkus.commons.base.BaseCrudController;
 import cn.vt.exception.AssertUtils;
 import jakarta.ws.rs.POST;
@@ -55,5 +56,11 @@ public class MyLinkController
         AssertUtils.assertTrue(Objects.equals(userId, currentAccountId), "不能删除别人的数据");
         List<MyLinkPO> children = service.findAllByParentId(myLinkPO.getId());
         AssertUtils.assertCollectionEmpty(children, "链接还有子链接");
+    }
+
+    @Path("/anon/listTreeByUserId")
+    @POST
+    public MyLinkTreeVo listTreeByUserId(UserIdVo userIdVo) {
+        return service.listTreeByUserId(userIdVo.getUserId());
     }
 }
