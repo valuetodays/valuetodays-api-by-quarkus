@@ -9,6 +9,7 @@ import cn.valuetodays.api2.extra.service.MyLinkServiceImpl;
 import cn.valuetodays.api2.extra.vo.MyLinkTreeVo;
 import cn.valuetodays.api2.web.common.UserIdVo;
 import cn.valuetodays.quarkus.commons.base.BaseCrudController;
+import cn.vt.R;
 import cn.vt.exception.AssertUtils;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -45,8 +46,8 @@ public class MyLinkController
 
     @Path("/listCascade")
     @POST
-    public MyLinkTreeVo listCascade() {
-        return service.listTreeByUserId(getCurrentAccountId());
+    public R<MyLinkTreeVo> listCascade() {
+        return R.success(service.listTreeByUserId(getCurrentAccountId()));
     }
 
     @Override
@@ -60,7 +61,7 @@ public class MyLinkController
 
     @Path("/anon/listTreeByUserId")
     @POST
-    public MyLinkTreeVo listTreeByUserId(UserIdVo userIdVo) {
-        return service.listTreeByUserId(userIdVo.getUserId());
+    public R<MyLinkTreeVo> listTreeByUserId(UserIdVo userIdVo) {
+        return R.success(service.listTreeByUserId(userIdVo.getUserId()));
     }
 }
