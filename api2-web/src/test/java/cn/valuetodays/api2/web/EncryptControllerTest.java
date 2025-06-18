@@ -1,11 +1,11 @@
 package cn.valuetodays.api2.web;
 
 import cn.valuetodays.api2.web.controller.EncryptController;
+import cn.vt.R;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-
-import java.util.Map;
 
 /**
  * Tests for {@link EncryptController}.
@@ -14,6 +14,7 @@ import java.util.Map;
  * @since 2024-12-22
  */
 @QuarkusTest
+@Slf4j
 public class EncryptControllerTest {
 
     @Inject
@@ -21,7 +22,7 @@ public class EncryptControllerTest {
 
     @Test
     public void getPublicKey() {
-        Map<String, Object> publicKey = controller.getPublicKey();
-        System.out.println(publicKey);
+        R<String> publicKey = controller.getPublicKey();
+        log.info("publicKey={}", publicKey);
     }
 }
