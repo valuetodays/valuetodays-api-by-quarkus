@@ -1,5 +1,11 @@
 #
 
+
+## branch
+
+- dev: for developer to code
+- master: run in production environment
+
 ##
 
 Singleton: eager Singleton
