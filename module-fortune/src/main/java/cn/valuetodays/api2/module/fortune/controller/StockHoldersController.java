@@ -3,6 +3,8 @@ package cn.valuetodays.api2.module.fortune.controller;
 import java.util.List;
 
 import cn.valuetodays.api2.module.fortune.persist.StockHoldersPO;
+import cn.valuetodays.api2.module.fortune.reqresp.AccountProfitVo;
+import cn.valuetodays.api2.module.fortune.reqresp.GetAccountProfitReq;
 import cn.valuetodays.api2.module.fortune.service.StockHoldersServiceImpl;
 import cn.valuetodays.api2.web.common.AffectedRowsResp;
 import cn.valuetodays.quarkus.commons.base.BaseCrudController;
@@ -32,5 +34,15 @@ public class StockHoldersController
         return getService().getCostPrice(req);
     }
 
+    /**
+     * 获取账户盈利列表
+     *
+     * @param req req
+     */
+    @Path(value = "/getAccountProfit.do")
+    @POST
+    public List<AccountProfitVo> getAccountProfit(GetAccountProfitReq req) {
+        return getService().getAccountProfit(req);
+    }
 
 }

@@ -82,7 +82,12 @@
             <artifactId>webp-imageio</artifactId>
             <version>0.1.6</version>
         </dependency>
-
+        <!-- https://mvnrepository.com/artifact/commons-dbutils/commons-dbutils -->
+        <dependency>
+            <groupId>commons-dbutils</groupId>
+            <artifactId>commons-dbutils</artifactId>
+            <version>1.8.1</version>
+        </dependency>
     </dependencies>
 
 </project>

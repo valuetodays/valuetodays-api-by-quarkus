@@ -8,17 +8,22 @@ import cn.valuetodays.api2.module.fortune.channel.StockHoldersParser;
 import cn.valuetodays.api2.module.fortune.channel.StockHoldersParserFactory;
 import cn.valuetodays.api2.module.fortune.dao.StockHoldersDAO;
 import cn.valuetodays.api2.module.fortune.persist.StockHoldersPO;
+import cn.valuetodays.api2.module.fortune.reqresp.AccountProfitVo;
+import cn.valuetodays.api2.module.fortune.reqresp.GetAccountProfitReq;
 import cn.valuetodays.api2.module.fortune.reqresp.HolderInfo;
 import cn.valuetodays.api2.module.fortune.reqresp.SaveAllHoldersReq;
 import cn.valuetodays.api2.web.common.AffectedRowsResp;
+import cn.valuetodays.api2.web.common.SqlServiceImpl;
 import cn.valuetodays.quarkus.commons.base.BaseCrudService;
 import cn.vt.exception.AssertUtils;
 import cn.vt.moduled.fortune.enums.FortuneCommonEnums;
 import cn.vt.web.req.SimpleTypesReq;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 我的证券账户持有
@@ -30,6 +35,8 @@ import org.apache.commons.collections4.CollectionUtils;
 @Slf4j
 public class StockHoldersServiceImpl
     extends BaseCrudService<Long, StockHoldersPO, StockHoldersDAO> {
+    @Inject
+    SqlServiceImpl sqlService;
 
 
     public int saveAllHolders(SaveAllHoldersReq req, Long currentAccountId) {
@@ -92,7 +99,7 @@ public class StockHoldersServiceImpl
         return getRepository().findAllBySecCodeOrderByStatDateAsc(text);
     }
 
-    /*
+
         public List<AccountProfitVo> getAccountProfit(GetAccountProfitReq req) {
             Long currentAccountId = req.getAccountId();
             String sqlWithVar = """
@@ -113,10 +120,10 @@ public class StockHoldersServiceImpl
                 replacement = " AND channel='" + channel.name() + "' ";
             }
             sqlWithVar = StringUtils.replace(sqlWithVar, "{{_CHANNEL_CONDITION_}}", replacement);
-
-            return jdbcTemplate.query(sqlWithVar, new BeanPropertyRowMapper<>(AccountProfitVo.class), currentAccountId);
+            return sqlService.queryForList(sqlWithVar, AccountProfitVo.class, currentAccountId);
+//            return jdbcTemplate.query(sqlWithVar, new BeanPropertyRowMapper<>(AccountProfitVo.class), currentAccountId);
         }
-    */
+
     private int toSaveIfNecessary(List<StockHoldersPO> listToSave) {
         if (CollectionUtils.isEmpty(listToSave)) {
             return 0;

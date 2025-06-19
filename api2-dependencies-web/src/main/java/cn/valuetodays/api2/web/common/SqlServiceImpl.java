@@ -10,6 +10,9 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.handlers.BeanHandler;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
 
 /**
  * .
@@ -44,6 +47,26 @@ public class SqlServiceImpl {
             log.error("error when saveBySql", e);
         }
         return 0;
+    }
+
+    private final QueryRunner runner = new QueryRunner();
+
+    public <T> T queryForObject(String sql, Class<T> clazz, final Object... params) {
+        try (Connection conn = dataSource.getConnection()) {
+            return runner.query(conn, sql, new BeanHandler<T>(clazz), params);
+        } catch (Exception e) {
+            log.error("error when queryForObject", e);
+        }
+        return null;
+    }
+
+    public <T> List<T> queryForList(String sql, Class<T> clazz, final Object... params) {
+        try (Connection conn = dataSource.getConnection()) {
+            return runner.query(conn, sql, new BeanListHandler<T>(clazz), params);
+        } catch (Exception e) {
+            log.error("error when queryForObject", e);
+        }
+        return null;
     }
 
 }
