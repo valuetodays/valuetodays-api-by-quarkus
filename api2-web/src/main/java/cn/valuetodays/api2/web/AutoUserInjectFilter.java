@@ -48,11 +48,13 @@ public class AutoUserInjectFilter extends BaseAuthorizationController implements
         boolean isSubClassOfBaseAccountableReq = false;
         for (Parameter parameter : parameters) {
             Class<?> type = parameter.getType();
+            log.info("type={}", type);
             if (BaseAccountableReq.class.equals(type)) {
                 isSubClassOfBaseAccountableReq = true;
                 break;
             }
         }
+        log.info("isSubClassOfBaseAccountableReq={}", isSubClassOfBaseAccountableReq);
         if (!isSubClassOfBaseAccountableReq) {
             return;
         }
@@ -73,6 +75,7 @@ public class AutoUserInjectFilter extends BaseAuthorizationController implements
                 return;
             }
         } catch (Exception ignored) {
+            log.warn("warn when", ignored);
         }
         // 恢复请求体，防止请求体丢失
         requestContext.setEntityStream(new ByteArrayInputStream(requestBodyBytes));
