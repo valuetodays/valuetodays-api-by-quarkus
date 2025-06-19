@@ -48,7 +48,7 @@ quarkus:
     runner-suffix: -runner
   thread-pool:
     max-threads: 200
-    core-threads: 50
+    core-threads: 20
     queue-size: 1000
   redis:
     hosts: redis://localhost:6379

@@ -42,7 +42,7 @@ public class StockHoldersController
     @Path(value = "/getAccountProfit")
     @POST
     public List<AccountProfitVo> getAccountProfit(GetAccountProfitReq req) {
-        super.fillLoginAccount(req);
+//        super.fillLoginAccount(req);
         return getService().getAccountProfit(req);
     }
 
