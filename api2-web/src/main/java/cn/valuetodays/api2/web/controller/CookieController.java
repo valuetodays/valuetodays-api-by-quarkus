@@ -1,5 +1,8 @@
 package cn.valuetodays.api2.web.controller;
 
+import java.util.List;
+import java.util.Map;
+
 import cn.valuetodays.api2.client.persist.AccessedUrlPersist;
 import cn.valuetodays.api2.client.req.PullCookieReq;
 import cn.valuetodays.api2.web.asyncevent.Events;
@@ -12,10 +15,6 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * .
@@ -56,26 +55,21 @@ public class CookieController {
     @POST
     public Map<String, String> pullWeiboCookies() {
         List<String> excludeNames = List.of("XSRF-TOKEN");
-        return pull(PushCookieReq.DOMAIN_WEIBO, excludeNames);
+        return cookieCacheComponent.pull(PushCookieReq.DOMAIN_WEIBO, excludeNames);
     }
 
     @Path("/anon/pullXueqiuCookies.do")
     @POST
     public Map<String, String> pullXueqiuCookies() {
-        List<String> excludeNames = List.of("XSRF-TOKEN");
-        return pull(PushCookieReq.DOMAIN_XUEQIU, excludeNames);
+        return cookieCacheComponent.pullXueqiuCookie();
     }
 
     @Path("/anon/pull.do")
     @POST
     public Map<String, String> pullCookie(PullCookieReq req) {
         String domain = req.getDomain();
-        return pull(domain, List.of());
+        return cookieCacheComponent.pull(domain, List.of());
     }
 
-    private Map<String, String> pull(String domain, List<String> excludeNames) {
-        String c = cookieCacheComponent.doGetAndBuildToString(domain, excludeNames);
-        return Map.of("cookies", StringUtils.trimToEmpty(c));
-    }
 
 }
