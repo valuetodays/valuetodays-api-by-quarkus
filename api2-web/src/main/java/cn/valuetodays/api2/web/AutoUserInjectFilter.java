@@ -49,7 +49,7 @@ public class AutoUserInjectFilter extends BaseAuthorizationController implements
         for (Parameter parameter : parameters) {
             Class<?> type = parameter.getType();
             log.info("type={}", type);
-            if (BaseAccountableReq.class.equals(type)) {
+            if (BaseAccountableReq.class.isAssignableFrom(type)) {
                 isSubClassOfBaseAccountableReq = true;
                 break;
             }
