@@ -63,17 +63,12 @@ public class AutoUserInjectFilter extends BaseAuthorizationController implements
         byte[] requestBodyBytes = originalStream.readAllBytes();
         // 这里可以选择性解析，如果解析失败就跳过
         try {
-            // 只要包含 currentLoginUserId 字段就处理（可以用更优的判断）
-            String json = new String(requestBodyBytes);
-            if (json.contains("currentLoginUserId")) {
-                // 动态读取 class，需要你自己根据请求路径映射到 DTO 类
-                // 简化：这里只做统一赋值，强制转为 Map 处理
-                var map = objectMapper.readValue(requestBodyBytes, Map.class);
-                map.put("accountId", getCurrentAccountId());
-                byte[] modifiedBody = objectMapper.writeValueAsBytes(map);
-                requestContext.setEntityStream(new ByteArrayInputStream(modifiedBody));
-                return;
-            }
+            // 简化：这里只做统一赋值，强制转为 Map 处理
+            var map = objectMapper.readValue(requestBodyBytes, Map.class);
+            map.put("accountId", getCurrentAccountId());
+            byte[] modifiedBody = objectMapper.writeValueAsBytes(map);
+            requestContext.setEntityStream(new ByteArrayInputStream(modifiedBody));
+            return;
         } catch (Exception ignored) {
             log.warn("warn when", ignored);
         }
