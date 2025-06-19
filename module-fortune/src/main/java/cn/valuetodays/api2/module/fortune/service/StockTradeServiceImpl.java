@@ -23,6 +23,7 @@ import cn.vt.util.DateUtils;
 import cn.vt.util.StringExUtils;
 import cn.vt.web.req.SimpleTypesReq;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.transaction.Transactional;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -411,6 +412,7 @@ public class StockTradeServiceImpl
         return (int) DateUtils.intervalDays(firstTradeDay, today) + 1;
     }
 
+    @Transactional
     public AffectedRowsResp parseTextAndSave(SimpleTypesReq req, Long currentAccountId) {
         String text = req.getText();
         StockTradeLogParser parser = StockTradeLogParserFactory.choose(text);
