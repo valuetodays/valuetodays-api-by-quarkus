@@ -39,7 +39,7 @@ public class StockHoldersController
      *
      * @param req req
      */
-    @Path(value = "/getAccountProfit.do")
+    @Path(value = "/getAccountProfit")
     @POST
     public List<AccountProfitVo> getAccountProfit(GetAccountProfitReq req) {
         return getService().getAccountProfit(req);
