@@ -24,7 +24,6 @@ public class GlobalResponseWriterInterceptor implements WriterInterceptor {
     ResourceInfo resourceInfo; // 注入当前请求信息
     @Override
     public void aroundWriteTo(WriterInterceptorContext context) throws IOException {
-        log.info("resourceInfo={}", resourceInfo);
         // 获取当前处理的方法和类
         Method method = resourceInfo.getResourceMethod();
         Class<?> resourceClass = resourceInfo.getResourceClass();
